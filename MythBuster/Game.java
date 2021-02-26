@@ -26,14 +26,15 @@ public class Game extends Application {
     private Group board;
 
     private String name;
-    private Weapon weapon;
     private Difficulty difficulty;
 
-    private int coins;
 
     private Text nameDisplay;
     private Text weaponDisplay;
     private Text coinDisplay;
+
+    private Player p1 = new Player(0);
+
 
     /**
      * This is the main method to launch the application.
@@ -59,19 +60,20 @@ public class Game extends Application {
      * @param startingWeaponIndex the index of the starting weapon
      * @param difficultyEntry     the difficulty
      */
-    private void initializeStats(String nameEntry, int startingWeaponIndex, Difficulty difficultyEntry) {
+    private void initializeStats(String nameEntry,
+                                 int startingWeaponIndex, Difficulty difficultyEntry) {
         name = nameEntry;
-        weapon = WeaponDatabase.getWeapon(startingWeaponIndex);
+        p1.setWeapon(WeaponDatabase.getWeapon(startingWeaponIndex));
         difficulty = difficultyEntry;
         switch (difficulty) {
         case EASY:
-            coins = 30;
+            p1.setCoins(30);
             break;
         case MEDIUM:
-            coins = 20;
+            p1.setCoins(20);
             break;
         case HARD:
-            coins = 10;
+            p1.setCoins(10);
             break;
         default: // unnecessary because of type safety
         }
@@ -159,32 +161,40 @@ public class Game extends Application {
         Label heroNameDescription = new Label("Hero Name");
         heroNameDescription.layoutXProperty().bind(heroNameTextField.layoutXProperty());
         heroNameDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
-        heroNameDescription.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-alignment:center");
+        heroNameDescription.setStyle("-fx-font-size: 30; "
+                + "-fx-font-weight: bold; -fx-alignment:center");
+
         heroNameDescription.setPrefWidth(350);
 
         Label startingWeaponDescription = new Label("Starting Weapon");
-        startingWeaponDescription.layoutXProperty().bind(startingWeaponSelector.layoutXProperty());
+        startingWeaponDescription.layoutXProperty()
+                .bind(startingWeaponSelector.layoutXProperty());
         startingWeaponDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
-        startingWeaponDescription.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-alignment:center");
+        startingWeaponDescription.setStyle("-fx-font-size: 30; "
+                + "-fx-font-weight: bold; -fx-alignment:center");
         startingWeaponDescription.setPrefWidth(300);
 
         Label difficultyDescription = new Label("Difficulty");
         difficultyDescription.layoutXProperty().bind(difficultySelector.layoutXProperty());
         difficultyDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
-        difficultyDescription.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-alignment:center");
+        difficultyDescription.setStyle("-fx-font-size: 30; "
+                + "-fx-font-weight: bold; -fx-alignment:center");
         difficultyDescription.setPrefWidth(300);
 
-        Group descriptionGroup = new Group(heroNameDescription, startingWeaponDescription, difficultyDescription);
+        Group descriptionGroup = new Group(heroNameDescription,
+                startingWeaponDescription, difficultyDescription);
 
         Button beginButton = new Button("Begin");
         beginButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
         beginButton.addEventHandler(ActionEvent.ACTION, (e) -> {
-            if (heroNameTextField.getText().length() < 1 || heroNameTextField.getText().trim().isEmpty()) {
-                showAlert();
+            if (heroNameTextField.getText().length() < 1
+                    || heroNameTextField.getText().trim().isEmpty()) {
+                showAlert("Your name cannot be empty or whitespace only!");
                 return;
             }
             initializeStats(heroNameTextField.getText(),
-                startingWeaponSelector.getSelectionModel().getSelectedIndex(), difficultySelector.getValue());
+                startingWeaponSelector.getSelectionModel().getSelectedIndex(),
+                    difficultySelector.getValue());
             gameScreen(stage);
         });
 
@@ -209,17 +219,24 @@ public class Game extends Application {
     public void gameScreen(Stage stage) {
         nameDisplay = new Text(110, 10, "Name: " + name);
         nameDisplay.setStyle("-fx-font-size: 30;");
-        weaponDisplay = new Text(210, 10, "Weapon: " + weapon.getName());
+        weaponDisplay = new Text(210, 10, "Weapon: " + p1.getWeapon().getName());
         weaponDisplay.setStyle("-fx-font-size: 30;");
-        coinDisplay = new Text(310, 10, "Coins: " + coins);
+        coinDisplay = new Text(310, 10, "Coins: " + p1.getCoins());
         coinDisplay.setStyle("-fx-font-size: 30;");
 
-        HBox hBox = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
-        hBox.setLayoutX(10);
-        hBox.setLayoutY(20);
+        HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
+        displays.setLayoutX(10);
+        displays.setLayoutY(20);
+
+        Door exit1 = new Door(1100, 100);
+        Door exit2 = new Door(1100, 300);
+        Door exit3 = new Door(1100, 500);
+        Door exit4 = new Door(1100, 700);
 
         board = new Group();
-        board.getChildren().addAll(hBox);
+        board.getChildren().addAll(displays);
+        board.getChildren().addAll(exit1.getGroup(),
+                exit2.getGroup(), exit3.getGroup(), exit4.getGroup());
         Scene scene = new Scene(board, W, H, Color.PURPLE);
         stage.setScene(scene);
         stage.show();
@@ -227,10 +244,10 @@ public class Game extends Application {
 
     /**
      * Alert if the hero name is invalid.
-     *
+     * @param message Message to display in alert.
      */
-    public void showAlert() {
-        Alert alert = new Alert(AlertType.WARNING, "Your hero name is invalid!");
+    public void showAlert(String message) {
+        Alert alert = new Alert(AlertType.WARNING, message);
         alert.showAndWait();
         return;
     }
