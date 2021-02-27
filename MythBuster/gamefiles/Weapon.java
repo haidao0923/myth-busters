@@ -1,3 +1,5 @@
+package gamefiles;
+
 public class Weapon {
     private int id;
     private String name;

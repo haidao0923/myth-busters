@@ -1,8 +1,10 @@
+package deprecated;
+
+import gamefiles.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,13 +12,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import gamefiles.StartingWeapon;
+import gamefiles.WeaponDatabase;
 
 public class Game extends Application {
 
@@ -50,7 +53,6 @@ public class Game extends Application {
         WeaponDatabase.initialize();
 
         stage.setResizable(false);
-        welcomeScreen(stage);
     }
 
     /**
@@ -79,50 +81,6 @@ public class Game extends Application {
         }
     }
 
-    /**
-     * This is the welcome screen.
-     *
-     * @param stage the stage
-     */
-    private void welcomeScreen(Stage stage) {
-        Label header = new Label("MYTHBUSTERS");
-        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
-        header.minWidthProperty().bind(stage.widthProperty());
-
-        ImageView leftImageView = new ImageView("sprites/Medusa.png");
-        leftImageView.setFitWidth(200);
-        leftImageView.setFitHeight(200);
-        Node leftImage = leftImageView;
-        leftImage.setLayoutX(100);
-        leftImage.setLayoutY(250);
-
-        ImageView rightImageView = new ImageView("sprites/Medusa.png");
-        rightImageView.setFitWidth(200);
-        rightImageView.setFitHeight(200);
-        Node rightImage = rightImageView;
-        rightImage.setLayoutX(W - 300);
-        rightImage.setLayoutY(250);
-
-        Button startGameButton = new Button("Start Game");
-        startGameButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-        startGameButton.addEventHandler(ActionEvent.ACTION, (e) -> {
-            configurationScreen(stage);
-        });
-
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().add(startGameButton);
-        vBox.minWidthProperty().bind(stage.widthProperty());
-        vBox.setLayoutY(300);
-
-        board = new Group();
-        board.getChildren().addAll(header, leftImage, rightImage, vBox);
-        Scene scene = new Scene(board, W, H, Color.PURPLE);
-
-        stage.setScene(scene);
-        stage.show();
-    }
 
     /**
      * This is the configuration screen.
@@ -166,7 +124,7 @@ public class Game extends Application {
 
         heroNameDescription.setPrefWidth(350);
 
-        Label startingWeaponDescription = new Label("Starting Weapon");
+        Label startingWeaponDescription = new Label("Starting GameFiles.Weapon");
         startingWeaponDescription.layoutXProperty()
                 .bind(startingWeaponSelector.layoutXProperty());
         startingWeaponDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
@@ -219,7 +177,7 @@ public class Game extends Application {
     public void gameScreen(Stage stage) {
         nameDisplay = new Text(110, 10, "Name: " + name);
         nameDisplay.setStyle("-fx-font-size: 30;");
-        weaponDisplay = new Text(210, 10, "Weapon: " + p1.getWeapon().getName());
+        weaponDisplay = new Text(210, 10, "GameFiles.Weapon: " + p1.getWeapon().getName());
         weaponDisplay.setStyle("-fx-font-size: 30;");
         coinDisplay = new Text(310, 10, "Coins: " + p1.getCoins());
         coinDisplay.setStyle("-fx-font-size: 30;");
