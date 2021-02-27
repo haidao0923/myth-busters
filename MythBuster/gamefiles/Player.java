@@ -1,8 +1,11 @@
+package gamefiles;
+
 public class Player {
     public Player(int coins) {
         coins = 0;
     }
 
+    private String name;
     private int coins;
     private Weapon weapon;
 
@@ -19,5 +22,12 @@ public class Player {
     }
     public Weapon getWeapon() {
         return weapon;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
     }
 }
