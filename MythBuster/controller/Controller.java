@@ -31,9 +31,7 @@ public class Controller extends Application {
         gameModel = new GameModel();
         p1 = new Player(0);
         WeaponDatabase.initialize();
-
         initWelcomeScreen();
-
     }
 
     public static void main(String[] args) {
@@ -45,7 +43,7 @@ public class Controller extends Application {
         Scene scene = welcomeScreen.getScene();
         Button startGameButton = welcomeScreen.getStartButton();
 
-        startGameButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+        startGameButton.setOnAction(e -> {
             goToConfigurationScreen();
         });
         welcomeScreen.setBinds(mainWindow);
@@ -73,10 +71,10 @@ public class Controller extends Application {
             goToRoomOne();
         });
         Scene scene = configScreen.getScene();
-        configScreen.setBinds(mainWindow);
-
         mainWindow.setScene(scene);
         mainWindow.show();
+        configScreen.setBinds(mainWindow);
+
     }
 
     public void goToRoomOne() {

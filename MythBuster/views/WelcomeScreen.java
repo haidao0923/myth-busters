@@ -41,8 +41,6 @@ public class WelcomeScreen {
     public Scene getScene() {
         Group board = new Group();
 
-
-
         ImageView leftImageView = new ImageView("sprites/Medusa.png");
         leftImageView.setFitWidth(200);
         leftImageView.setFitHeight(200);

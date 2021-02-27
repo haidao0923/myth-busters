@@ -50,7 +50,7 @@ public class ConfigurationScreen {
      * @return configuration screen scene
      */
     public Scene getScene() {
-
+        heroNameTextField.setId("HeroNameTextField");
         heroNameTextField.setPrefWidth(350);
         heroNameTextField.setFont(new Font(30));
         heroNameTextField.setPromptText("Name your hero");
@@ -79,7 +79,7 @@ public class ConfigurationScreen {
 
         heroNameDescription.setPrefWidth(350);
 
-        Label startingWeaponDescription = new Label("Starting GameFiles.Weapon");
+        Label startingWeaponDescription = new Label("Weapon");
         startingWeaponDescription.layoutXProperty()
                 .bind(startingWeaponSelector.layoutXProperty());
         startingWeaponDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
