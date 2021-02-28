@@ -55,6 +55,7 @@ public class ConfigurationScreen {
         heroNameTextField.setFont(new Font(30));
         heroNameTextField.setPromptText("Name your hero");
 
+        startingWeaponSelector.setId("startingWeaponSelector");
         startingWeaponSelector.setPrefWidth(300);
         startingWeaponSelector.setStyle("-fx-font-size: 30");
         startingWeaponSelector.getItems().setAll(StartingWeapon.values());
