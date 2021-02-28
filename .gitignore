@@ -21,7 +21,9 @@
 
 # Files for local development
 .vscode/**
+.idea/**
 lib/**
+MythBuster.iml
 
 #Other Files
 .DS_Store
