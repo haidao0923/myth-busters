@@ -135,4 +135,12 @@ public class Controller extends Application {
     public RoomOne getRoomOne() {
         return roomOne;
     }
+
+    /**
+     * Private testing method to return a String representation of the Label of the window.
+     * @return the string representing the label of the window.
+     */
+    public String getWindowTitle() {
+        return mainWindow.getTitle();
+    }
 }
