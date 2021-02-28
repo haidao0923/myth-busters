@@ -41,6 +41,7 @@ public class RoomOne {
         nameDisplay.setStyle("-fx-font-size: 30;");
         weaponDisplay = new Text(210, 10, "Weapon: " + player.getWeapon().getName());
         weaponDisplay.setStyle("-fx-font-size: 30;");
+        weaponDisplay.setId("weaponDisplay");
         coinDisplay = new Text(310, 10, "Coins: " + player.getCoins());
         coinDisplay.setStyle("-fx-font-size: 30;");
         coinDisplay.setId("coinDisplay");

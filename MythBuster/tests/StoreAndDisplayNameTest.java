@@ -3,25 +3,17 @@ package tests;
 import controller.Controller;
 import gamefiles.Player;
 
-
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import model.GameModel;
 import views.RoomOne;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
 
 import static org.junit.Assert.assertEquals;
-import static org.testfx.api.FxAssert.verifyThat;
 
 public class StoreAndDisplayNameTest extends ApplicationTest {
-    Controller controller;
-    Player player;
+    private Controller controller;
+    private Player player;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -57,4 +49,5 @@ public class StoreAndDisplayNameTest extends ApplicationTest {
         player = controller.getPlayer();
         RoomOne roomOne = controller.getRoomOne();
         assertEquals("Name: " + player.getName(), roomOne.getNameDisplay().getText());
-    }}
+    }
+}

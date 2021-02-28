@@ -1,10 +1,7 @@
 package tests;
 import controller.Controller;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
+import gamefiles.Player;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import model.GameModel;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
@@ -12,18 +9,36 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.api.FxAssert.verifyThat;
 
 
+
 public class StartGameButtonTest extends ApplicationTest {
+
+    private Controller controller;
+    private Player player;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Controller controller = new Controller();
+        controller = new Controller();
         controller.start(primaryStage);
     }
 
     @Test
-    public void testInvalidName() {
+    public void testStartGame() {
         clickOn("Start Game");
         verifyThat("Configuration Screen", NodeMatchers.isNotNull());
+    }
+
+    @Test
+    public void testInGame() {
+        clickOn("Start Game");
+        clickOn("#HeroNameTextField");
+        write("Test");
+        clickOn("Begin!");
+
+        player = controller.getPlayer();
+
+        verifyThat("Name: " + player.getName(), NodeMatchers.isNotNull());
+        verifyThat("Weapon: " + player.getWeapon().getName(), NodeMatchers.isNotNull());
+        verifyThat("Coins: " + player.getCoins(), NodeMatchers.isNotNull());
     }
 
 }

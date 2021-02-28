@@ -4,13 +4,7 @@ import controller.Controller;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-import org.testfx.matcher.control.TextInputControlMatchers;
 import org.testfx.matcher.control.TextMatchers;
-import org.testfx.service.query.NodeQuery;
-import org.testfx.util.NodeQueryUtils;
-
-import static org.junit.Assert.assertEquals;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
