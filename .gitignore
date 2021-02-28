@@ -20,8 +20,8 @@
 *.rar
 
 # Files for local development
-.vscode/**
-.idea/**
+.vscode/
+.idea/
 lib/**
 MythBuster.iml
 

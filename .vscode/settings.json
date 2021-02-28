@@ -1,7 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "lib/javafx-sdk-11.0.2-mac/lib/*.jar"
-    ],
-    "java.checkstyle.configuration": "${workspaceFolder}\\MythBuster\\CS1332-checkstyle.xml"
-}
