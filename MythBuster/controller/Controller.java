@@ -24,6 +24,7 @@ public class Controller extends Application {
     private static final int H = 800;
 
     private Player p1;
+    private RoomOne roomOne;
 
     public void start(Stage primaryStage) throws Exception {
         mainWindow = primaryStage;
@@ -78,7 +79,7 @@ public class Controller extends Application {
     }
 
     public void goToRoomOne() {
-        RoomOne roomOne = new RoomOne(W, H, p1);
+        roomOne = new RoomOne(W, H, p1);
 
         Scene scene = roomOne.getScene();
         mainWindow.setScene(scene);
@@ -121,4 +122,17 @@ public class Controller extends Application {
         return;
     }
 
+    /**
+     * @return the player object
+     */
+    public Player getPlayer() {
+        return p1;
+    }
+
+    /**
+     * @return the first room
+     */
+    public RoomOne getRoomOne() {
+        return roomOne;
+    }
 }
