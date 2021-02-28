@@ -60,6 +60,7 @@ public class ConfigurationScreen {
         startingWeaponSelector.getItems().setAll(StartingWeapon.values());
         startingWeaponSelector.getSelectionModel().selectFirst();
 
+        difficultySelector.setId("difficultySelector");
         difficultySelector.setPrefWidth(300);
         difficultySelector.setStyle("-fx-font-size: 30");
         difficultySelector.getItems().setAll(Difficulty.values());

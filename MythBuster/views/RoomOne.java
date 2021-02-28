@@ -43,6 +43,7 @@ public class RoomOne {
         weaponDisplay.setStyle("-fx-font-size: 30;");
         coinDisplay = new Text(310, 10, "Coins: " + player.getCoins());
         coinDisplay.setStyle("-fx-font-size: 30;");
+        coinDisplay.setId("coinDisplay");
 
         HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
         displays.setLayoutX(10);
