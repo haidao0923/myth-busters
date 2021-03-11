@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Controller",
+            "request": "launch",
+            "mainClass": "controller.Controller",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+<<<<<<< HEAD:.vscode/launch.json
+            "projectName": "MythBuster_c5f4235e"
+=======
+            "projectName": "MythBuster_c1a60a52"
+>>>>>>> 8c3e31dc99cb750556914ab7183806165f641a47:out/production/MythBuster/.vscode/launch.json
+        },
+        {
+            "type": "java",
+            "name": "Launch Example5",
+            "request": "launch",
+<<<<<<< HEAD:.vscode/launch.json
+            "mainClass": "gamefiles.Example5",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+            "projectName": "MythBuster_c5f4235e"
+        },
+=======
+            "mainClass": "Game",
+            "projectName": "MythBuster_c1a60a52",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
+        }
+>>>>>>> 8c3e31dc99cb750556914ab7183806165f641a47:out/production/MythBuster/.vscode/launch.json
+    ]
+}

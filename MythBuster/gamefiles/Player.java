@@ -71,11 +71,11 @@ public class Player implements Touchable {
                 // game logic
                 if ((input.contains("LEFT") || input.contains("A")) && positionX > 0)
                     moveRelative(-10,0);
-                if ((input.contains("RIGHT") || input.contains("D")) && positionX < scene.getWidth())
+                if ((input.contains("RIGHT") || input.contains("D")) && positionX + width < scene.getWidth())
                     moveRelative(10,0);
                 if ((input.contains("UP") || input.contains("W")) && positionY > 0)
                     moveRelative(0,-10);
-                if ((input.contains("DOWN") || input.contains("S")) && positionY < scene.getHeight())
+                if ((input.contains("DOWN") || input.contains("S")) && positionY + height < scene.getHeight())
                     moveRelative(0,10);
             }
         }.start();
