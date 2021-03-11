@@ -16,5 +16,6 @@
         "tests/testfx-junit-4.0.4-alpha.jar",
         "tests/testfx-junit-4.0.15-alpha.jar",
         "tests/testfx-core-4.0.15-alpha.jar"
-    ]
+    ],
+    "java.checkstyle.configuration": "${workspaceFolder}\\cs2340_checks.xml"
 }

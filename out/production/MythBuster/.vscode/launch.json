@@ -10,12 +10,34 @@
             "request": "launch",
             "mainClass": "controller.Controller",
             "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+<<<<<<< HEAD
+<<<<<<<< HEAD:out/production/MythBuster/.vscode/launch.json
             "projectName": "MythBuster_c1a60a52"
+========
+            "projectName": "MythBuster_c5f4235e"
+>>>>>>>> hai:.vscode/launch.json
+=======
+<<<<<<< HEAD:.vscode/launch.json
+            "projectName": "MythBuster_c5f4235e"
+=======
+            "projectName": "MythBuster_c1a60a52"
+>>>>>>> 8c3e31dc99cb750556914ab7183806165f641a47:out/production/MythBuster/.vscode/launch.json
+>>>>>>> hai
         },
         {
             "type": "java",
-            "name": "Launch Game",
+            "name": "Launch Example5",
             "request": "launch",
+<<<<<<< HEAD
+<<<<<<<< HEAD:out/production/MythBuster/.vscode/launch.json
+=======
+<<<<<<< HEAD:.vscode/launch.json
+            "mainClass": "gamefiles.Example5",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+            "projectName": "MythBuster_c5f4235e"
+        },
+=======
+>>>>>>> hai
             "mainClass": "Game",
             "projectName": "MythBuster_c1a60a52",
             "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
@@ -27,5 +49,15 @@
             "mainClass": "${file}",
             "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
         }
+<<<<<<< HEAD
+========
+            "mainClass": "gamefiles.Example5",
+            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+            "projectName": "MythBuster_c5f4235e"
+        },
+>>>>>>>> hai:.vscode/launch.json
+=======
+>>>>>>> 8c3e31dc99cb750556914ab7183806165f641a47:out/production/MythBuster/.vscode/launch.json
+>>>>>>> hai
     ]
 }

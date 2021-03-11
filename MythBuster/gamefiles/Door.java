@@ -1,32 +1,50 @@
 package gamefiles;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Door {
+public class Door implements Touchable {
+    private Room destination;
+
+    private double positionX, positionY, width = 60, height = 80;
+
     private Group doorGroup;
-    public Door(int x, int y) {
+    public Door(double x, double y) {
         doorGroup = new Group();
-        Rectangle door = new Rectangle(0, 0, 60, 80);
+        Rectangle door = new Rectangle(0, 0, width, height);
         Rectangle knob = new Rectangle(50, 40, 7, 7);
         door.setStroke(Color.BLACK);
         door.setFill(Color.BROWN);
         knob.setFill(Color.BLACK);
         doorGroup.getChildren().addAll(door, knob);
-        doorGroup.relocate(x, y);
+        relocate(x, y);
     }
 
     public Group getGroup() {
         return doorGroup;
     }
-    public void relocate(int x, int y) {
-        doorGroup.relocate(x, y);
+    public void relocate(double x, double y) {
+        positionX = x;
+        positionY = y;
+        doorGroup.relocate(positionX, positionY);
     }
-    public int getWidth() {
-        return 100;
+
+    public Rectangle2D getBoundary()
+    {
+        return new Rectangle2D(positionX, positionY, width, height);
     }
-    public int getHeight() {
-        return 100;
+
+    public boolean intersects(Touchable other)
+    {
+        return other.getBoundary().intersects(this.getBoundary());
+    }
+
+    public double getWidth() {
+        return width;
+    }
+    public double getHeight() {
+        return height;
     }
 }

@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -29,3 +28,20 @@ MythBuster.iml
 .DS_Store
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+javafx-sdk-11.0.2/lib/javafx-swt.jar
+javafx-sdk-11.0.2/lib/javafx.base.jar
+javafx-sdk-11.0.2/lib/javafx.controls.jar
+javafx-sdk-11.0.2/lib/javafx.fxml.jar
+javafx-sdk-11.0.2/lib/javafx.graphics.jar
+javafx-sdk-11.0.2/lib/javafx.media.jar
+javafx-sdk-11.0.2/lib/javafx.swing.jar
+javafx-sdk-11.0.2/lib/javafx.web.jar
+MythBuster/checkstyle-8.24-all.jar
+MythBuster/tests/guava-18.0.jar
+MythBuster/tests/junit-4.12.jar
+MythBuster/tests/testfx-junit-4.0.15-alpha.jar
+MythBuster/tests/testfx-core-4.0.15-alpha.jar
+MythBuster/tests/hamcrest-core-1.3.jar
+.vscode/launch.json
+.vscode/launch.json
+MythBuster/.vscode/settings.json
