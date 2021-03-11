@@ -1,11 +1,17 @@
 package views;
 
 import gamefiles.Player;
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+
 import gamefiles.Door;
 import javafx.stage.Stage;
 
@@ -30,6 +36,8 @@ public class RoomOne {
         this.player = player;
         this.width = width;
         this.height = height;
+
+        this.player = player;
     }
 
     /**
@@ -53,11 +61,27 @@ public class RoomOne {
         Door exit3 = new Door(1100, 500);
         Door exit4 = new Door(1100, 700);
 
+        player.moveAbsolute(100, 100);
+
         Group board = new Group();
         board.getChildren().addAll(displays);
-        board.getChildren().addAll(exit1.getGroup(),
-                exit2.getGroup(), exit3.getGroup(), exit4.getGroup());
-        Scene scene = new Scene(board, width, height, Color.PURPLE);
+        board.getChildren().addAll(exit1.getGroup(), exit2.getGroup(), exit3.getGroup(), exit4.getGroup(),
+                player.getGroup());
+        Scene scene = new Scene(board, width, height);
+        scene.setFill(Color.PURPLE);
+
+        player.movePlayer(scene);
+
+        new AnimationTimer()
+        {
+            public void handle(long currentNanoTime)
+            {
+                // game logic
+                if (player.intersects(exit1) || player.intersects(exit2) || player.intersects(exit3) || player.intersects(exit4))
+                    System.out.println(player.toString());
+            }
+        }.start();
+
         return scene;
     }
 

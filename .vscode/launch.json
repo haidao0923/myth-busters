@@ -6,18 +6,19 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch Current File",
+            "name": "Launch Controller",
             "request": "launch",
-            "mainClass": "${file}",
+            "mainClass": "controller.Controller",
             "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
+            "projectName": "MythBuster_c5f4235e"
         },
         {
             "type": "java",
-            "name": "Launch Game",
+            "name": "Launch Example5",
             "request": "launch",
-            "mainClass": "Game",
+            "mainClass": "gamefiles.Example5",
             "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-11.0.2/lib\" --add-modules javafx.controls,javafx.fxml",
             "projectName": "MythBuster_c5f4235e"
-        }
+        },
     ]
 }
