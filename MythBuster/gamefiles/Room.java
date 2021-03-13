@@ -24,7 +24,7 @@ public abstract class Room {
     public Door getRightDoor() {
         return doors[2];
     }
-    public Door getDownDoor() {
+    public Door getBottomDoor() {
         return doors[3];
     }
     public void setLeftDoor(Room destination) {

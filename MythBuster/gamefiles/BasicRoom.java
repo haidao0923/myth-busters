@@ -7,5 +7,7 @@ public class BasicRoom extends Room {
     }
 
     // This will later have methods to generate monsters, gold, chests, and the like.
-
+    public String toString() {
+        return "Regular Room";
+    }
 }

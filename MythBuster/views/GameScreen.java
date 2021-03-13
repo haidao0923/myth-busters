@@ -3,6 +3,7 @@ package views;
 import gamefiles.Player;
 import gamefiles.Room;
 import gamefiles.RoomLayout;
+import gamefiles.StartingRoom;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,7 +21,9 @@ public class GameScreen {
     private Text nameDisplay;
     private Text weaponDisplay;
     private Text coinDisplay;
+    private Text roomInfo;
 
+    private RoomLayout roomLayout;
     private Room currentRoom;
     private Group roomGroup;
     private Group board;
@@ -34,11 +37,12 @@ public class GameScreen {
      * @param height height of room screen
      * @param player player in room
      */
-    public GameScreen(int width, int height, Player player) {
+    public GameScreen(int width, int height, Player player, RoomLayout roomLayout) {
         this.player = player;
         this.width = width;
         this.height = height;
         this.board = new Group();
+        this.roomLayout = roomLayout;
     }
 
     public void setCurrentRoom(Room room) {
@@ -60,14 +64,16 @@ public class GameScreen {
         coinDisplay.setStyle("-fx-font-size: 30;");
         coinDisplay.setId("coinDisplay");
 
-        HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
+        setCurrentRoom(roomLayout.getRoom(roomLayout.getStartRoomRow(), roomLayout.getStartRoomColumn()));
+        roomInfo = new Text(410, 10, currentRoom.toString());
+        roomInfo.setStyle("-fx-font-size: 30;");
+
+        HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay, roomInfo);
         displays.setLayoutX(10);
         displays.setLayoutY(20);
 
 
         player.moveAbsolute(100, 100);
-
-        setCurrentRoom(RoomLayout.rooms[RoomLayout.START_ROOM_ROW][RoomLayout.START_ROOM_COLUMN]);
 
         board.getChildren().addAll(displays);
         board.getChildren().addAll(currentRoom.getRoomGroup(),
@@ -83,44 +89,63 @@ public class GameScreen {
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null && player.intersects(currentRoom.getLeftDoor())) {
-
-                    if (RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1] == null) {
-                        //If no left room exists, generate it and move there.
-                        RoomLayout.generateRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
-                        setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
-                        board.getChildren().clear();
-                        board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                        player.moveAbsolute(width / 2, height / 2);
-                        //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() - 1));
+                    board.getChildren().clear();
+                    board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
                     } else {
-                        //If a left room already exists, just move there.
-                        setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
-                        board.getChildren().clear();
-                        board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                        player.moveAbsolute(width / 2, height / 2);
+                        displays.getChildren().remove(roomInfo);
                     }
+                    board.getChildren().addAll(displays);
+                    player.moveAbsolute(width / 2, height / 2);
+                        //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
                 }
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null && player.intersects(currentRoom.getRightDoor())) {
-                    //If no right room exists, generate it and move there.
-                    if (RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1] == null) {
-                            RoomLayout.generateRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
-                            setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1]);
-                            board.getChildren().clear();
-                            board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                            player.moveAbsolute(width / 2, height / 2);
-                            //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() + 1));
+                    board.getChildren().clear();
+                    board.getChildren().addAll(currentRoom.getRoomGroup(),
+                            player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
                     } else {
-                        //If a right room already exists, just move there.
-                        setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1]);
-                        board.getChildren().clear();
-                        board.getChildren().addAll(currentRoom.getRoomGroup(),
-                                player.getGroup());
-                        player.moveAbsolute(width / 2, height / 2);
+                        displays.getChildren().remove(roomInfo);
                     }
+                    board.getChildren().addAll(displays);
+                    player.moveAbsolute(width / 2, height / 2);
+                }
+                
+                //If there is a top door and we are at it.
+                if (currentRoom.getTopDoor() != null && player.intersects(currentRoom.getTopDoor())) {
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() - 1,currentRoom.getColumn()));
+                    board.getChildren().clear();
+                    board.getChildren().addAll(currentRoom.getRoomGroup(),
+                            player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
+                    player.moveAbsolute(width / 2, height / 2);
                 }
 
+                //If there is a bottom door and we are at it.
+                if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1,currentRoom.getColumn()));
+                    board.getChildren().clear();
+                    board.getChildren().addAll(currentRoom.getRoomGroup(),
+                            player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
+                    player.moveAbsolute(width / 2, height / 2);
+                }
             }
         }.start();
 

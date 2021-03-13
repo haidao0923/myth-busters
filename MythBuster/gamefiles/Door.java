@@ -24,6 +24,7 @@ public class Door implements Touchable {
         knob.setFill(Color.BLACK);
         doorGroup.getChildren().addAll(door, knob);
         relocate(x, y);
+        this.destination = destination;
     }
 
     public Group getGroup() {
@@ -48,5 +49,8 @@ public class Door implements Touchable {
     }
     public double getHeight() {
         return height;
+    }
+    public Room getDestination() {
+        return destination;
     }
 }
