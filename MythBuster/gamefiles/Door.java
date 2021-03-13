@@ -6,12 +6,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Door implements Touchable {
-    private Room destination;
+    private Room destination; //Placeholder, maybe not needed.
+
 
     private double positionX, positionY, width = 60, height = 80;
 
     private Group doorGroup;
-    public Door(double x, double y) {
+    public Door(double x, double y, Room destination) {
         doorGroup = new Group();
         Rectangle door = new Rectangle(0, 0, width, height);
         Rectangle knob = new Rectangle(50, 40, 7, 7);

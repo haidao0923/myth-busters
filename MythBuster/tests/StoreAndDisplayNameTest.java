@@ -4,7 +4,7 @@ import controller.Controller;
 import gamefiles.Player;
 
 import javafx.stage.Stage;
-import views.RoomOne;
+import views.GameScreen;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -47,7 +47,7 @@ public class StoreAndDisplayNameTest extends ApplicationTest {
         write(name);
         clickOn("Begin!");
         player = controller.getPlayer();
-        RoomOne roomOne = controller.getRoomOne();
-        assertEquals("Name: " + player.getName(), roomOne.getNameDisplay().getText());
+        GameScreen gameScreen = controller.getRoomOne();
+        assertEquals("Name: " + player.getName(), gameScreen.getNameDisplay().getText());
     }
 }

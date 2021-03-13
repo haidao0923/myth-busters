@@ -105,6 +105,10 @@ public class Player implements Touchable {
 
     public boolean intersects(Touchable other)
     {
+        if (other == null) {
+            System.out.println("Null Other!");
+            return false;
+        }
         return other.getBoundary().intersects(this.getBoundary());
     }
 

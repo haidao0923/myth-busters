@@ -1,3 +1,6 @@
+/*
+
+
 package deprecated;
 
 import gamefiles.*;
@@ -39,11 +42,13 @@ public class Game extends Application {
     private Player p1 = new Player(0);
 
 
-    /**
+    */
+/**
      * This is the main method to launch the application.
      *
      * @param args unused
-     */
+     **//*
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -55,13 +60,15 @@ public class Game extends Application {
         stage.setResizable(false);
     }
 
-    /**
+    */
+/**
      * Set initial parameters
      *
      * @param nameEntry           the name of the hero
      * @param startingWeaponIndex the index of the starting weapon
      * @param difficultyEntry     the difficulty
-     */
+     *//*
+
     private void initializeStats(String nameEntry,
                                  int startingWeaponIndex, Difficulty difficultyEntry) {
         name = nameEntry;
@@ -82,11 +89,13 @@ public class Game extends Application {
     }
 
 
-    /**
+    */
+/**
      * This is the configuration screen.
      *
      * @param stage the stage
-     */
+     *//*
+
     private void configurationScreen(Stage stage) {
         Label header = new Label("Configuration Screen");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
@@ -169,11 +178,13 @@ public class Game extends Application {
 
     }
 
-    /**
+    */
+/**
      * This is the game screen.
      *
      * @param stage the stage
-     */
+     *//*
+
     public void gameScreen(Stage stage) {
         nameDisplay = new Text(110, 10, "Name: " + name);
         nameDisplay.setStyle("-fx-font-size: 30;");
@@ -186,10 +197,10 @@ public class Game extends Application {
         displays.setLayoutX(10);
         displays.setLayoutY(20);
 
-        Door exit1 = new Door(1100, 100);
-        Door exit2 = new Door(1100, 300);
-        Door exit3 = new Door(1100, 500);
-        Door exit4 = new Door(1100, 700);
+        Door exit1 = new Door(1100, 100, null);
+        Door exit2 = new Door(1100, 300, null);
+        Door exit3 = new Door(1100, 500, null);
+        Door exit4 = new Door(1100, 700, null);
 
         board = new Group();
         board.getChildren().addAll(displays);
@@ -200,13 +211,16 @@ public class Game extends Application {
         stage.show();
     }
 
-    /**
+    */
+/**
      * Alert if the hero name is invalid.
      * @param message Message to display in alert.
-     */
+     *//*
+
     public void showAlert(String message) {
         Alert alert = new Alert(AlertType.WARNING, message);
         alert.showAndWait();
         return;
     }
 }
+*/
