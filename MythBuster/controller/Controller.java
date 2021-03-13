@@ -77,7 +77,8 @@ public class Controller extends Application {
     }
 
     public void goToRoomOne() {
-        gameScreen = new GameScreen(W, H, p1);
+        RoomLayout roomLayout = new RoomLayout();
+        gameScreen = new GameScreen(W, H, p1, roomLayout);
 
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);

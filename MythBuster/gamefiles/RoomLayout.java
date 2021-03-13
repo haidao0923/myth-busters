@@ -25,6 +25,7 @@ public class RoomLayout {
 
         this.fillRooms();
         this.growingTreeAlgorithm();
+        this.toFile();
     }
 
     public void fillRooms() {
@@ -139,7 +140,47 @@ public class RoomLayout {
     }
 
     public void toFile() {
-        FileWriter clear = new FileWriter("printables/RoomLayout.txt", false).close();
+        try {
+            new FileWriter("printables/RoomLayout.txt", false).close();
 
+            FileWriter writer = new FileWriter("printables/RoomLayout.txt");
+
+            for (int row = 0; row < rooms.length; row++) {
+                String cap = "";
+                String mid = "";
+                for (int column = 0; column < rooms[0].length; column++) {
+                    Room currRoom = rooms[row][column];
+                    String roomUp = currRoom.getTopDoor() != null ? " " : "-";
+                    cap += "+" + roomUp;
+                    String roomLeft = currRoom.getLeftDoor() != null ? " " : "|";
+                    String content;
+                    if (currRoom instanceof StartingRoom) {
+                        content = "S";
+                    } else if (currRoom instanceof BossRoom) {
+                        content = "B";
+                    } else {
+                        content = " ";
+                    }
+                    mid += roomLeft + content;
+                }
+                cap += "+\n";
+                mid += "|\n";
+                writer.write(cap);
+                writer.write(mid);
+            }
+
+            String bot = "";
+            for (int column = 0; column < rooms[0].length; column++) {
+                bot += "+-";
+            }
+            bot += "+";
+            writer.write(bot);
+        } catch (Exception e) {
+            System.out.println("Exception: Writing to file printables/RoomLayout.java.");
+        }
+    }
+
+    public Room getRoom(int row, int column) {
+        return rooms[row][column];
     }
 }
