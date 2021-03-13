@@ -31,11 +31,11 @@ public class RoomLayout {
     public void fillRooms() {
         for (int row = 0; row < rooms.length; row++) {
             for(int column = 0; column < rooms[0].length; column++) {
-                rooms[row][column] = new BasicRoom(ROOM_HEIGHT, ROOM_WIDTH, row, column);
+                rooms[row][column] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
             }
         }
 
-        rooms[START_ROOM_ROW][START_ROOM_COLUMN] = new StartingRoom(ROOM_HEIGHT, ROOM_WIDTH, START_ROOM_ROW, 
+        rooms[START_ROOM_ROW][START_ROOM_COLUMN] = new StartingRoom(ROOM_WIDTH, ROOM_HEIGHT, START_ROOM_ROW,
             START_ROOM_COLUMN);
     }
 
