@@ -9,13 +9,13 @@ import controller.Controller;
 
 
 public class RoomLayout {
-    static final int totalRows = 7;
-    static final int totalColumns = 7;
+    static final int totalRows = 6;
+    static final int totalColumns = 6;
     static final int ROOM_WIDTH = Controller.getW();
     static final int ROOM_HEIGHT = Controller.getH();
 
-    public int startRoomRow;
-    public int startRoomColumn;
+    private int startRoomRow;
+    private int startRoomColumn;
 
 
     private Room[][] rooms;
@@ -26,6 +26,7 @@ public class RoomLayout {
         this.setStartingRoom();
         this.fillRooms();
         this.growingTreeAlgorithm();
+        this.setBossRoom();
         this.toFile();
     }
 
@@ -149,8 +150,45 @@ public class RoomLayout {
     }
 
     public void setStartingRoom() {
-        this.startRoomRow = (int) Math.floor(Math.random() * (ROOM_HEIGHT - 2) + 1);
-        this.startRoomColumn = (int) Math.floor(Math.random() * (ROOM_WIDTH - 2) + 1);
+        this.startRoomRow = (int) Math.floor(Math.random() * (totalRows - 2)) + 1;
+        this.startRoomColumn = (int) Math.floor(Math.random() * (totalColumns - 2)) + 1;
+    }
+
+    public void setBossRoom() {
+        int r;
+        int c;
+        if (startRoomRow < totalRows / 2) {
+            r = totalRows - 1;
+        } else {
+            r = 0;
+        }
+        if (startRoomColumn < totalColumns / 2) {
+            c = totalColumns - 1;
+        } else {
+            c = 0;
+        }
+
+        Room oldRoom = rooms[r][c];
+        BossRoom bossRoom = new BossRoom(ROOM_WIDTH, ROOM_HEIGHT, r, c);
+
+        if (oldRoom.getLeftDoor() != null) {
+            bossRoom.setLeftDoor(oldRoom.getLeftDoor().getDestination());
+            oldRoom.getLeftDoor().getDestination().setRightDoor(bossRoom);
+        }
+        if (oldRoom.getTopDoor() != null) {
+            bossRoom.setTopDoor(oldRoom.getTopDoor().getDestination());
+            oldRoom.getTopDoor().getDestination().setBottomDoor(bossRoom);
+        }
+        if (oldRoom.getRightDoor() != null) {
+            bossRoom.setRightDoor(oldRoom.getRightDoor().getDestination());
+            oldRoom.getRightDoor().getDestination().setLeftDoor(bossRoom);
+        }
+        if (oldRoom.getBottomDoor() != null) {
+            bossRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
+            oldRoom.getBottomDoor().getDestination().setTopDoor(bossRoom);
+        }
+
+        rooms[r][c] = bossRoom;
     }
 
     public void toFile() {
@@ -200,5 +238,13 @@ public class RoomLayout {
 
     public Room getRoom(int row, int column) {
         return rooms[row][column];
+    }
+
+    public int getStartRoomRow() {
+        return startRoomRow;
+    }
+
+    public int getStartRoomColumn() {
+        return startRoomColumn;
     }
 }

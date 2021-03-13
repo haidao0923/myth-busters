@@ -3,6 +3,7 @@ package views;
 import gamefiles.Player;
 import gamefiles.Room;
 import gamefiles.RoomLayout;
+import gamefiles.StartingRoom;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ public class GameScreen {
     private Text nameDisplay;
     private Text weaponDisplay;
     private Text coinDisplay;
+    private Text roomInfo;
 
     private RoomLayout roomLayout;
     private Room currentRoom;
@@ -62,14 +64,16 @@ public class GameScreen {
         coinDisplay.setStyle("-fx-font-size: 30;");
         coinDisplay.setId("coinDisplay");
 
-        HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
+        setCurrentRoom(roomLayout.getRoom(roomLayout.getStartRoomRow(), roomLayout.getStartRoomColumn()));
+        roomInfo = new Text(410, 10, currentRoom.toString());
+        roomInfo.setStyle("-fx-font-size: 30;");
+
+        HBox displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay, roomInfo);
         displays.setLayoutX(10);
         displays.setLayoutY(20);
 
 
         player.moveAbsolute(100, 100);
-
-        setCurrentRoom(roomLayout.getRoom(RoomLayout.START_ROOM_ROW, RoomLayout.START_ROOM_COLUMN));
 
         board.getChildren().addAll(displays);
         board.getChildren().addAll(currentRoom.getRoomGroup(),
@@ -88,6 +92,12 @@ public class GameScreen {
                     setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() - 1));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
                     player.moveAbsolute(width / 2, height / 2);
                         //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
                 }
@@ -98,6 +108,12 @@ public class GameScreen {
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
                     player.moveAbsolute(width / 2, height / 2);
                 }
                 
@@ -107,6 +123,12 @@ public class GameScreen {
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
                     player.moveAbsolute(width / 2, height / 2);
                 }
 
@@ -116,6 +138,12 @@ public class GameScreen {
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
+                    if (currentRoom instanceof StartingRoom) {
+                        displays.getChildren().add(roomInfo);
+                    } else {
+                        displays.getChildren().remove(roomInfo);
+                    }
+                    board.getChildren().addAll(displays);
                     player.moveAbsolute(width / 2, height / 2);
                 }
             }

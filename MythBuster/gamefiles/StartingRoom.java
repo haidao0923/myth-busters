@@ -8,4 +8,7 @@ public class StartingRoom extends Room {
         this.setRightDoor(null);
         this.setTopDoor(null);
     }
+    public String toString() {
+        return "Starting Room";
+    }
 }
