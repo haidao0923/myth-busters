@@ -69,7 +69,7 @@ public class GameScreen {
 
         player.moveAbsolute(100, 100);
 
-        setCurrentRoom(roomLayout.getRoom(RoomLayout.START_ROOM_ROW, RoomLayout.START_ROOM_COLUMN);
+        setCurrentRoom(roomLayout.getRoom(RoomLayout.START_ROOM_ROW, RoomLayout.START_ROOM_COLUMN));
 
         board.getChildren().addAll(displays);
         board.getChildren().addAll(currentRoom.getRoomGroup(),
@@ -85,7 +85,7 @@ public class GameScreen {
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null && player.intersects(currentRoom.getLeftDoor())) {
-                    setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() - 1));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
                     player.moveAbsolute(width / 2, height / 2);
@@ -94,32 +94,32 @@ public class GameScreen {
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null && player.intersects(currentRoom.getRightDoor())) {
-                    setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() + 1));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
                     player.moveAbsolute(width / 2, height / 2);
                 }
                 
-                //If there is a right door and we are at it.
+                //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null && player.intersects(currentRoom.getTopDoor())) {
-                    setCurrentRoom(RoomLayout.rooms[currentRoom.getRow() - 1][currentRoom.getColumn()]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() - 1,currentRoom.getColumn()));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
                     player.moveAbsolute(width / 2, height / 2);
                 }
 
-                //If there is a right door and we are at it.
+                //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
-                    setCurrentRoom(RoomLayout.rooms[currentRoom.getRow() + 1][currentRoom.getColumn()]);
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1,currentRoom.getColumn()));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
                     player.moveAbsolute(width / 2, height / 2);
                 }
             }
-        }.startF();
+        }.start();
 
 
         return scene;

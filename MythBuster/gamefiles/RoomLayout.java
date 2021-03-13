@@ -69,9 +69,9 @@ public class RoomLayout {
                     neighbor = rooms[currRoom.getRow()][currRoom.getColumn() - 1];
                 } else if (direction == 1 && currRoom.getRow() != 0) {
                     neighbor = rooms[currRoom.getRow() - 1][currRoom.getColumn()];
-                } else if (direction == 2 && currRoom.getColumn() != totalColumns) {
+                } else if (direction == 2 && currRoom.getColumn() != totalColumns - 1) {
                     neighbor = rooms[currRoom.getRow()][currRoom.getColumn() + 1];
-                } else if (direction == 3 && currRoom.getColumn() != totalRows) {
+                } else if (direction == 3 && currRoom.getRow() != totalRows - 1) {
                     neighbor = rooms[currRoom.getRow() + 1][currRoom.getColumn()];
                 }
 
@@ -79,12 +79,16 @@ public class RoomLayout {
                     // Valid nonvisited neighbor
                     if (direction == 0) {
                         currRoom.setLeftDoor(neighbor);
+                        neighbor.setRightDoor(currRoom);
                     } else if (direction == 1) {
                         currRoom.setTopDoor(neighbor);
+                        neighbor.setBottomDoor(currRoom);
                     } else if (direction == 2) {
                         currRoom.setRightDoor(neighbor);
+                        neighbor.setLeftDoor(currRoom);
                     } else if (direction == 3) {
                         currRoom.setBottomDoor(neighbor);
+                        neighbor.setTopDoor(currRoom);
                     }
                     visitedSet.add(neighbor);
                     currentList.add(neighbor);
@@ -123,27 +127,32 @@ public class RoomLayout {
     public void addStartingNeighbors(ArrayList<Room> currentList, HashSet<Room> visitedSet, Room startingRoom) {
         // Left
         startingRoom.setLeftDoor(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
+        rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1].setRightDoor(startingRoom);
         currentList.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
         visitedSet.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
         // Top
         startingRoom.setTopDoor(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
+        rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN].setBottomDoor(startingRoom);
         currentList.add(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
         visitedSet.add(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
         // Right
         startingRoom.setRightDoor(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
+        rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1].setLeftDoor(startingRoom);
         currentList.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
         visitedSet.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
         // Bottom
         startingRoom.setBottomDoor(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
+        rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN].setTopDoor(startingRoom);
         currentList.add(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
         visitedSet.add(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
     }
 
     public void toFile() {
         try {
-            new FileWriter("printables/RoomLayout.txt", false).close();
+            String filepath = System.getProperty("user.dir") + "/MythBuster/gamefiles/printables/RoomLayout.txt";
+            new FileWriter(filepath, false).close();
 
-            FileWriter writer = new FileWriter("printables/RoomLayout.txt");
+            FileWriter writer = new FileWriter(filepath);
 
             for (int row = 0; row < rooms.length; row++) {
                 String cap = "";
@@ -175,8 +184,11 @@ public class RoomLayout {
             }
             bot += "+";
             writer.write(bot);
+            writer.close();
         } catch (Exception e) {
             System.out.println("Exception: Writing to file printables/RoomLayout.java.");
+            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
