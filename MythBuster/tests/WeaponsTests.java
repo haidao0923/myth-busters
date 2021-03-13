@@ -2,7 +2,7 @@ package tests;
 
 import controller.Controller;
 import gamefiles.Player;
-import views.RoomOne;
+import views.GameScreen;
 
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class WeaponsTests extends ApplicationTest {
 
     private Controller controller;
     private Player player;
-    private RoomOne roomOne;
+    private GameScreen gameScreen;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,9 +47,9 @@ public class WeaponsTests extends ApplicationTest {
         clickOn("Begin!");
 
         player = controller.getPlayer();
-        roomOne = controller.getRoomOne();
+        gameScreen = controller.getRoomOne();
 
         assertEquals("Sword", player.getWeapon().getName());
-        assertEquals("Weapon: Sword", roomOne.getWeaponDisplay().getText());
+        assertEquals("Weapon: Sword", gameScreen.getWeaponDisplay().getText());
     }
 }

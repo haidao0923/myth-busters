@@ -1,10 +1,8 @@
 package controller;
-import gamefiles.Difficulty;
-import gamefiles.StartingWeapon;
-import gamefiles.WeaponDatabase;
+import gamefiles.*;
 import model.GameModel;
 import views.ConfigurationScreen;
-import views.RoomOne;
+import views.GameScreen;
 import views.WelcomeScreen;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -14,17 +12,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import gamefiles.Player;
 
 
 public class Controller extends Application {
-    private Stage mainWindow;
+    private static Stage mainWindow;
     private GameModel gameModel;
     private static final int W = 1200;
     private static final int H = 800;
 
     private Player p1;
-    private RoomOne roomOne;
+    private static GameScreen gameScreen;
 
     public void start(Stage primaryStage) throws Exception {
         mainWindow = primaryStage;
@@ -79,12 +76,19 @@ public class Controller extends Application {
     }
 
     public void goToRoomOne() {
-        roomOne = new RoomOne(W, H, p1);
+        gameScreen = new GameScreen(W, H, p1);
 
-        Scene scene = roomOne.getScene();
+        Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
         mainWindow.show();
     }
+
+    public static void updateRoom() {
+        Scene scene = gameScreen.getScene();
+        mainWindow.setScene(scene);
+        mainWindow.show();
+    }
+
 
     /**
      * Set initial parameters
@@ -132,8 +136,8 @@ public class Controller extends Application {
     /**
      * @return the first room
      */
-    public RoomOne getRoomOne() {
-        return roomOne;
+    public GameScreen getRoomOne() {
+        return gameScreen;
     }
 
     /**
@@ -142,5 +146,12 @@ public class Controller extends Application {
      */
     public String getWindowTitle() {
         return mainWindow.getTitle();
+    }
+
+    public static int getW(){
+        return W;
+    }
+    public static int getH(){
+        return H;
     }
 }
