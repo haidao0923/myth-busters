@@ -9,7 +9,10 @@ public class Door implements Touchable {
     private Room destination; //Placeholder, maybe not needed.
 
 
-    private double positionX, positionY, width = 60, height = 80;
+    private double positionX;
+    private double positionY;
+    private double width = 60;
+    private double height = 80;
 
     private Group doorGroup;
     public Door(double x, double y, Room destination) {
@@ -32,13 +35,11 @@ public class Door implements Touchable {
         doorGroup.relocate(positionX, positionY);
     }
 
-    public Rectangle2D getBoundary()
-    {
+    public Rectangle2D getBoundary() {
         return new Rectangle2D(positionX, positionY, width, height);
     }
 
-    public boolean intersects(Touchable other)
-    {
+    public boolean intersects(Touchable other) {
         return other.getBoundary().intersects(this.getBoundary());
     }
 
