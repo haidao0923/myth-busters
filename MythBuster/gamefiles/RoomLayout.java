@@ -14,8 +14,8 @@ public class RoomLayout {
     static final int ROOM_WIDTH = Controller.getW();
     static final int ROOM_HEIGHT = Controller.getH();
 
-    public static final int START_ROOM_ROW = 4;
-    public static final int START_ROOM_COLUMN = 4;
+    public int startRoomRow;
+    public int startRoomColumn;
 
 
     private Room[][] rooms;
@@ -23,6 +23,7 @@ public class RoomLayout {
     public RoomLayout() {
         rooms = new Room[totalRows][totalColumns];
 
+        this.setStartingRoom();
         this.fillRooms();
         this.growingTreeAlgorithm();
         this.toFile();
@@ -31,12 +32,12 @@ public class RoomLayout {
     public void fillRooms() {
         for (int row = 0; row < rooms.length; row++) {
             for(int column = 0; column < rooms[0].length; column++) {
-                rooms[row][column] = new BasicRoom(ROOM_HEIGHT, ROOM_WIDTH, row, column);
+                rooms[row][column] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
             }
         }
 
-        rooms[START_ROOM_ROW][START_ROOM_COLUMN] = new StartingRoom(ROOM_HEIGHT, ROOM_WIDTH, START_ROOM_ROW, 
-            START_ROOM_COLUMN);
+        rooms[startRoomRow][startRoomColumn] = new StartingRoom(ROOM_WIDTH, ROOM_HEIGHT, startRoomRow, 
+            startRoomColumn);
     }
 
     /**
@@ -53,7 +54,7 @@ public class RoomLayout {
         directions.add(2);
         directions.add(3);
 
-        Room startingRoom = rooms[START_ROOM_ROW][START_ROOM_COLUMN];
+        Room startingRoom = rooms[startRoomRow][startRoomColumn];
         visitedSet.add(startingRoom);
         this.addStartingNeighbors(currentList, visitedSet, startingRoom);
 
@@ -126,25 +127,30 @@ public class RoomLayout {
 
     public void addStartingNeighbors(ArrayList<Room> currentList, HashSet<Room> visitedSet, Room startingRoom) {
         // Left
-        startingRoom.setLeftDoor(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
-        rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1].setRightDoor(startingRoom);
-        currentList.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
-        visitedSet.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN - 1]);
+        startingRoom.setLeftDoor(rooms[startRoomRow][startRoomColumn - 1]);
+        rooms[startRoomRow][startRoomColumn - 1].setRightDoor(startingRoom);
+        currentList.add(rooms[startRoomRow][startRoomColumn - 1]);
+        visitedSet.add(rooms[startRoomRow][startRoomColumn - 1]);
         // Top
-        startingRoom.setTopDoor(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
-        rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN].setBottomDoor(startingRoom);
-        currentList.add(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
-        visitedSet.add(rooms[START_ROOM_ROW - 1][START_ROOM_COLUMN]);
+        startingRoom.setTopDoor(rooms[startRoomRow - 1][startRoomColumn]);
+        rooms[startRoomRow - 1][startRoomColumn].setBottomDoor(startingRoom);
+        currentList.add(rooms[startRoomRow - 1][startRoomColumn]);
+        visitedSet.add(rooms[startRoomRow - 1][startRoomColumn]);
         // Right
-        startingRoom.setRightDoor(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
-        rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1].setLeftDoor(startingRoom);
-        currentList.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
-        visitedSet.add(rooms[START_ROOM_ROW][START_ROOM_COLUMN + 1]);
+        startingRoom.setRightDoor(rooms[startRoomRow][startRoomColumn + 1]);
+        rooms[startRoomRow][startRoomColumn + 1].setLeftDoor(startingRoom);
+        currentList.add(rooms[startRoomRow][startRoomColumn + 1]);
+        visitedSet.add(rooms[startRoomRow][startRoomColumn + 1]);
         // Bottom
-        startingRoom.setBottomDoor(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
-        rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN].setTopDoor(startingRoom);
-        currentList.add(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
-        visitedSet.add(rooms[START_ROOM_ROW + 1][START_ROOM_COLUMN]);
+        startingRoom.setBottomDoor(rooms[startRoomRow + 1][startRoomColumn]);
+        rooms[startRoomRow + 1][startRoomColumn].setTopDoor(startingRoom);
+        currentList.add(rooms[startRoomRow + 1][startRoomColumn]);
+        visitedSet.add(rooms[startRoomRow + 1][startRoomColumn]);
+    }
+
+    public void setStartingRoom() {
+        this.startRoomRow = (int) Math.floor(Math.random() * (ROOM_HEIGHT - 2) + 1);
+        this.startRoomColumn = (int) Math.floor(Math.random() * (ROOM_WIDTH - 2) + 1);
     }
 
     public void toFile() {
