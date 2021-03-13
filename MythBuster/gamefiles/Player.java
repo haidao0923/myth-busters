@@ -1,15 +1,13 @@
 package gamefiles;
 
-import java.util.ArrayList;
-
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
+
+import java.util.ArrayList;
 
 public class Player implements Touchable {
     private String name;
@@ -44,40 +42,45 @@ public class Player implements Touchable {
     }
 
     public void movePlayer(Scene scene) {
-        ArrayList<String> input = new ArrayList<String>();
+        ArrayList<String> input = new ArrayList<>();
 
         scene.setOnKeyPressed(
-            new EventHandler<KeyEvent>() {
-                public void handle(KeyEvent e) {
-                    String code = e.getCode().toString();
-                    if (!input.contains(code)) {
-                        input.add(code);
-                    }
+            e -> {
+                String code = e.getCode().toString();
+                if (!input.contains(code)) {
+                    input.add(code);
                 }
             });
 
         scene.setOnKeyReleased(
-            new EventHandler<KeyEvent>() {
-                public void handle(KeyEvent e) {
-                    String code = e.getCode().toString();
-                    input.remove(code);
-                }
+            e -> {
+                String code = e.getCode().toString();
+                input.remove(code);
             });
 
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // game logic
-                if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
+                if (input.contains("A") && input.contains("W") && positionX > 0 && positionY > 0) {
+                    moveRelative(-7, -7);
+                } else if (input.contains("A") && input.contains("S") && positionX > 0
+                        && positionY + height < scene.getHeight()) {
+                    moveRelative(-7, 7);
+                } else if (input.contains("D") && input.contains("S")
+                        && positionX + width < scene.getWidth()
+                        && positionY + height < scene.getHeight()) {
+                    moveRelative(7, 7);
+                } else if (input.contains("D") && input.contains("W")
+                        && positionX + width < scene.getWidth() && positionY > 0) {
+                    moveRelative(7, -7);
+                } else if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
                     moveRelative(-10, 0);
-                }
-                if ((input.contains("RIGHT") || input.contains("D"))
+                } else if ((input.contains("RIGHT") || input.contains("D"))
                         && positionX + width < scene.getWidth()) {
                     moveRelative(10, 0);
-                }
-                if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
+                } else if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
                     moveRelative(0, -10);
-                }
-                if ((input.contains("DOWN") || input.contains("S"))
+                } else if ((input.contains("DOWN") || input.contains("S"))
                         && positionY + height < scene.getHeight()) {
                     moveRelative(0, 10);
                 }

@@ -148,10 +148,10 @@ public class Controller extends Application {
         return mainWindow.getTitle();
     }
 
-    public static int getW(){
+    public static int getW() {
         return W;
     }
-    public static int getH(){
+    public static int getH() {
         return H;
     }
 }
