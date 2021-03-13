@@ -16,7 +16,10 @@ public class Player implements Touchable {
     private int coins;
     private Weapon weapon;
 
-    private double positionX, positionY, width, height;
+    private double positionX;
+    private double positionY;
+    private double width;
+    private double height;
 
     private Group imageGroup;
 
@@ -44,39 +47,40 @@ public class Player implements Touchable {
         ArrayList<String> input = new ArrayList<String>();
 
         scene.setOnKeyPressed(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
+            new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
-                    if ( !input.contains(code) )
-                        input.add( code );
+                    if (!input.contains(code)) {
+                        input.add(code);
+                    }
                 }
             });
 
         scene.setOnKeyReleased(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
+            new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
-                    input.remove( code );
+                    input.remove(code);
                 }
             });
 
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
                 // game logic
-                if ((input.contains("LEFT") || input.contains("A")) && positionX > 0)
-                    moveRelative(-10,0);
-                if ((input.contains("RIGHT") || input.contains("D")) && positionX + width < scene.getWidth())
-                    moveRelative(10,0);
-                if ((input.contains("UP") || input.contains("W")) && positionY > 0)
-                    moveRelative(0,-10);
-                if ((input.contains("DOWN") || input.contains("S")) && positionY + height < scene.getHeight())
-                    moveRelative(0,10);
+                if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
+                    moveRelative(-10, 0);
+                }
+                if ((input.contains("RIGHT") || input.contains("D"))
+                        && positionX + width < scene.getWidth()) {
+                    moveRelative(10, 0);
+                }
+                if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
+                    moveRelative(0, -10);
+                }
+                if ((input.contains("DOWN") || input.contains("S"))
+                        && positionY + height < scene.getHeight()) {
+                    moveRelative(0, 10);
+                }
             }
         }.start();
     }
@@ -98,13 +102,11 @@ public class Player implements Touchable {
         return imageGroup;
     }
 
-    public Rectangle2D getBoundary()
-    {
+    public Rectangle2D getBoundary() {
         return new Rectangle2D(positionX, positionY, width, height);
     }
 
-    public boolean intersects(Touchable other)
-    {
+    public boolean intersects(Touchable other) {
         if (other == null) {
             System.out.println("Null Other!");
             return false;
