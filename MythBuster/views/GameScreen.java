@@ -43,8 +43,6 @@ public class GameScreen {
         this.player = player;
         this.width = width;
         this.height = height;
-
-        this.player = player;
         this.board = new Group();
     }
 
@@ -90,10 +88,8 @@ public class GameScreen {
 
         player.movePlayer(scene);
 
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
                 // game logic
 
                 //If there is a left door and we are at it.
