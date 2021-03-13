@@ -15,12 +15,12 @@ public class RoomLayout {
     public static Room[][] rooms;
     static {
         rooms = new Room[totalRows][totalColumns];
-        rooms[START_ROOM_ROW][START_ROOM_COLUMN] = new Room(ROOM_WIDTH, ROOM_HEIGHT, START_ROOM_ROW, START_ROOM_COLUMN);
+        rooms[START_ROOM_ROW][START_ROOM_COLUMN] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, START_ROOM_ROW, START_ROOM_COLUMN);
 
     }
 
     public static void generateRoom(int row, int column) {
-        rooms[row][column] = new Room(ROOM_WIDTH, ROOM_HEIGHT, row, column);
+        rooms[row][column] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
         if (column == totalColumns - 1) {
             //This means we are at the right border.  Don't generate a door to the right.
         }

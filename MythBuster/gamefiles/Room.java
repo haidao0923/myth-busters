@@ -1,15 +1,13 @@
 package gamefiles;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 
-public class Room {
+public abstract class Room {
     private Door[] doors = new Door[4];
-    int row;
-    int column;
-    int width;
-    int height;
+    private int row;
+    private int column;
+    private int width;
+    private int height;
 
     public Room(int width, int height, int row, int column) {
         this.width = width;
@@ -60,12 +58,15 @@ public class Room {
         return roomGroup;
     }
 
-    public int getRow(){
+    public int getRow() {
         return row;
     }
-    public int getColumn(){
+    public int getColumn() {
         return column;
     }
+
+    // abstract methods for generating monsters and chests will be here.
+
 
 
 }
