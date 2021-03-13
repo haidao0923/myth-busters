@@ -42,7 +42,6 @@ public class ConfigurationScreen {
         header = new Label("Configuration Screen");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
                 + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
-
     }
 
     /**

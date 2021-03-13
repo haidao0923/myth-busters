@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import views.WinScreen;
 
 
 public class Controller extends Application {
@@ -85,6 +86,13 @@ public class Controller extends Application {
 
     public static void updateRoom() {
         Scene scene = gameScreen.getScene();
+        mainWindow.setScene(scene);
+        mainWindow.show();
+    }
+
+    public void goToWinScreen() {
+        WinScreen winScreen = new WinScreen(W, H);
+        Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);
         mainWindow.show();
     }

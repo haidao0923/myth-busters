@@ -4,17 +4,12 @@ import gamefiles.Player;
 import gamefiles.Room;
 import gamefiles.RoomLayout;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-
-import gamefiles.Door;
 import javafx.stage.Stage;
 
 public class GameScreen {
@@ -27,7 +22,7 @@ public class GameScreen {
     private Text coinDisplay;
 
     private Room currentRoom;
-    private Group RoomGroup;
+    private Group roomGroup;
     private Group board;
 
 
@@ -73,12 +68,6 @@ public class GameScreen {
         player.moveAbsolute(100, 100);
 
         setCurrentRoom(RoomLayout.rooms[RoomLayout.START_ROOM_ROW][RoomLayout.START_ROOM_COLUMN]);
-        //Get rid of this once we have an actual StartingRoom Class that automatically initializes doors.
-        currentRoom.setLeftDoor(null);
-        currentRoom.setRightDoor(null);
-        currentRoom.setTopDoor(null);
-        currentRoom.setBottomDoor(null);
-
 
         board.getChildren().addAll(displays);
         board.getChildren().addAll(currentRoom.getRoomGroup(),
@@ -101,15 +90,14 @@ public class GameScreen {
                         setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
                         board.getChildren().clear();
                         board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                        player.moveAbsolute(width/2, height/2);
-                    }
+                        player.moveAbsolute(width / 2, height / 2);
                         //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
-                    else {
+                    } else {
                         //If a left room already exists, just move there.
                         setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
                         board.getChildren().clear();
                         board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                        player.moveAbsolute(width/2, height/2);
+                        player.moveAbsolute(width / 2, height / 2);
                     }
                 }
 
@@ -121,16 +109,15 @@ public class GameScreen {
                             setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1]);
                             board.getChildren().clear();
                             board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-                            player.moveAbsolute(width/2, height/2);
-                    }
-                        //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
-                    else {
+                            player.moveAbsolute(width / 2, height / 2);
+                            //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
+                    } else {
                         //If a right room already exists, just move there.
                         setCurrentRoom(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() + 1]);
                         board.getChildren().clear();
                         board.getChildren().addAll(currentRoom.getRoomGroup(),
                                 player.getGroup());
-                        player.moveAbsolute(width/2, height/2);
+                        player.moveAbsolute(width / 2, height / 2);
                     }
                 }
 
