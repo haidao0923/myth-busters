@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Collections;
 import java.io.FileWriter;
+import java.io.File;
 
 import controller.Controller;
 
@@ -32,7 +33,7 @@ public class RoomLayout {
         this.toFile();
     }
 
-    public void fillRooms() {
+    private void fillRooms() {
         for (int row = 0; row < rooms.length; row++) {
             for (int column = 0; column < rooms[0].length; column++) {
                 rooms[row][column] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
@@ -48,7 +49,7 @@ public class RoomLayout {
      * Takes a matrix of Rooms and generates "paths" between them according to the specifications.
      * Tracks a visited set and list of Rooms to choose from.
      */
-    public void growingTreeAlgorithm() {
+    private void growingTreeAlgorithm() {
         HashSet<Room> visitedSet = new HashSet<Room>();
         ArrayList<Room> currentList = new ArrayList<Room>();
         ArrayList<Integer> directions = new ArrayList<Integer>();
@@ -108,7 +109,7 @@ public class RoomLayout {
         }
     }
 
-    public static int pickIndex(ArrayList<Room> currentList) {
+    private static int pickIndex(ArrayList<Room> currentList) {
         // EDIT THESE NUMBERS TO REFLECT ROOM GENERATION NEEDS
         double newestPercentage = .30;
         double oldestPercentage = 0;
@@ -128,7 +129,7 @@ public class RoomLayout {
         }
     }
 
-    public void addStartingNeighbors(ArrayList<Room> currentList,
+    private void addStartingNeighbors(ArrayList<Room> currentList,
                                      HashSet<Room> visitedSet, Room startingRoom) {
         // Left
         startingRoom.setLeftDoor(rooms[startRoomRow][startRoomColumn - 1]);
@@ -152,12 +153,12 @@ public class RoomLayout {
         visitedSet.add(rooms[startRoomRow + 1][startRoomColumn]);
     }
 
-    public void setStartingRoom() {
+    private void setStartingRoom() {
         this.startRoomRow = (int) Math.floor(Math.random() * (TOTAL_ROWS - 2)) + 1;
         this.startRoomColumn = (int) Math.floor(Math.random() * (TOTAL_COLUMNS - 2)) + 1;
     }
 
-    public void setBossRoom() {
+    private void setBossRoom() {
         int r;
         int c;
         if (startRoomRow < TOTAL_ROWS / 2) {
@@ -196,12 +197,22 @@ public class RoomLayout {
         bossRoomColumn = c;
     }
 
-    public void toFile() {
+    private void toFile() {
         try {
             String filepath = System.getProperty("user.dir")
                     + "/MythBuster/gamefiles/printables/RoomLayout.txt";
+            String filepathDir = System.getProperty("user.dir")
+                    + "/MythBuster/gamefiles/printables";
+            
+            File printablesDir = new File(filepathDir);
+            if (!printablesDir.exists()) {
+                printablesDir.mkdirs();
+            }
+            
+            File roomLayoutToText = new File(filepath);
+            roomLayoutToText.createNewFile();
             new FileWriter(filepath, false).close();
-
+        
             FileWriter writer = new FileWriter(filepath);
 
             for (int row = 0; row < rooms.length; row++) {
@@ -236,7 +247,7 @@ public class RoomLayout {
             writer.write(bot);
             writer.close();
         } catch (Exception e) {
-            System.out.println("Exception: Writing to file printables/RoomLayout.java.");
+            System.out.println("Exception: Writing to file printables/RoomLayout.txt.");
             e.printStackTrace();
             System.out.println(e);
         }

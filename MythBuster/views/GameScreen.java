@@ -4,7 +4,6 @@ import gamefiles.Player;
 import gamefiles.Room;
 import gamefiles.RoomLayout;
 import gamefiles.StartingRoom;
-import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -38,6 +37,7 @@ public class GameScreen {
      * @param width width of room screen
      * @param height height of room screen
      * @param player player in room
+     * @param roomLayout layout of rooms
      */
     public GameScreen(int width, int height, Player player, RoomLayout roomLayout) {
         this.player = player;
@@ -130,7 +130,8 @@ public class GameScreen {
          }
 
          //If there is a bottom door and we are at it.
-         if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
+         if (currentRoom.getBottomDoor() != null 
+         && player.intersects(currentRoom.getBottomDoor())) {
          setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn()));
          board.getChildren().clear();
          board.getChildren().addAll(currentRoom.getRoomGroup(),

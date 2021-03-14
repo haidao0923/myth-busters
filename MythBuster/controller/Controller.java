@@ -106,33 +106,41 @@ public class Controller extends Application {
                 HBox displays = gameScreen.getDisplays();
 
                 //If there is a left door and we are at it.
-                if (currentRoom.getLeftDoor() != null && player.intersects(currentRoom.getLeftDoor())) {
+                if (currentRoom.getLeftDoor() != null 
+                            && player.intersects(currentRoom.getLeftDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
+                    currentRoom = 
+                            roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a right door and we are at it.
-                if (currentRoom.getRightDoor() != null && player.intersects(currentRoom.getRightDoor())) {
+                if (currentRoom.getRightDoor() != null 
+                            && player.intersects(currentRoom.getRightDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
+                    currentRoom = 
+                            roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a top door and we are at it.
-                if (currentRoom.getTopDoor() != null && player.intersects(currentRoom.getTopDoor())) {
+                if (currentRoom.getTopDoor() != null 
+                            && player.intersects(currentRoom.getTopDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
+                    currentRoom = 
+                            roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a bottom door and we are at it.
-                if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
+                if (currentRoom.getBottomDoor() != null 
+                            && player.intersects(currentRoom.getBottomDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
+                    currentRoom = 
+                            roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
@@ -151,7 +159,8 @@ public class Controller extends Application {
 
     public static void goToBossRoom() {
         //Go to boss room(used for testing).
-        currentRoom = roomLayout.getRoom(roomLayout.getBossRoomRow(), roomLayout.getBossRoomColumn());
+        currentRoom = roomLayout.getRoom(roomLayout.getBossRoomRow(), 
+                                        roomLayout.getBossRoomColumn());
         gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
     }
@@ -215,6 +224,10 @@ public class Controller extends Application {
      */
     public GameScreen getRoomOne() {
         return gameScreen;
+    }
+
+    public RoomLayout getRoomLayout() {
+        return roomLayout;
     }
 
     /**
