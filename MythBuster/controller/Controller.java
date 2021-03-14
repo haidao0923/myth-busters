@@ -199,6 +199,10 @@ public class Controller extends Application {
         return player;
     }
 
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
     /**
      * Returns the current room
      * @return the current room
