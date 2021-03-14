@@ -5,13 +5,11 @@ import gamefiles.Room;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-import org.testfx.matcher.control.TextMatchers;
 
 import java.util.Stack;
 
 import static org.junit.Assert.assertTrue;
-import static org.testfx.api.FxAssert.verifyThat;
+
 public class PathExistsTest extends ApplicationTest {
     private Controller controller;
     private int counter = 0;
@@ -39,7 +37,8 @@ public class PathExistsTest extends ApplicationTest {
             if (curr instanceof BossRoom) {
                 passed = true;
             }
-            if (curr.getBottomDoor() != null && !visited[curr.getBottomDoor().getDestination().getRow()]
+            if (curr.getBottomDoor() != null
+                    && !visited[curr.getBottomDoor().getDestination().getRow()]
                     [curr.getBottomDoor().getDestination().getColumn()]) {
                 rooms.push(curr.getBottomDoor().getDestination());
                 visited[curr.getBottomDoor().getDestination().getRow()]
@@ -51,7 +50,8 @@ public class PathExistsTest extends ApplicationTest {
                 visited[curr.getTopDoor().getDestination().getRow()]
                         [curr.getTopDoor().getDestination().getColumn()] = true;
             }
-            if (curr.getRightDoor() != null && !visited[curr.getRightDoor().getDestination().getRow()]
+            if (curr.getRightDoor() != null
+                    && !visited[curr.getRightDoor().getDestination().getRow()]
                     [curr.getRightDoor().getDestination().getColumn()]) {
                 rooms.push(curr.getRightDoor().getDestination());
                 visited[curr.getRightDoor().getDestination().getRow()]

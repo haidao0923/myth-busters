@@ -39,8 +39,8 @@ public class RoomLayout {
             }
         }
 
-        rooms[startRoomRow][startRoomColumn] = new StartingRoom(ROOM_WIDTH, ROOM_HEIGHT, startRoomRow, 
-            startRoomColumn);
+        rooms[startRoomRow][startRoomColumn] = new StartingRoom(ROOM_WIDTH,
+                ROOM_HEIGHT, startRoomRow, startRoomColumn);
     }
 
     /**
@@ -128,7 +128,8 @@ public class RoomLayout {
         }
     }
 
-    public void addStartingNeighbors(ArrayList<Room> currentList, HashSet<Room> visitedSet, Room startingRoom) {
+    public void addStartingNeighbors(ArrayList<Room> currentList,
+                                     HashSet<Room> visitedSet, Room startingRoom) {
         // Left
         startingRoom.setLeftDoor(rooms[startRoomRow][startRoomColumn - 1]);
         rooms[startRoomRow][startRoomColumn - 1].setRightDoor(startingRoom);
@@ -197,7 +198,8 @@ public class RoomLayout {
 
     public void toFile() {
         try {
-            String filepath = System.getProperty("user.dir") + "/MythBuster/gamefiles/printables/RoomLayout.txt";
+            String filepath = System.getProperty("user.dir")
+                    + "/MythBuster/gamefiles/printables/RoomLayout.txt";
             new FileWriter(filepath, false).close();
 
             FileWriter writer = new FileWriter(filepath);

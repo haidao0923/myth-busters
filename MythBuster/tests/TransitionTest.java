@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TransitionTest extends ApplicationTest {
 
@@ -36,7 +35,8 @@ public class TransitionTest extends ApplicationTest {
 
         int currentRoomRow = currRoom.getRow();
         double doorPos = currRoom.getTopDoor().getPositionY();
-        while(player.getPositionY() > doorPos && currentRoomRow == controller.getCurrentRoom().getRow()) {
+        while (player.getPositionY() > doorPos && currentRoomRow
+                == controller.getCurrentRoom().getRow()) {
             push(KeyCode.UP);
         }
         int newRoomRow = controller.getCurrentRoom().getRow();
@@ -56,11 +56,13 @@ public class TransitionTest extends ApplicationTest {
 
         int currentRoomRow = currRoom.getRow();
         double doorPos = currRoom.getTopDoor().getPositionY();
-        while(player.getPositionY() > doorPos && currentRoomRow == controller.getCurrentRoom().getRow()) {
+        while (player.getPositionY() > doorPos
+                && currentRoomRow == controller.getCurrentRoom().getRow()) {
             push(KeyCode.UP);
         }
         doorPos = currRoom.getBottomDoor().getPositionY();
-        while(player.getPositionY() < doorPos && currentRoomRow - 1 == controller.getCurrentRoom().getRow()) {
+        while (player.getPositionY() < doorPos
+                && currentRoomRow - 1 == controller.getCurrentRoom().getRow()) {
             push(KeyCode.DOWN);
         }
         int newRoomRow = controller.getCurrentRoom().getRow();

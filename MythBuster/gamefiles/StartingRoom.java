@@ -1,7 +1,5 @@
 package gamefiles;
 
-import javafx.scene.Group;
-
 public class StartingRoom extends Room {
     public StartingRoom(int width, int height, int row, int column) {
         super(width, height, row, column);
