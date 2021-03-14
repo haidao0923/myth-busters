@@ -21,12 +21,7 @@ public class BossRoom extends Room {
         bossName.setFill(Color.WHITE);
         bossName.setStyle("-fx-font-size: 30;");
 
-        boss.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Controller.goToWinScreen();
-            }
-        });
+        boss.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> Controller.goToWinScreen());
 
     }
 

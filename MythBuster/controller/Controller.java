@@ -192,6 +192,13 @@ public class Controller extends Application {
     }
 
     /**
+     * Returns the current room
+     * @return the current room
+     */
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+    /**
      * @return the first room
      */
     public GameScreen getRoomOne() {

@@ -18,7 +18,7 @@ public class PathExistsTest extends ApplicationTest {
     public void start(Stage primaryStage) throws Exception {
         controller = new Controller();
         controller.start(primaryStage);
-        controller.goToConfigurationScreen();
+        Controller.goToConfigurationScreen();
     }
 
     @Test
@@ -30,13 +30,15 @@ public class PathExistsTest extends ApplicationTest {
         boolean[][] visited = new boolean[6][6];
         Room curr;
         int counter = 0;
-        rooms.push(controller.getRoomOne().getCurrentRoom());
+        rooms.push(controller.getCurrentRoom());
+        boolean passed = false; //default to fail
         while (!rooms.isEmpty()) {
             counter++;
             curr = rooms.pop();
+            controller.setCurrentRoom(curr);
             if (curr instanceof BossRoom) {
-                verifyThat("#boss", NodeMatchers.isNotNull());
-                assertTrue(counter >= 6);
+                passed = true;
+                assertTrue(counter >= 6); //make sure path is long enough
             }
             if (curr.getBottomDoor() != null && !visited[curr.getBottomDoor().getDestination().getRow()]
                     [curr.getBottomDoor().getDestination().getColumn()]) {
@@ -64,5 +66,6 @@ public class PathExistsTest extends ApplicationTest {
             }
             visited[curr.getRow()][curr.getColumn()] = true;
         }
+        assertTrue(passed);
     }
 }
