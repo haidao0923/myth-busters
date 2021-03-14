@@ -53,4 +53,12 @@ public class Door implements Touchable {
     public Room getDestination() {
         return destination;
     }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
 }
