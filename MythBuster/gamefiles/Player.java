@@ -38,6 +38,7 @@ public class Player implements Touchable {
 
     public Player(Player player, int x, int y) {
         this(player.coins);
+
         moveAbsolute(x, y);
     }
 

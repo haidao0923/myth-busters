@@ -35,6 +35,9 @@ public class Controller extends Application {
         player = new Player(0);
         WeaponDatabase.initialize();
         initWelcomeScreen();
+
+
+
     }
 
     public static void main(String[] args) {
@@ -90,7 +93,6 @@ public class Controller extends Application {
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
         playGame();
-
     }
 
     public static void playGame() {
@@ -147,6 +149,12 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
+    public static void goToBossRoom() {
+        //Go to boss room(used for testing).
+        currentRoom = roomLayout.getRoom(roomLayout.getBossRoomRow(), roomLayout.getBossRoomColumn());
+        gameScreen.updateBoard(currentRoom);
+        player.moveAbsolute(W / 2, H / 2);
+    }
 
     /**
      * Set initial parameters

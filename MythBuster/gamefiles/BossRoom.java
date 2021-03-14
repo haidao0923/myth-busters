@@ -26,7 +26,12 @@ public class BossRoom extends Room {
                 Controller.goToWinScreen();
             }
         });
-
+        bossName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Controller.goToWinScreen();
+            }
+        });
     }
 
     //this class will have a method to generate a boss, as well as trigger a victory condition
