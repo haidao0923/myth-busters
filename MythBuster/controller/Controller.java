@@ -225,9 +225,18 @@ public class Controller extends Application {
         return mainWindow.getTitle();
     }
 
+    /**
+     * Getter for the width of the map.
+     * @return an int representing the width of the map
+     */
     public static int getW() {
         return W;
     }
+
+    /**
+     * Getter for the height of the map.
+     * @return an int represneting the height of the map.
+     */
     public static int getH() {
         return H;
     }
