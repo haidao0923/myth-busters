@@ -36,6 +36,7 @@ public class GameScreen {
      * @param width width of room screen
      * @param height height of room screen
      * @param player player in room
+     * @param roomLayout the layout of the maze
      */
     public GameScreen(int width, int height, Player player, RoomLayout roomLayout) {
         this.player = player;
@@ -89,7 +90,7 @@ public class GameScreen {
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null && player.intersects(currentRoom.getLeftDoor())) {
-                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() - 1));
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
                     if (currentRoom instanceof StartingRoom) {
@@ -99,12 +100,12 @@ public class GameScreen {
                     }
                     board.getChildren().addAll(displays);
                     player.moveAbsolute(width / 2, height / 2);
-                        //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
+                    //System.out.println(RoomLayout.rooms[currentRoom.getRow()][currentRoom.getColumn() - 1]);
                 }
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null && player.intersects(currentRoom.getRightDoor())) {
-                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(),currentRoom.getColumn() + 1));
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
@@ -119,7 +120,7 @@ public class GameScreen {
                 
                 //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null && player.intersects(currentRoom.getTopDoor())) {
-                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() - 1,currentRoom.getColumn()));
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn()));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());
@@ -134,7 +135,7 @@ public class GameScreen {
 
                 //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
-                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1,currentRoom.getColumn()));
+                    setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn()));
                     board.getChildren().clear();
                     board.getChildren().addAll(currentRoom.getRoomGroup(),
                             player.getGroup());

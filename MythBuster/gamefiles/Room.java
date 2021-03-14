@@ -54,7 +54,6 @@ public abstract class Room {
         if (doors[3] != null) {
             roomGroup.getChildren().add(doors[3].getGroup());
         }
-
         return roomGroup;
     }
 
