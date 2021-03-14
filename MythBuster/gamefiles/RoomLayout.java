@@ -17,6 +17,8 @@ public class RoomLayout {
     private int startRoomRow;
     private int startRoomColumn;
 
+    private int bossRoomRow;
+    private int bossRoomColumn;
 
     private Room[][] rooms;
 
@@ -189,6 +191,8 @@ public class RoomLayout {
         }
 
         rooms[r][c] = bossRoom;
+        bossRoomRow = r;
+        bossRoomColumn = c;
     }
 
     public void toFile() {
@@ -246,5 +250,12 @@ public class RoomLayout {
 
     public int getStartRoomColumn() {
         return startRoomColumn;
+    }
+
+    public int getBossRoomRow() {
+        return bossRoomRow;
+    }
+    public int getBossRoomColumn() {
+        return bossRoomColumn;
     }
 }

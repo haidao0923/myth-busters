@@ -18,20 +18,17 @@ public class WinScreen {
         this.width = width;
         this.height = height;
 
-
         header = new Label("Congratulations!");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
                 + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
     }
 
     public Scene getScene() {
-        win = new Text(width / 2, height / 2, "You Win!");
-        HBox hBox = new HBox(50);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(win);
+        win = new Text(width / 2 - 200, height / 2, "You Win!");
+        win.setStyle("-fx-font-size: 100;");
 
         Group board = new Group();
-        board.getChildren().addAll(header, hBox);
+        board.getChildren().addAll(header, win);
         Scene scene = new Scene(board, width, height, Color.POWDERBLUE);
         return scene;
     }
