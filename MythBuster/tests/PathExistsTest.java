@@ -84,7 +84,8 @@ public class PathExistsTest extends ApplicationTest {
             if (curr instanceof BossRoom) {
                 assertTrue(counter >= 6);
             }
-            if (curr.getBottomDoor() != null && !visited[curr.getBottomDoor().getDestination().getRow()]
+            if (curr.getBottomDoor() != null 
+                    && !visited[curr.getBottomDoor().getDestination().getRow()]
                     [curr.getBottomDoor().getDestination().getColumn()]) {
                 rooms.push(curr.getBottomDoor().getDestination());
                 visited[curr.getBottomDoor().getDestination().getRow()]
@@ -96,7 +97,8 @@ public class PathExistsTest extends ApplicationTest {
                 visited[curr.getTopDoor().getDestination().getRow()]
                         [curr.getTopDoor().getDestination().getColumn()] = true;
             }
-            if (curr.getRightDoor() != null && !visited[curr.getRightDoor().getDestination().getRow()]
+            if (curr.getRightDoor() != null 
+                    && !visited[curr.getRightDoor().getDestination().getRow()]
                     [curr.getRightDoor().getDestination().getColumn()]) {
                 rooms.push(curr.getRightDoor().getDestination());
                 visited[curr.getRightDoor().getDestination().getRow()]
