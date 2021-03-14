@@ -13,6 +13,7 @@ public class Player implements Touchable {
     private String name;
     private int coins;
     private Weapon weapon;
+    private double speed;
 
     private double positionX;
     private double positionY;
@@ -62,41 +63,37 @@ public class Player implements Touchable {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // game logic
-                if (input.contains("A") && input.contains("W") && positionX > 0 && positionY > 0) {
-                    moveRelative(-7, -7);
-                } else if (input.contains("A") && input.contains("S") && positionX > 0
-                        && positionY + height < scene.getHeight()) {
-                    moveRelative(-7, 7);
-                } else if (input.contains("D") && input.contains("S")
-                        && positionX + width < scene.getWidth()
-                        && positionY + height < scene.getHeight()) {
-                    moveRelative(7, 7);
-                } else if (input.contains("D") && input.contains("W")
-                        && positionX + width < scene.getWidth() && positionY > 0) {
-                    moveRelative(7, -7);
-                } else if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
-                    moveRelative(-10, 0);
-                } else if ((input.contains("RIGHT") || input.contains("D"))
+                if (input.size() > 1) {
+                    speed = 7;
+                } else {
+                    speed = 10;
+                }
+                if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
+                    moveRelative(-speed, 0);
+                }
+                if ((input.contains("RIGHT") || input.contains("D"))
                         && positionX + width < scene.getWidth()) {
-                    moveRelative(10, 0);
-                } else if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
-                    moveRelative(0, -10);
-                } else if ((input.contains("DOWN") || input.contains("S"))
+                    moveRelative(speed, 0);
+                }
+                if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
+                    moveRelative(0, -speed);
+                }
+                if ((input.contains("DOWN") || input.contains("S"))
                         && positionY + height < scene.getHeight()) {
-                    moveRelative(0, 10);
+                    moveRelative(0, speed);
                 }
             }
         }.start();
     }
 
 
-    public void moveAbsolute(int x, int y) {
+    public void moveAbsolute(double x, double y) {
         positionX = x;
         positionY = y;
         imageGroup.relocate(positionX, positionY);
     }
 
-    public void moveRelative(int x, int y) {
+    public void moveRelative(double x, double y) {
         positionX += x;
         positionY += y;
         imageGroup.relocate(positionX, positionY);
@@ -137,6 +134,16 @@ public class Player implements Touchable {
     }
     public String getName() {
         return name;
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+    public double getPositionY() {
+        return positionY;
+    }
+    public double getSpeed() {
+        return speed;
     }
 
     public String toString() {

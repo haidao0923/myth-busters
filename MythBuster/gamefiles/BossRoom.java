@@ -16,9 +16,11 @@ public class BossRoom extends Room {
         super(width, height, row, column);
         boss = new Rectangle(width / 2 + 150, height / 2, 130, 130);
         boss.setFill(Color.BLACK);
+        boss.setId("boss");
         bossName = new Text(width / 2 + 155, height / 2 + 50, "The Boss");
         bossName.setFill(Color.WHITE);
         bossName.setStyle("-fx-font-size: 30;");
+
 
         boss.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -32,6 +34,10 @@ public class BossRoom extends Room {
                 Controller.goToWinScreen();
             }
         });
+
+        boss.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> Controller.goToWinScreen());
+
+
     }
 
     //this class will have a method to generate a boss, as well as trigger a victory condition
