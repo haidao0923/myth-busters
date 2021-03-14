@@ -1,5 +1,8 @@
 package controller;
 import gamefiles.*;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
+import javafx.scene.layout.HBox;
 import model.GameModel;
 import views.ConfigurationScreen;
 import views.GameScreen;
@@ -17,18 +20,19 @@ import views.WinScreen;
 
 public class Controller extends Application {
     private static Stage mainWindow;
-    private GameModel gameModel;
     private static final int W = 1200;
     private static final int H = 800;
-
-    private Player p1;
+    private static Player player;
     private static GameScreen gameScreen;
+    private static RoomLayout roomLayout;
+    private static Room currentRoom;
+
 
     public void start(Stage primaryStage) throws Exception {
+        roomLayout = new RoomLayout();
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
-        gameModel = new GameModel();
-        p1 = new Player(0);
+        player = new Player(0);
         WeaponDatabase.initialize();
         initWelcomeScreen();
     }
@@ -51,7 +55,7 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    public void goToConfigurationScreen() {
+    public static void goToConfigurationScreen() {
         ConfigurationScreen configScreen = new ConfigurationScreen(W, H);
         Button beginButton = configScreen.getBeginButton();
         TextField heroNameField = configScreen.getHeroNameField();
@@ -67,31 +71,76 @@ public class Controller extends Application {
             initializeStats(heroNameField.getText(),
                     startingWeaponSelector.getSelectionModel().getSelectedIndex(),
                     difficultySelector.getValue());
-            goToRoomOne();
+            goToStartingRoom();
         });
         Scene scene = configScreen.getScene();
         mainWindow.setScene(scene);
-        mainWindow.show();
         configScreen.setBinds(mainWindow);
 
     }
 
-    public void goToRoomOne() {
-        RoomLayout roomLayout = new RoomLayout();
-        gameScreen = new GameScreen(W, H, p1, roomLayout);
+    public static void goToStartingRoom() {
+        //Initialize starting room.
+        gameScreen = new GameScreen(W, H, player, roomLayout);
+        currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(), roomLayout.getStartRoomColumn());
+        gameScreen.getBoard().getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
+        gameScreen.getDisplays().getChildren().add(currentRoom.getRoomInfo());
+        player.moveAbsolute(W / 2, H / 2);
 
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
-        mainWindow.show();
+        playGame();
+
     }
 
-    public static void updateRoom() {
-        Scene scene = gameScreen.getScene();
-        mainWindow.setScene(scene);
-        mainWindow.show();
+    public static void playGame() {
+
+        player.movePlayer(gameScreen.getScene());
+
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
+                // game logic
+                Group board = gameScreen.getBoard();
+                HBox displays = gameScreen.getDisplays();
+
+                //If there is a left door and we are at it.
+                if (currentRoom.getLeftDoor() != null && player.intersects(currentRoom.getLeftDoor())) {
+                    displays.getChildren().remove(currentRoom.getRoomInfo());
+                    currentRoom = roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
+                    gameScreen.updateBoard(currentRoom);
+                    player.moveAbsolute(W / 2, H / 2);
+                }
+
+                //If there is a right door and we are at it.
+                if (currentRoom.getRightDoor() != null && player.intersects(currentRoom.getRightDoor())) {
+                    displays.getChildren().remove(currentRoom.getRoomInfo());
+                    currentRoom = roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
+                    gameScreen.updateBoard(currentRoom);
+                    player.moveAbsolute(W / 2, H / 2);
+                }
+
+                //If there is a top door and we are at it.
+                if (currentRoom.getTopDoor() != null && player.intersects(currentRoom.getTopDoor())) {
+                    displays.getChildren().remove(currentRoom.getRoomInfo());
+                    currentRoom = roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
+                    gameScreen.updateBoard(currentRoom);
+                    player.moveAbsolute(W / 2, H / 2);
+                }
+
+                //If there is a bottom door and we are at it.
+                if (currentRoom.getBottomDoor() != null && player.intersects(currentRoom.getBottomDoor())) {
+                    displays.getChildren().remove(currentRoom.getRoomInfo());
+                    currentRoom = roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
+                    gameScreen.updateBoard(currentRoom);
+                    player.moveAbsolute(W / 2, H / 2);
+                }
+
+            }
+        }.start();
+
     }
 
-    public void goToWinScreen() {
+    public static void goToWinScreen() {
         WinScreen winScreen = new WinScreen(W, H);
         Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);
@@ -106,20 +155,20 @@ public class Controller extends Application {
      * @param startingWeaponIndex the index of the starting weapon
      * @param difficultyEntry     the difficulty
      */
-    private void initializeStats(String nameEntry,
+    private static void initializeStats(String nameEntry,
                                  int startingWeaponIndex, Difficulty difficultyEntry) {
-        p1.setName(nameEntry);
-        p1.setWeapon(WeaponDatabase.getWeapon(startingWeaponIndex));
+        player.setName(nameEntry);
+        player.setWeapon(WeaponDatabase.getWeapon(startingWeaponIndex));
         Difficulty difficulty = difficultyEntry;
         switch (difficulty) {
         case EASY:
-            p1.setCoins(30);
+            player.setCoins(30);
             break;
         case MEDIUM:
-            p1.setCoins(20);
+            player.setCoins(20);
             break;
         case HARD:
-            p1.setCoins(10);
+            player.setCoins(10);
             break;
         default: // unnecessary because of type safety
         }
@@ -129,7 +178,7 @@ public class Controller extends Application {
      * Alert Method
      * @param message Message to display in alert.
      */
-    public void showAlert(String message) {
+    public static void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING, message);
         alert.showAndWait();
         return;
@@ -139,7 +188,7 @@ public class Controller extends Application {
      * @return the player object
      */
     public Player getPlayer() {
-        return p1;
+        return player;
     }
 
     /**

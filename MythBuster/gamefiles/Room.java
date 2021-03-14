@@ -1,6 +1,8 @@
 package gamefiles;
 
 import javafx.scene.Group;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public abstract class Room {
     private Door[] doors = new Door[4];
@@ -8,12 +10,18 @@ public abstract class Room {
     private int column;
     private int width;
     private int height;
+    private Text roomInfo;
+
+
+    Group roomGroup;
 
     public Room(int width, int height, int row, int column) {
         this.width = width;
         this.height = height;
         this.row = row;
         this.column = column;
+        roomInfo = new Text(410, 10, toString());
+        roomInfo.setStyle("-fx-font-size: 30;");
     }
     public Door getLeftDoor() {
         return doors[0];
@@ -41,7 +49,7 @@ public abstract class Room {
     }
 
     public Group getRoomGroup() {
-        Group roomGroup = new Group();
+        roomGroup = new Group();
         if (doors[0] != null) {
             roomGroup.getChildren().add(doors[0].getGroup());
         }
@@ -54,7 +62,13 @@ public abstract class Room {
         if (doors[3] != null) {
             roomGroup.getChildren().add(doors[3].getGroup());
         }
+        System.out.println("Row:" + row + " Col: " + column);
         return roomGroup;
+    }
+
+    public Text getRoomInfo() {
+
+        return roomInfo;
     }
 
     public int getRow() {
