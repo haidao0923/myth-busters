@@ -9,8 +9,8 @@ import controller.Controller;
 
 
 public class RoomLayout {
-    static final int totalRows = 6;
-    static final int totalColumns = 6;
+    static final int TOTAL_ROWS = 6;
+    static final int TOTAL_COLUMNS = 6;
     static final int ROOM_WIDTH = Controller.getW();
     static final int ROOM_HEIGHT = Controller.getH();
 
@@ -21,7 +21,7 @@ public class RoomLayout {
     private Room[][] rooms;
 
     public RoomLayout() {
-        rooms = new Room[totalRows][totalColumns];
+        rooms = new Room[TOTAL_ROWS][TOTAL_COLUMNS];
 
         this.setStartingRoom();
         this.fillRooms();
@@ -32,7 +32,7 @@ public class RoomLayout {
 
     public void fillRooms() {
         for (int row = 0; row < rooms.length; row++) {
-            for(int column = 0; column < rooms[0].length; column++) {
+            for (int column = 0; column < rooms[0].length; column++) {
                 rooms[row][column] = new BasicRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
             }
         }
@@ -59,7 +59,7 @@ public class RoomLayout {
         visitedSet.add(startingRoom);
         this.addStartingNeighbors(currentList, visitedSet, startingRoom);
 
-        while(currentList.size() > 0) {
+        while (currentList.size() > 0) {
             Collections.shuffle(directions);
             int index = pickIndex(currentList);
             Room currRoom = currentList.get(index);
@@ -71,9 +71,9 @@ public class RoomLayout {
                     neighbor = rooms[currRoom.getRow()][currRoom.getColumn() - 1];
                 } else if (direction == 1 && currRoom.getRow() != 0) {
                     neighbor = rooms[currRoom.getRow() - 1][currRoom.getColumn()];
-                } else if (direction == 2 && currRoom.getColumn() != totalColumns - 1) {
+                } else if (direction == 2 && currRoom.getColumn() != TOTAL_COLUMNS - 1) {
                     neighbor = rooms[currRoom.getRow()][currRoom.getColumn() + 1];
-                } else if (direction == 3 && currRoom.getRow() != totalRows - 1) {
+                } else if (direction == 3 && currRoom.getRow() != TOTAL_ROWS - 1) {
                     neighbor = rooms[currRoom.getRow() + 1][currRoom.getColumn()];
                 }
 
@@ -150,20 +150,20 @@ public class RoomLayout {
     }
 
     public void setStartingRoom() {
-        this.startRoomRow = (int) Math.floor(Math.random() * (totalRows - 2)) + 1;
-        this.startRoomColumn = (int) Math.floor(Math.random() * (totalColumns - 2)) + 1;
+        this.startRoomRow = (int) Math.floor(Math.random() * (TOTAL_ROWS - 2)) + 1;
+        this.startRoomColumn = (int) Math.floor(Math.random() * (TOTAL_COLUMNS - 2)) + 1;
     }
 
     public void setBossRoom() {
         int r;
         int c;
-        if (startRoomRow < totalRows / 2) {
-            r = totalRows - 1;
+        if (startRoomRow < TOTAL_ROWS / 2) {
+            r = TOTAL_ROWS - 1;
         } else {
             r = 0;
         }
-        if (startRoomColumn < totalColumns / 2) {
-            c = totalColumns - 1;
+        if (startRoomColumn < TOTAL_COLUMNS / 2) {
+            c = TOTAL_COLUMNS - 1;
         } else {
             c = 0;
         }
