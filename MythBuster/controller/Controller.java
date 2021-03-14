@@ -3,7 +3,6 @@ import gamefiles.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
-import model.GameModel;
 import views.ConfigurationScreen;
 import views.GameScreen;
 import views.WelcomeScreen;
@@ -85,11 +84,12 @@ public class Controller extends Application {
     public static void goToStartingRoom() {
         //Initialize starting room.
         gameScreen = new GameScreen(W, H, player, roomLayout);
-        currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(), roomLayout.getStartRoomColumn());
-        gameScreen.getBoard().getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
+        currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(),
+                roomLayout.getStartRoomColumn());
+        Group gameBoard = gameScreen.getBoard();
+        gameBoard.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
         gameScreen.getDisplays().getChildren().add(currentRoom.getRoomInfo());
         player.moveAbsolute(W / 2, H / 2);
-
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
         playGame();

@@ -1,7 +1,6 @@
 package gamefiles;
 
 import javafx.scene.Group;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 public abstract class Room {
@@ -13,7 +12,7 @@ public abstract class Room {
     private Text roomInfo;
 
 
-    Group roomGroup;
+    private Group roomGroup;
 
     public Room(int width, int height, int row, int column) {
         this.width = width;
