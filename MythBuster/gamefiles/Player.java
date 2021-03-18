@@ -15,6 +15,11 @@ public class Player implements Touchable {
     private Weapon weapon;
     private double speed;
     private boolean shooting;
+    private double maxHealth;
+    private double currentHealth;
+    private double percentageHealth;
+    private double damageCooldown;
+
 
     private double positionX;
     private double positionY;
@@ -25,8 +30,8 @@ public class Player implements Touchable {
 
     public Player(int coins) {
         coins = 0;
-        width = 100;
-        height = 100;
+        width = 50;
+        height = 50;
 
         ImageView imageView = new ImageView("sprites/Medusa.png");
         imageView.setFitWidth(width);
@@ -64,6 +69,7 @@ public class Player implements Touchable {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // game logic
+                damageCooldown -= 1;
                 if (input.size() > 1) {
                     speed = 7;
                 } else {
@@ -109,6 +115,12 @@ public class Player implements Touchable {
         if (other == null) {
             System.out.println("Null Other!");
             return false;
+        }
+        if (other instanceof Monster) {
+            if (damageCooldown > 0) {
+                return false;
+            }
+            damageCooldown += 10;
         }
         return other.getBoundary().intersects(this.getBoundary());
     }

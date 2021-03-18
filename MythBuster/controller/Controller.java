@@ -1,4 +1,7 @@
 package controller;
+import java.util.ArrayList;
+import java.util.List;
+
 import gamefiles.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -25,7 +28,7 @@ public class Controller extends Application {
     private static GameScreen gameScreen;
     private static RoomLayout roomLayout;
     private static Room currentRoom;
-
+    public static List<Monster> monsters = new ArrayList<>();
 
     public void start(Stage primaryStage) throws Exception {
         roomLayout = new RoomLayout();
@@ -88,6 +91,11 @@ public class Controller extends Application {
                 roomLayout.getStartRoomColumn());
         Group gameBoard = gameScreen.getBoard();
         gameBoard.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
+// Trap Monster Test
+        TrapMonster trapMonster = new TrapMonster();
+        TrapMonster trapMonster2 = new TrapMonster();
+        gameBoard.getChildren().addAll(trapMonster.getGroup(), trapMonster2.getGroup());
+// End Trap Monster Test
         gameScreen.getDisplays().getChildren().add(currentRoom.getRoomInfo());
         player.moveAbsolute(W / 2, H / 2);
         Scene scene = gameScreen.getScene();
@@ -106,45 +114,51 @@ public class Controller extends Application {
                 HBox displays = gameScreen.getDisplays();
 
                 //If there is a left door and we are at it.
-                if (currentRoom.getLeftDoor() != null 
+                if (currentRoom.getLeftDoor() != null
                             && player.intersects(currentRoom.getLeftDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = 
+                    currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a right door and we are at it.
-                if (currentRoom.getRightDoor() != null 
+                if (currentRoom.getRightDoor() != null
                             && player.intersects(currentRoom.getRightDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = 
+                    currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a top door and we are at it.
-                if (currentRoom.getTopDoor() != null 
+                if (currentRoom.getTopDoor() != null
                             && player.intersects(currentRoom.getTopDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = 
+                    currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
 
                 //If there is a bottom door and we are at it.
-                if (currentRoom.getBottomDoor() != null 
+                if (currentRoom.getBottomDoor() != null
                             && player.intersects(currentRoom.getBottomDoor())) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
-                    currentRoom = 
+                    currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
-
+                //Intersect Logic with monster
+                for (int i = 0; i < monsters.size(); i++) {
+                    if (player.intersects(monsters.get(i))) {
+                        monsters.get(i).addHealth(-10);
+                        System.out.println(monsters.size());
+                    }
+                }
             }
         }.start();
 
@@ -159,7 +173,7 @@ public class Controller extends Application {
 
     public static void goToBossRoom() {
         //Go to boss room(used for testing).
-        currentRoom = roomLayout.getRoom(roomLayout.getBossRoomRow(), 
+        currentRoom = roomLayout.getRoom(roomLayout.getBossRoomRow(),
                                         roomLayout.getBossRoomColumn());
         gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
