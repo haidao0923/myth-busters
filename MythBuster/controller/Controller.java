@@ -2,6 +2,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.TreeMultimap;
+
 import gamefiles.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -112,7 +114,12 @@ public class Controller extends Application {
                 // game logic
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
-
+                //Intersect Logic with monster
+                for (int i = 0; i < monsters.size(); i++) {
+                    if (player.intersects(monsters.get(i))) {
+                        monsters.get(i).addHealth(-10);
+                    }
+                }
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
                             && player.intersects(currentRoom.getLeftDoor())) {
@@ -151,13 +158,6 @@ public class Controller extends Application {
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
-                }
-                //Intersect Logic with monster
-                for (int i = 0; i < monsters.size(); i++) {
-                    if (player.intersects(monsters.get(i))) {
-                        monsters.get(i).addHealth(-10);
-                        System.out.println(monsters.size());
-                    }
                 }
             }
         }.start();
