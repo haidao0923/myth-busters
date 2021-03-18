@@ -14,6 +14,7 @@ public class Player implements Touchable {
     private int coins;
     private Weapon weapon;
     private double speed;
+    private boolean shooting;
 
     private double positionX;
     private double positionY;
@@ -68,24 +69,21 @@ public class Player implements Touchable {
                 } else {
                     speed = 10;
                 }
-                if ((input.contains("LEFT") || input.contains("A")) && positionX > 0) {
+                if (input.contains("A") && positionX > 0) {
                     moveRelative(-speed, 0);
                 }
-                if ((input.contains("RIGHT") || input.contains("D"))
-                        && positionX + width < scene.getWidth()) {
+                if (input.contains("D") && positionX + width < scene.getWidth()) {
                     moveRelative(speed, 0);
                 }
-                if ((input.contains("UP") || input.contains("W")) && positionY > 0) {
+                if (input.contains("W") && positionY > 0) {
                     moveRelative(0, -speed);
                 }
-                if ((input.contains("DOWN") || input.contains("S"))
-                        && positionY + height < scene.getHeight()) {
+                if (input.contains("S") && positionY + height < scene.getHeight()) {
                     moveRelative(0, speed);
                 }
             }
         }.start();
     }
-
 
     public void moveAbsolute(double x, double y) {
         positionX = x;

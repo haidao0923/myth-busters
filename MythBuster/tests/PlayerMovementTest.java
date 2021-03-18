@@ -62,34 +62,6 @@ public class PlayerMovementTest extends ApplicationTest {
         release(KeyCode.D);
         previousPositionX = player.getPositionX();
         previousPositionY = player.getPositionY();
-
-        press(KeyCode.LEFT);
-        assertEquals(10, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX > player.getPositionX());
-        release(KeyCode.LEFT);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
-        press(KeyCode.UP);
-        assertEquals(10, player.getSpeed(), 0.1);
-        assertTrue(previousPositionY > player.getPositionY());
-        release(KeyCode.UP);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
-        press(KeyCode.DOWN);
-        assertEquals(10, player.getSpeed(), 0.1);
-        assertTrue(previousPositionY < player.getPositionY());
-        release(KeyCode.DOWN);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
-        press(KeyCode.RIGHT);
-        assertEquals(10, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX < player.getPositionX());
-        release(KeyCode.RIGHT);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
     }
 
     /**
@@ -112,27 +84,11 @@ public class PlayerMovementTest extends ApplicationTest {
         previousPositionX = player.getPositionX();
         previousPositionY = player.getPositionY();
 
-        press(KeyCode.LEFT, KeyCode.UP);
-        assertEquals(7, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX > player.getPositionX());
-        assertTrue(previousPositionY > player.getPositionY());
-        release(KeyCode.LEFT, KeyCode.UP);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
         press(KeyCode.A, KeyCode.S);
         assertEquals(7, player.getSpeed(), 0.1);
         assertTrue(previousPositionX > player.getPositionX());
         assertTrue(previousPositionY < player.getPositionY());
         release(KeyCode.A, KeyCode.S);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
-        press(KeyCode.LEFT, KeyCode.DOWN);
-        assertEquals(7, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX > player.getPositionX());
-        assertTrue(previousPositionY < player.getPositionY());
-        release(KeyCode.LEFT, KeyCode.DOWN);
         previousPositionX = player.getPositionX();
         previousPositionY = player.getPositionY();
 
@@ -144,27 +100,11 @@ public class PlayerMovementTest extends ApplicationTest {
         previousPositionX = player.getPositionX();
         previousPositionY = player.getPositionY();
 
-        press(KeyCode.RIGHT, KeyCode.UP);
-        assertEquals(7, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX < player.getPositionX());
-        assertTrue(previousPositionY > player.getPositionY());
-        release(KeyCode.RIGHT, KeyCode.UP);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
         press(KeyCode.D, KeyCode.S);
         assertEquals(7, player.getSpeed(), 0.1);
         assertTrue(previousPositionX < player.getPositionX());
         assertTrue(previousPositionY < player.getPositionY());
         release(KeyCode.D, KeyCode.S);
-        previousPositionX = player.getPositionX();
-        previousPositionY = player.getPositionY();
-
-        press(KeyCode.RIGHT, KeyCode.DOWN);
-        assertEquals(7, player.getSpeed(), 0.1);
-        assertTrue(previousPositionX < player.getPositionX());
-        assertTrue(previousPositionY < player.getPositionY());
-        release(KeyCode.RIGHT, KeyCode.DOWN);
         previousPositionX = player.getPositionX();
         previousPositionY = player.getPositionY();
     }
