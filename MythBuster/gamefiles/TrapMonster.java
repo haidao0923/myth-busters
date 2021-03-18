@@ -24,6 +24,9 @@ public class TrapMonster extends Monster {
                 // game logic
                 checkDeath();
                 redrawHealthBar();
+                if (isDead) {
+                    stop();
+                }
                 // move
                 double offsetX = targetPositionX - positionX;
                 double offsetY = targetPositionY - positionY;

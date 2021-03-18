@@ -116,13 +116,16 @@ public class Player implements Touchable {
             System.out.println("Null Other!");
             return false;
         }
-        if (other instanceof Monster) {
+        boolean intersected = other.getBoundary().intersects(this.getBoundary());
+        if (intersected == true && other instanceof Monster) {
             if (damageCooldown > 0) {
                 return false;
+            } else {
+                damageCooldown += 10;
             }
-            damageCooldown += 10;
+            System.out.println("Test");
         }
-        return other.getBoundary().intersects(this.getBoundary());
+        return intersected;
     }
 
     public int getCoins() {
@@ -154,6 +157,9 @@ public class Player implements Touchable {
     }
     public double getSpeed() {
         return speed;
+    }
+    public double getDamageCooldown() {
+        return damageCooldown;
     }
 
     public String toString() {
