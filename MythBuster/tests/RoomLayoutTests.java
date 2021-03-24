@@ -10,7 +10,8 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
+//mport static org.junit.jupiter.api.Assertions.assertTrue; //idk what this was for lol
 import static org.junit.Assert.assertNotNull;
 
 public class RoomLayoutTests extends ApplicationTest {
