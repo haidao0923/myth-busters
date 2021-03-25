@@ -36,11 +36,10 @@ public class Player implements Touchable {
         ImageView imageView = new ImageView("sprites/Medusa.png");
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
-        Node image = imageView;
-        image.setLayoutX(100);
-        image.setLayoutY(250);
+        imageView.setLayoutX(100);
+        imageView.setLayoutY(250);
         imageGroup = new Group();
-        imageGroup.getChildren().add(image);
+        imageGroup.getChildren().add(imageView);
     }
 
     public Player(Player player, int x, int y) {
@@ -117,7 +116,7 @@ public class Player implements Touchable {
             return false;
         }
         boolean intersected = other.getBoundary().intersects(this.getBoundary());
-        if (intersected == true && other instanceof Monster) {
+        if (intersected && other instanceof Monster) {
             if (damageCooldown > 0) {
                 return false;
             } else {

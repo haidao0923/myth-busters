@@ -39,9 +39,6 @@ public class Controller extends Application {
         player = new Player(0);
         WeaponDatabase.initialize();
         initWelcomeScreen();
-
-
-
     }
 
     public static void main(String[] args) {
