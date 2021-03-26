@@ -13,6 +13,7 @@ public class Soldier extends Monster {
 
     }
 
+    int damage = 100;
     int damageCooldown = 0;
 
     public void update() {
@@ -42,7 +43,7 @@ public class Soldier extends Monster {
                 damageCooldown--;
             } else {
                 damageCooldown = 20;
-                Controller.getPlayer().takeDamage(50);
+                Controller.getPlayer().takeDamage(damage);
                 System.out.println(Controller.getPlayer().getCurrentHealth());
             }
         } else if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10) {

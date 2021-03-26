@@ -16,8 +16,7 @@ public class GameLoop {
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
-                numEntities = monsters.size();
-                for(int i = 0; i < numEntities; i++) {
+                for(int i = 0; i < monsters.size(); i++) {
                     monsters.get(i).update();
                 }
 
