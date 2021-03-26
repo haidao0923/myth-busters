@@ -36,7 +36,6 @@ public class Controller extends Application {
     private static GameScreen gameScreen;
     private static RoomLayout roomLayout;
     private static Room currentRoom;
-    public static List<Monster> monsters = new ArrayList<>();
 
     public void start(Stage primaryStage) throws Exception {
         player = new Player(0);
@@ -228,7 +227,7 @@ public class Controller extends Application {
      * Returns the current room
      * @return the current room
      */
-    public Room getCurrentRoom() {
+    public static Room getCurrentRoom() {
         return currentRoom;
     }
     /**
@@ -241,6 +240,7 @@ public class Controller extends Application {
     public RoomLayout getRoomLayout() {
         return roomLayout;
     }
+
 
     /**
      * Private testing method to return a String representation of the Label of the window.

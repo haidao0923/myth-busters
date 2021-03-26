@@ -39,7 +39,6 @@ public abstract class Monster implements Touchable {
         this.width = width;
         this.height = height;
 
-        Controller.monsters.add(this);
         isDead = false;
 
         imageView = new ImageView(spritePath);
@@ -75,8 +74,12 @@ public abstract class Monster implements Touchable {
         }
     }
 
+
     public void addHealth(double value) {
         this.currentHealth += value;
+    }
+    public void takeDamage(double value) {
+        addHealth(-value);
     }
 
     public void moveAbsolute(double x, double y) {

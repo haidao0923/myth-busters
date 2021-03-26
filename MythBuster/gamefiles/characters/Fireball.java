@@ -12,6 +12,7 @@ public class Fireball extends Monster {
         moveAbsolute(posX, posY);
     }
 
+    int damage = 100;
     int timer = 500;
 
     public void update() {
@@ -26,7 +27,7 @@ public class Fireball extends Monster {
         double offsetY = targetPositionY - positionY;
         double magnitude = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
         if (Controller.getPlayer().intersects(this)) {
-            Controller.getPlayer().takeDamage(100);
+            Controller.getPlayer().takeDamage(damage);
             System.out.println("Fireballed! Health: " + Controller.getPlayer().getCurrentHealth());
             currentHealth = 0;
             checkDeath();
