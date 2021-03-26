@@ -1,7 +1,7 @@
 package tests;
 
 import controller.Controller;
-import gamefiles.Player;
+import gamefiles.characters.Player;
 import views.GameScreen;
 
 import javafx.stage.Stage;

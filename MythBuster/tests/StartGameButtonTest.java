@@ -1,7 +1,7 @@
 package tests;
 import controller.Controller;
 
-import gamefiles.Player;
+import gamefiles.characters.Player;
 
 import javafx.stage.Stage;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package gamefiles;
+package gamefiles.rooms;
 
 import controller.Controller;
 import javafx.event.EventHandler;

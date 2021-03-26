@@ -5,6 +5,12 @@ import java.util.List;
 //import com.google.common.collect.TreeMultimap; what is this for lol
 
 import gamefiles.*;
+import gamefiles.characters.Monster;
+import gamefiles.characters.Player;
+import gamefiles.characters.Soldier;
+import gamefiles.characters.TrapMonster;
+import gamefiles.rooms.Room;
+import gamefiles.rooms.RoomLayout;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
@@ -33,10 +39,10 @@ public class Controller extends Application {
     public static List<Monster> monsters = new ArrayList<>();
 
     public void start(Stage primaryStage) throws Exception {
+        player = new Player(0);
         roomLayout = new RoomLayout();
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
-        player = new Player(0);
         WeaponDatabase.initialize();
         initWelcomeScreen();
     }
@@ -88,14 +94,7 @@ public class Controller extends Application {
         gameScreen = new GameScreen(W, H, player, roomLayout);
         currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(),
                 roomLayout.getStartRoomColumn());
-        Group gameBoard = gameScreen.getBoard();
-        gameBoard.getChildren().addAll(currentRoom.getRoomGroup(), player.getGroup());
-// Trap Monster Test
-        TrapMonster trapMonster = new TrapMonster();
-        TrapMonster trapMonster2 = new TrapMonster();
-        gameBoard.getChildren().addAll(trapMonster.getGroup(), trapMonster2.getGroup());
-// End Trap Monster Test
-        gameScreen.getDisplays().getChildren().add(currentRoom.getRoomInfo());
+        gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
@@ -104,6 +103,8 @@ public class Controller extends Application {
 
     public static void playGame() {
 
+        GameLoop.gameLoop();
+
         player.movePlayer(gameScreen.getScene());
 
         new AnimationTimer() {
@@ -111,12 +112,7 @@ public class Controller extends Application {
                 // game logic
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
-                //Intersect Logic with monster
-                for (int i = 0; i < monsters.size(); i++) {
-                    if (player.intersects(monsters.get(i))) {
-                        monsters.get(i).addHealth(-10);
-                    }
-                }
+
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
                             && player.intersects(currentRoom.getLeftDoor())) {
@@ -156,6 +152,7 @@ public class Controller extends Application {
                     gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2, H / 2);
                 }
+
             }
         }.start();
 
@@ -215,8 +212,12 @@ public class Controller extends Application {
     /**
      * @return the player object
      */
-    public Player getPlayer() {
+    public static Player getPlayer() {
         return player;
+    }
+
+    public static views.GameScreen getGameScreen() {
+        return gameScreen;
     }
 
     public void setCurrentRoom(Room currentRoom) {
@@ -264,4 +265,6 @@ public class Controller extends Application {
     public static int getH() {
         return H;
     }
+
+
 }

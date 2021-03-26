@@ -1,6 +1,6 @@
 package gamefiles;
 
-abstract class Weapon {
+public abstract class Weapon {
     private int id;
     private String name;
     private double speed;

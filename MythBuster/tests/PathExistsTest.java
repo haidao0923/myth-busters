@@ -1,7 +1,7 @@
 package tests;
 import controller.Controller;
-import gamefiles.BossRoom;
-import gamefiles.Room;
+import gamefiles.rooms.BossRoom;
+import gamefiles.rooms.Room;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;

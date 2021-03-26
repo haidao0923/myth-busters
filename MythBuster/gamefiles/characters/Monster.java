@@ -1,6 +1,8 @@
-package gamefiles;
+package gamefiles.characters;
 
 import controller.Controller;
+import controller.GameLoop;
+import gamefiles.Touchable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -10,51 +12,51 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Monster implements Touchable {
     protected String name;
-
     protected double maxHealth;
     protected double currentHealth;
     protected double percentageHealth;
     protected boolean isDead;
     protected double movementSpeed;
-    protected double attackSpeed;
-
     protected double positionX;
     protected double positionY;
     protected double width;
     protected double height;
-
+    protected ImageView imageView;
 
     private Node image;
     private Rectangle healthBar;
+    private Rectangle healthBarBacking;
     private double healthBarWidth = 120;
 
     protected Group monsterGroup;
-    public Monster(String name, double health, double movementSpeed, double attackSpeed, String spritePath,
+    public Monster(String name, double health, double movementSpeed, String spritePath,
         double width, double height) {
+
         this.name = name;
         this.maxHealth = health;
         currentHealth = maxHealth;
-        this.movementSpeed = movementSpeed;
-        this.attackSpeed = attackSpeed;
+        this.movementSpeed = ((Math.random() * 0.5) + 0.5) * movementSpeed; //Somewhat randomize movespeed to prevent stacking.
         this.width = width;
         this.height = height;
 
         Controller.monsters.add(this);
         isDead = false;
 
-        ImageView imageView = new ImageView(spritePath);
+        imageView = new ImageView(spritePath);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
         image = imageView;
         healthBar = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
-        healthBar.setFill(Color.RED);
+        healthBar.setFill(Color.GREEN);
+        healthBarBacking = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
+        healthBarBacking.setFill(Color.RED);
         monsterGroup = new Group();
-        monsterGroup.getChildren().addAll(image, healthBar);
-        act();
+        monsterGroup.getChildren().addAll(image, healthBarBacking, healthBar);
 
     }
 
-    public abstract void act();
+
+    public abstract void update();
 
     public Group getGroup() {
         return monsterGroup;
@@ -66,10 +68,10 @@ public abstract class Monster implements Touchable {
     }
 
     public void checkDeath() {
-        if (currentHealth < 0) {
+        if (currentHealth <= 0) {
             isDead = true;
-            monsterGroup.getChildren().removeAll(image, healthBar);
-            Controller.monsters.remove(this);
+            monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
+            GameLoop.monsters.remove(this);
         }
     }
 
@@ -89,10 +91,11 @@ public abstract class Monster implements Touchable {
         monsterGroup.relocate(positionX, positionY);
     }
 
+
+
     public Rectangle2D getBoundary() {
         return new Rectangle2D(positionX, positionY, width, height);
     }
-
     public boolean intersects(Touchable other) {
         return other.getBoundary().intersects(this.getBoundary());
     }
@@ -107,8 +110,9 @@ public abstract class Monster implements Touchable {
     public double getPositionX() {
         return positionX;
     }
-
     public double getPositionY() {
         return positionY;
     }
+
+
 }

@@ -1,8 +1,8 @@
 package tests;
 
 import controller.Controller;
-import gamefiles.Player;
-import gamefiles.Room;
+import gamefiles.characters.Player;
+import gamefiles.rooms.Room;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 

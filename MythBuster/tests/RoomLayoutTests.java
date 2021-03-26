@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 
 import controller.Controller;
-import gamefiles.Room;
+import gamefiles.rooms.Room;
 
 import javafx.stage.Stage;
 import org.junit.Test;

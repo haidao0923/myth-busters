@@ -1,4 +1,4 @@
-package gamefiles;
+package gamefiles.rooms;
 
 import java.util.ArrayList;
 import java.util.HashSet;

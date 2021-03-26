@@ -1,7 +1,14 @@
-package gamefiles;
+package gamefiles.rooms;
 
+import gamefiles.Door;
+import gamefiles.characters.Mage;
+import gamefiles.characters.Monster;
+import gamefiles.characters.Soldier;
+import gamefiles.characters.TrapMonster;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 
 public abstract class Room {
     private Door[] doors = new Door[4];
@@ -11,6 +18,7 @@ public abstract class Room {
     private int height;
     private Text roomInfo;
 
+    ArrayList<Monster> monsters = new ArrayList<>();
 
     private Group roomGroup;
 
@@ -21,6 +29,29 @@ public abstract class Room {
         this.column = column;
         roomInfo = new Text(410, 10, toString());
         roomInfo.setStyle("-fx-font-size: 30;");
+
+        //Add at least 1 monster
+        Monster defaultMonster = new Soldier();
+        defaultMonster.moveAbsolute(Math.random() * width, Math.random() * height);
+        monsters.add(defaultMonster);
+
+        //Randomly add more monsters
+        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+            Soldier soldier = new Soldier();
+            soldier.moveAbsolute(Math.random() * width, Math.random() * height);
+            monsters.add(soldier);
+        }
+        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+            TrapMonster trapMonster = new TrapMonster();
+            trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
+            monsters.add(trapMonster);
+        }
+        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+            Mage mage = new Mage();
+            mage.moveAbsolute(Math.random() * width, Math.random() * height);
+            monsters.add(mage);
+        }
+
     }
     public Door getLeftDoor() {
         return doors[0];
@@ -61,8 +92,17 @@ public abstract class Room {
         if (doors[3] != null) {
             roomGroup.getChildren().add(doors[3].getGroup());
         }
+        for(Monster monster : monsters){
+            roomGroup.getChildren().add(monster.getGroup());
+        }
+
+
         System.out.println("Row:" + row + " Col: " + column);
         return roomGroup;
+    }
+
+    public ArrayList<Monster> getMonsters() {
+        return monsters;
     }
 
     public Text getRoomInfo() {

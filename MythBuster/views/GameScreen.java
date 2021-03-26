@@ -1,9 +1,10 @@
 package views;
 
-import gamefiles.Player;
-import gamefiles.Room;
-import gamefiles.RoomLayout;
-import gamefiles.StartingRoom;
+import controller.GameLoop;
+import gamefiles.characters.Player;
+import gamefiles.rooms.Room;
+import gamefiles.rooms.RoomLayout;
+import gamefiles.rooms.StartingRoom;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -164,6 +165,10 @@ public class GameScreen {
             displays.getChildren().remove(currentRoom.getRoomInfo());
         }
         board.getChildren().addAll(displays);
+
+        GameLoop.monsters.clear();
+        GameLoop.monsters.addAll(currentRoom.getMonsters());
+
     }
 
 

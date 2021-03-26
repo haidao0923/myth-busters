@@ -1,9 +1,10 @@
-package gamefiles;
+package gamefiles.characters;
 
+import gamefiles.Touchable;
+import gamefiles.Weapon;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 
@@ -30,8 +31,8 @@ public class Player implements Touchable {
 
     public Player(int coins) {
         coins = 0;
-        width = 50;
-        height = 50;
+        width = 100;
+        height = 100;
 
         ImageView imageView = new ImageView("sprites/Medusa.png");
         imageView.setFitWidth(width);
@@ -40,6 +41,9 @@ public class Player implements Touchable {
         imageView.setLayoutY(250);
         imageGroup = new Group();
         imageGroup.getChildren().add(imageView);
+
+        currentHealth = 9999;
+        maxHealth = 9999;
     }
 
     public Player(Player player, int x, int y) {
@@ -116,14 +120,7 @@ public class Player implements Touchable {
             return false;
         }
         boolean intersected = other.getBoundary().intersects(this.getBoundary());
-        if (intersected && other instanceof Monster) {
-            if (damageCooldown > 0) {
-                return false;
-            } else {
-                damageCooldown += 10;
-            }
-            System.out.println("Test");
-        }
+
         return intersected;
     }
 
@@ -159,6 +156,17 @@ public class Player implements Touchable {
     }
     public double getDamageCooldown() {
         return damageCooldown;
+    }
+
+    public void addHealth(double value) {
+        this.currentHealth += value;
+    }
+    public void takeDamage(double damage) {
+        addHealth(-damage);
+    }
+
+    public double getCurrentHealth() {
+        return currentHealth;
     }
 
     public String toString() {

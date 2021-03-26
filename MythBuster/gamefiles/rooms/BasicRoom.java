@@ -1,4 +1,4 @@
-package gamefiles;
+package gamefiles.rooms;
 
 public class BasicRoom extends Room {
 
