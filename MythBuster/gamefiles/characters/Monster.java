@@ -23,10 +23,10 @@ public abstract class Monster implements Touchable {
     protected double height;
     protected ImageView imageView;
 
-    private Node image;
-    private Rectangle healthBar;
-    private Rectangle healthBarBacking;
-    private double healthBarWidth = 120;
+    protected Node image;
+    protected Rectangle healthBar;
+    protected Rectangle healthBarBacking;
+    protected double healthBarWidth;
 
     protected Group monsterGroup;
     public Monster(String name, double health, double movementSpeed, String spritePath,
@@ -38,6 +38,7 @@ public abstract class Monster implements Touchable {
         this.movementSpeed = ((Math.random() * 0.5) + 0.5) * movementSpeed; //Somewhat randomize movespeed to prevent stacking.
         this.width = width;
         this.height = height;
+        this.healthBarWidth = width;
 
         isDead = false;
 
