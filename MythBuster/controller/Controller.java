@@ -37,6 +37,8 @@ public class Controller extends Application {
     private static RoomLayout roomLayout;
     private static Room currentRoom;
 
+    private static int gameDifficulty;
+
     public void start(Stage primaryStage) throws Exception {
         player = new Player(0);
         roomLayout = new RoomLayout();
@@ -77,6 +79,7 @@ public class Controller extends Application {
                 showAlert("Your name cannot be empty or whitespace only!");
                 return;
             }
+            setDifficulty(difficultySelector.getValue());
             initializeStats(heroNameField.getText(),
                     startingWeaponSelector.getSelectionModel().getSelectedIndex(),
                     difficultySelector.getValue());
@@ -112,9 +115,14 @@ public class Controller extends Application {
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
 
+                // if there are no monsters, unlock the doors
+                if (GameLoop.monsters.size() == 0) {
+                    currentRoom.unlockDoors();
+                }
+
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
-                            && player.intersects(currentRoom.getLeftDoor())) {
+                            && player.intersects(currentRoom.getLeftDoor()) && !currentRoom.getLeftDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
@@ -124,7 +132,7 @@ public class Controller extends Application {
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null
-                            && player.intersects(currentRoom.getRightDoor())) {
+                            && player.intersects(currentRoom.getRightDoor()) && !currentRoom.getRightDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
@@ -134,7 +142,7 @@ public class Controller extends Application {
 
                 //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null
-                            && player.intersects(currentRoom.getTopDoor())) {
+                            && player.intersects(currentRoom.getTopDoor()) && !currentRoom.getTopDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
@@ -144,7 +152,7 @@ public class Controller extends Application {
 
                 //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null
-                            && player.intersects(currentRoom.getBottomDoor())) {
+                            && player.intersects(currentRoom.getBottomDoor()) && !currentRoom.getBottomDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
@@ -170,6 +178,24 @@ public class Controller extends Application {
                                         roomLayout.getBossRoomColumn());
         gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
+    }
+
+    private static void setDifficulty(Difficulty difficulty) {
+        switch (difficulty) {
+            case EASY:
+                gameDifficulty = 0;
+                break;
+            case MEDIUM:
+                gameDifficulty = 1;
+                break;
+            case HARD:
+                gameDifficulty = 2;
+                break;
+        }
+    }
+
+    public static int getDifficulty() {
+        return gameDifficulty;
     }
 
     /**
