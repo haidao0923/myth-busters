@@ -19,7 +19,7 @@ public abstract class Room {
     private int height;
     private Text roomInfo;
 
-    protected ArrayList<Monster> monsters = new ArrayList<>();
+    ArrayList<Monster> monsters = new ArrayList<>();
 
     private Group roomGroup;
 
