@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class GameLoop {
 
-    private static int numEntities = 0;
     public static ArrayList<Monster> monsters = new ArrayList<>();
 
 

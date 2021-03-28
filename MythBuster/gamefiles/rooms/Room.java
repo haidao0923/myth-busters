@@ -1,5 +1,6 @@
 package gamefiles.rooms;
 
+import controller.Controller;
 import gamefiles.Door;
 import gamefiles.characters.Mage;
 import gamefiles.characters.Monster;
@@ -18,7 +19,7 @@ public abstract class Room {
     private int height;
     private Text roomInfo;
 
-    ArrayList<Monster> monsters = new ArrayList<>();
+    protected ArrayList<Monster> monsters = new ArrayList<>();
 
     private Group roomGroup;
 
@@ -36,17 +37,17 @@ public abstract class Room {
         monsters.add(defaultMonster);
 
         //Randomly add more monsters
-        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             Soldier soldier = new Soldier();
             soldier.moveAbsolute(Math.random() * width, Math.random() * height);
             monsters.add(soldier);
         }
-        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             TrapMonster trapMonster = new TrapMonster();
             trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
             monsters.add(trapMonster);
         }
-        for(int i = 0; i < (Math.random() * 2) - 1; i++) {
+        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             Mage mage = new Mage();
             mage.moveAbsolute(Math.random() * width, Math.random() * height);
             monsters.add(mage);
@@ -76,6 +77,14 @@ public abstract class Room {
     }
     public void setBottomDoor(Room destination) {
         doors[3] = new Door(width / 2, height - 100, destination);
+    }
+
+    public void unlockDoors() {
+        for (int i = 0; i < 4; i++) {
+            if (doors[i] != null) {
+                doors[i].unlock();
+            }
+        }
     }
 
     public Group getRoomGroup() {

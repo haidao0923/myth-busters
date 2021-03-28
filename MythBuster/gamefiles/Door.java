@@ -7,13 +7,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Door implements Touchable {
+   
     private Room destination; //Placeholder, maybe not needed.
-
 
     private double positionX;
     private double positionY;
     private double width = 60;
     private double height = 80;
+
+    public boolean locked;
 
     private Group doorGroup;
     public Door(double x, double y, Room destination) {
@@ -26,6 +28,7 @@ public class Door implements Touchable {
         doorGroup.getChildren().addAll(door, knob);
         relocate(x, y);
         this.destination = destination;
+        locked = true;
     }
 
     public Group getGroup() {
@@ -35,6 +38,14 @@ public class Door implements Touchable {
         positionX = x;
         positionY = y;
         doorGroup.relocate(positionX, positionY);
+    }
+
+    public void unlock() {
+        locked = false;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 
     public Rectangle2D getBoundary() {
