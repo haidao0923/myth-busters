@@ -118,5 +118,8 @@ public abstract class Monster implements Touchable {
         return positionY;
     }
 
+    public String getName() {
+        return this.name;
+    }
 
 }

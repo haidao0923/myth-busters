@@ -53,7 +53,7 @@ public class Mage extends Monster {
             } else {
                 damageCooldown = 20;
                 Controller.getPlayer().takeDamage(damage);
-                System.out.println("Collided with Mage! Health: " + Controller.getPlayer().getCurrentHealth());
+                //System.out.println("Collided with Mage! Health: " + Controller.getPlayer().getCurrentHealth());
             }
         }
     }

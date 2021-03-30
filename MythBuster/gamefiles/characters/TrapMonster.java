@@ -40,7 +40,8 @@ public class TrapMonster extends Monster {
             } else {
                 damageCooldown = 20;
                 Controller.getPlayer().takeDamage(damage);
-                System.out.println("Collided with Trap Monster! Health: " + Controller.getPlayer().getCurrentHealth());
+                //System.out.println("Collided with Trap Monster! Health: " + Controller.getPlayer().getCurrentHealth
+                // ());
             }
         }
         if (spawnTrapCooldown > 0) {
