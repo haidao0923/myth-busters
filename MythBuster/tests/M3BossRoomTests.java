@@ -1,7 +1,7 @@
 package tests;
 
 import controller.Controller;
-import gamefiles.WeaponDatabase;
+import gamefiles.weapons.WeaponDatabase;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
