@@ -16,11 +16,7 @@ public class MonsterTests extends ApplicationTest {
         Controller controller = new Controller();
         controller.start(primaryStage);
 
-        //Set up test player so we don't get null pointers in required attributes
-
     }
-
-
 
     @Test
     public void testMonstersExist() {
