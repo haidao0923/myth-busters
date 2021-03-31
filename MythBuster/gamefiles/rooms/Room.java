@@ -1,11 +1,13 @@
 package gamefiles.rooms;
 
 import controller.Controller;
+import controller.GameLoop;
 import gamefiles.Door;
 import gamefiles.characters.Mage;
 import gamefiles.characters.Monster;
 import gamefiles.characters.Soldier;
 import gamefiles.characters.TrapMonster;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 
@@ -120,20 +122,26 @@ public abstract class Room {
         return column;
     }
 
-    public void spawnSoldier() {
+    public Soldier spawnSoldier() {
         Soldier soldier = new Soldier();
         soldier.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(soldier);
+        GameLoop.monsters.add(soldier);
+        return soldier;
     }
-    public void spawnMage() {
+    public Mage spawnMage() {
         Mage mage = new Mage();
         mage.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(mage);
+        GameLoop.monsters.add(mage);
+        return mage;
     }
-    public void spawnTrapMonster() {
+    public TrapMonster spawnTrapMonster() {
         TrapMonster trapMonster = new TrapMonster();
         trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(trapMonster);
+        GameLoop.monsters.add(trapMonster);
+        return trapMonster;
     }
     // abstract methods for generating monsters and chests will be here.
 

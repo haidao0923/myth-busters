@@ -5,6 +5,7 @@ import gamefiles.characters.Player;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.rooms.StartingRoom;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -131,7 +132,7 @@ public class GameScreen {
          }
 
          //If there is a bottom door and we are at it.
-         if (currentRoom.getBottomDoor() != null 
+         if (currentRoom.getBottomDoor() != null
          && player.intersects(currentRoom.getBottomDoor())) {
          setCurrentRoom(roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn()));
          board.getChildren().clear();
@@ -159,16 +160,15 @@ public class GameScreen {
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
                 player.getGroup(), player.getHeartsBox());
-        if (currentRoom instanceof StartingRoom) {
+        /*if (currentRoom instanceof StartingRoom) {
             displays.getChildren().add(currentRoom.getRoomInfo());
         } else {
             displays.getChildren().remove(currentRoom.getRoomInfo());
-        }
+        }*/
         board.getChildren().addAll(displays);
 
         GameLoop.monsters.clear();
         GameLoop.monsters.addAll(currentRoom.getMonsters());
-
     }
 
 

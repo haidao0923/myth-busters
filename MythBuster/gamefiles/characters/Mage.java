@@ -3,6 +3,7 @@ package gamefiles.characters;
 import controller.Controller;
 import controller.GameLoop;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 
 public class Mage extends Monster {
 
@@ -39,12 +40,15 @@ public class Mage extends Monster {
                 //Shoot a fireball.
 
                 Fireball fireball = new Fireball(positionX, positionY);
-                Controller.getGameScreen().getBoard().getChildren().add(fireball.getGroup());
+                Platform.runLater(() -> {
+                    Controller.getGameScreen().getBoard().getChildren().add(fireball.getGroup());
+                });
                 GameLoop.monsters.add(fireball);
 
                 spawnFireballCooldown = 500;
                 targetPositionX = Math.random() * (Controller.getW() - width);
                 targetPositionY = Math.random() * (Controller.getH() - height);
+
             }
         }
         /*if (Controller.getPlayer().intersects(this)) {
