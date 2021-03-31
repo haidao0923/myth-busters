@@ -1,7 +1,9 @@
 package controller;
 
+import gamefiles.characters.Player;
 import gamefiles.characters.Monster;
 import javafx.animation.AnimationTimer;
+import views.GameScreen;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,23 @@ public class GameLoop {
 
             }
         };
-        
-        monsterLoop.start();
     }
 
+    public static void initializeAllAnimationTimers(Player player, GameScreen gameScreen) {
+        GameLoop.gameLoop();
+        player.updatePlayerHp();
+        player.play(gameScreen.getScene());
+    }
+
+    public static void startAllAnimationTimers(AnimationTimer... timers) {
+        for (AnimationTimer timer : timers) {
+            timer.start();
+        }
+    }
+
+    public static void stopAllAnimationTimers(AnimationTimer... timers) {
+        for (AnimationTimer timer : timers) {
+            timer.stop();
+        }
+    }
 }

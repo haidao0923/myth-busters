@@ -59,12 +59,15 @@ public class Player implements Touchable {
     private ArrayList<Heart> hearts;
     private HBox heartsBox;
 
+    private AnimationTimer playerLogic;
+    private AnimationTimer playerHpUpdate;
+
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
         width = 100;
         height = 100;
-        damage = weapon.getDamage() * damage;
+        damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
             imageView.setImage(spearSprite);
@@ -132,9 +135,26 @@ public class Player implements Touchable {
                 input.remove(code);
             });
 
-        new AnimationTimer() {
+        this.playerLogic = new AnimationTimer() {
+            int lastDirection = 0;
+            int invisibilityCd = 0;
             public void handle(long now) {
                 // game logic
+                damageCooldown--;
+                invisibilityCd--;
+                if (damageCooldown > 0) { // got hit
+                    if (now % (15) == 0) {
+                        invisibilityCd = 5;
+                    } else if (invisibilityCd > 0) { // longer invis frames
+                        imageView.setScaleX(0);
+                    } else {
+                        if (lastDirection == 0) { // same direction
+                            imageView.setScaleX(1);
+                        } else if (lastDirection == 1) {
+                            imageView.setScaleX(-1);
+                        }
+                    }
+                }
                 if (attackCD > 0) {
                     attackCD--;
                 }
@@ -154,21 +174,25 @@ public class Player implements Touchable {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
                         moveRelative(-speed, 0);
+                        lastDirection = 0; 
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
                         moveRelative(speed, 0);
+                        lastDirection = 1;
                     }
                     if (input.contains("W") && positionY > 0) {
                         moveRelative(0, -speed);
+                        //lastDirection = 2;
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
                         moveRelative(0, speed);
+                        //lastDirection = 3;
                     }
                 }
 
             }
-        }.start();
+        };
     }
 
     public void moveAbsolute(double x, double y) {
@@ -184,7 +208,7 @@ public class Player implements Touchable {
     }
 
     public void updatePlayerHp() {
-        new AnimationTimer() {
+        this.playerHpUpdate = new AnimationTimer() {
             double oldHealth = getCurrentHealth();
             public void handle(long currentNanoTime) {
                 double currentHealth = getCurrentHealth();
@@ -192,7 +216,7 @@ public class Player implements Touchable {
                 if (currentHealth != oldHealth) {
                     System.out.println("Updating Damage!");
 
-                    if (currentHealth <= 0) {
+                    if (currentHealth <= 25) { // higher number b/c some glitch
                         Controller.goToDeathScreen();
                         this.stop();
                     }
@@ -209,7 +233,7 @@ public class Player implements Touchable {
                 
                 oldHealth = currentHealth;
             }
-        }.start();
+        };
     }
 
     public void updatePlayerMaxHp() {
@@ -284,7 +308,10 @@ public class Player implements Touchable {
         this.currentHealth += value;
     }
     public void takeDamage(double damage) {
-        addHealth(-damage);
+        if (damageCooldown <= 0) {
+            addHealth(-damage);
+            damageCooldown = 60;
+        }
         System.out.println(currentHealth);
     }
 
@@ -304,6 +331,14 @@ public class Player implements Touchable {
 
     public double getCurrentHealth() {
         return currentHealth;
+    }
+
+    public AnimationTimer getPlayerLogicTimer() {
+        return playerLogic;
+    }
+
+    public AnimationTimer getPlayerHpUpdateTimer() {
+        return playerHpUpdate;
     }
 
     public String toString() {

@@ -33,11 +33,11 @@ public class Controller extends Application {
     private static GameScreen gameScreen;
     private static RoomLayout roomLayout;
     private static Room currentRoom;
+    private static AnimationTimer controllerLoop;
 
     private static int gameDifficulty;
 
     public void start(Stage primaryStage) throws Exception {
-        roomLayout = new RoomLayout();
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
         WeaponDatabase.initialize();
@@ -89,6 +89,7 @@ public class Controller extends Application {
 
     public static void goToStartingRoom() {
         //Initialize starting room.
+        roomLayout = new RoomLayout();
         gameScreen = new GameScreen(W, H, player, roomLayout);
         currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(),
                 roomLayout.getStartRoomColumn());
@@ -100,13 +101,7 @@ public class Controller extends Application {
     }
 
     public static void playGame() {
-
-        GameLoop.gameLoop();
-
-        player.updatePlayerHp();
-        player.play(gameScreen.getScene());
-
-        new AnimationTimer() {
+        controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // game logic
                 Group board = gameScreen.getBoard();
@@ -158,8 +153,10 @@ public class Controller extends Application {
                 }
 
             }
-        }.start();
+        };
 
+        GameLoop.initializeAllAnimationTimers(player, gameScreen);
+        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
     }
 
     public static void goToWinScreen() {
@@ -178,7 +175,7 @@ public class Controller extends Application {
     }
 
     public static void goToDeathScreen() {
-        GameLoop.monsterLoop.stop();
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 
