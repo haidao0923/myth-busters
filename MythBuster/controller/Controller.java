@@ -3,14 +3,15 @@ package controller;
 //import com.google.common.collect.TreeMultimap; what is this for lol
 
 import gamefiles.*;
-        import gamefiles.characters.Player;
-        import gamefiles.rooms.Room;
+import gamefiles.characters.Player;
+import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import views.ConfigurationScreen;
+import views.DeathScreen;
 import views.GameScreen;
 import views.WelcomeScreen;
 import javafx.application.Application;
@@ -32,11 +33,11 @@ public class Controller extends Application {
     private static GameScreen gameScreen;
     private static RoomLayout roomLayout;
     private static Room currentRoom;
+    private static AnimationTimer controllerLoop;
 
     private static int gameDifficulty;
 
     public void start(Stage primaryStage) throws Exception {
-        roomLayout = new RoomLayout();
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
         WeaponDatabase.initialize();
@@ -88,6 +89,7 @@ public class Controller extends Application {
 
     public static void goToStartingRoom() {
         //Initialize starting room.
+        roomLayout = new RoomLayout();
         gameScreen = new GameScreen(W, H, player, roomLayout);
         currentRoom = roomLayout.getRoom(roomLayout.getStartRoomRow(),
                 roomLayout.getStartRoomColumn());
@@ -99,12 +101,7 @@ public class Controller extends Application {
     }
 
     public static void playGame() {
-
-        GameLoop.gameLoop();
-
-        player.play(gameScreen.getScene());
-
-        new AnimationTimer() {
+        controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // game logic
                 Group board = gameScreen.getBoard();
@@ -156,8 +153,10 @@ public class Controller extends Application {
                 }
 
             }
-        }.start();
+        };
 
+        GameLoop.initializeAllAnimationTimers(player, gameScreen);
+        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
     }
 
     public static void goToWinScreen() {
@@ -173,6 +172,21 @@ public class Controller extends Application {
                                         roomLayout.getBossRoomColumn());
         gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
+    }
+
+    public static void goToDeathScreen() {
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
+        DeathScreen deathScreen = new DeathScreen(W, H);
+        player = new Player(0, null);
+
+        Button restartButton = deathScreen.getRestartButton();
+        restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            goToConfigurationScreen();
+        });
+
+        Scene scene = deathScreen.getScene();
+        mainWindow.setScene(scene);
+        mainWindow.show();
     }
 
     private static void setDifficulty(Difficulty difficulty) {

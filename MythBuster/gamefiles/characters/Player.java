@@ -1,5 +1,9 @@
 package gamefiles.characters;
 
+import java.util.ArrayList;
+
+import controller.Controller;
+import gamefiles.Heart;
 import controller.GameLoop;
 import controller.SpriteAnimation;
 import gamefiles.Touchable;
@@ -14,9 +18,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Player implements Touchable {
     private String name;
@@ -24,8 +27,10 @@ public class Player implements Touchable {
     private Weapon weapon;
     private double speed;
     private boolean shooting;
+    private int numHearts;
     private double maxHealth;
     private double currentHealth;
+    // private double oldHealth;
     private double percentageHealth;
     private double attackCD = 0;
     private double moveCD = 0;
@@ -42,19 +47,27 @@ public class Player implements Touchable {
     private double width;
     private double height;
 
+    private final double heartsPadding = 10;
+    private final double heartsDimensions = 50;
+
     private int spriteWidth = 63;
     private int spriteHeight = 55;
     private int spriteX = 0;
     private int spriteY = 585;
 
     private Group imageGroup;
+    private ArrayList<Heart> hearts;
+    private HBox heartsBox;
+
+    private AnimationTimer playerLogic;
+    private AnimationTimer playerHpUpdate;
 
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
         width = 100;
         height = 100;
-        damage = weapon.getDamage() * damage;
+        damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
             imageView.setImage(spearSprite);
@@ -73,8 +86,13 @@ public class Player implements Touchable {
         imageGroup = new Group();
         imageGroup.getChildren().add(imageView);
 
-        currentHealth = 9999;
-        maxHealth = 9999;
+        // hp
+        currentHealth = 250;
+        // oldHealth = currentHealth;
+        maxHealth = 250;
+        numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
+        
+        updatePlayerMaxHp();
     }
 
     public void attack(Scene scene) {
@@ -117,9 +135,26 @@ public class Player implements Touchable {
                 input.remove(code);
             });
 
-        new AnimationTimer() {
+        this.playerLogic = new AnimationTimer() {
+            int lastDirection = 0;
+            int invisibilityCd = 0;
             public void handle(long now) {
                 // game logic
+                damageCooldown--;
+                invisibilityCd--;
+                if (damageCooldown > 0) { // got hit
+                    if (now % (15) == 0) {
+                        invisibilityCd = 5;
+                    } else if (invisibilityCd > 0) { // longer invis frames
+                        imageView.setScaleX(0);
+                    } else {
+                        if (lastDirection == 0) { // same direction
+                            imageView.setScaleX(1);
+                        } else if (lastDirection == 1) {
+                            imageView.setScaleX(-1);
+                        }
+                    }
+                }
                 if (attackCD > 0) {
                     attackCD--;
                 }
@@ -139,21 +174,25 @@ public class Player implements Touchable {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
                         moveRelative(-speed, 0);
+                        lastDirection = 0; 
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
                         moveRelative(speed, 0);
+                        lastDirection = 1;
                     }
                     if (input.contains("W") && positionY > 0) {
                         moveRelative(0, -speed);
+                        //lastDirection = 2;
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
                         moveRelative(0, speed);
+                        //lastDirection = 3;
                     }
                 }
 
             }
-        }.start();
+        };
     }
 
     public void moveAbsolute(double x, double y) {
@@ -168,8 +207,53 @@ public class Player implements Touchable {
         imageGroup.relocate(positionX, positionY);
     }
 
+    public void updatePlayerHp() {
+        this.playerHpUpdate = new AnimationTimer() {
+            double oldHealth = getCurrentHealth();
+            public void handle(long currentNanoTime) {
+                double currentHealth = getCurrentHealth();
+                
+                if (currentHealth != oldHealth) {
+                    System.out.println("Updating Damage!");
+
+                    if (currentHealth <= 25) { // higher number b/c some glitch
+                        Controller.goToDeathScreen();
+                        this.stop();
+                    }
+
+                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); i >= 0 && i < hearts.size(); i++) {
+                        hearts.get(i).setEmpty();
+                    }
+                    ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
+                    for (int j = 0; j < hearts.size(); j++) {  
+                        heartsImages.add(hearts.get(j).getImageView());
+                    }
+                    heartsBox.getChildren().setAll(heartsImages);
+                }
+                
+                oldHealth = currentHealth;
+            }
+        };
+    }
+
+    public void updatePlayerMaxHp() {
+        this.hearts = new ArrayList<Heart>(numHearts);
+        this.heartsBox = new HBox(heartsPadding);
+        for (int i = 0; i < numHearts; i++) {
+            Heart heart = new Heart(heartsDimensions, heartsDimensions, true);
+            hearts.add(heart);
+            heartsBox.getChildren().add(heart.getImageView());
+        }
+        heartsBox.setLayoutX(heartsPadding);
+        heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
+    }
+
     public Group getGroup() {
         return imageGroup;
+    }
+
+    public HBox getHeartsBox() {
+        return heartsBox;
     }
 
     public Rectangle2D getBoundary() {
@@ -224,7 +308,10 @@ public class Player implements Touchable {
         this.currentHealth += value;
     }
     public void takeDamage(double damage) {
-        addHealth(-damage);
+        if (damageCooldown <= 0) {
+            addHealth(-damage);
+            damageCooldown = 60;
+        }
         System.out.println(currentHealth);
     }
 
@@ -232,8 +319,26 @@ public class Player implements Touchable {
         this.direction = direction;
     }
 
+    public void addMaximumHealth(double value) {
+        this.maxHealth += value;
+        this.numHearts += (int) Math.floor(value / Heart.HEALTH_PER_HEART);
+        updatePlayerMaxHp();
+    }
+
+    public void subtractMaximumHealth(double value) {
+        addMaximumHealth(-value);
+    }
+
     public double getCurrentHealth() {
         return currentHealth;
+    }
+
+    public AnimationTimer getPlayerLogicTimer() {
+        return playerLogic;
+    }
+
+    public AnimationTimer getPlayerHpUpdateTimer() {
+        return playerHpUpdate;
     }
 
     public String toString() {
