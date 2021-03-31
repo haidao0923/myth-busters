@@ -3,6 +3,7 @@ package gamefiles.characters;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Touchable;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -70,7 +71,9 @@ public abstract class Monster implements Touchable {
     public void checkDeath() {
         if (currentHealth <= 0) {
             isDead = true;
-            monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
+            Platform.runLater(() -> {
+                monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
+            });
             GameLoop.monsters.remove(this);
         }
     }
@@ -81,6 +84,10 @@ public abstract class Monster implements Touchable {
     }
     public void takeDamage(double value) {
         addHealth(-value);
+    }
+    public void loseAllHealth() {
+        takeDamage(maxHealth);
+        checkDeath();
     }
 
     public void moveAbsolute(double x, double y) {

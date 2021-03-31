@@ -3,6 +3,7 @@ package gamefiles.characters;
 import controller.Controller;
 import controller.GameLoop;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 
 public class TrapMonster extends Monster {
 
@@ -49,9 +50,11 @@ public class TrapMonster extends Monster {
         } else {
             spawnTrapCooldown = 100;
             Trap trap = new Trap(positionX, positionY);
-            Controller.getGameScreen().getBoard().getChildren().add(trap.getGroup());
             GameLoop.monsters.add(trap);
-            Controller.getCurrentRoom().getMonsters().add(trap);
+            Platform.runLater(() -> {
+                Controller.getGameScreen().getBoard().getChildren().add(trap.getGroup());
+                Controller.getCurrentRoom().getMonsters().add(trap);
+            });
         }
     };
 }
