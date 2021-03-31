@@ -1,5 +1,9 @@
 package gamefiles.characters;
 
+import java.util.ArrayList;
+
+import controller.Controller;
+import gamefiles.Heart;
 import gamefiles.Touchable;
 import gamefiles.Weapon;
 import javafx.animation.AnimationTimer;
@@ -7,8 +11,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
+import javafx.scene.layout.HBox;
 
 public class Player implements Touchable {
     private String name;
@@ -16,8 +19,10 @@ public class Player implements Touchable {
     private Weapon weapon;
     private double speed;
     private boolean shooting;
+    private int numHearts;
     private double maxHealth;
     private double currentHealth;
+    // private double oldHealth;
     private double percentageHealth;
     private double damageCooldown;
 
@@ -27,10 +32,16 @@ public class Player implements Touchable {
     private double width;
     private double height;
 
+    private final double heartsPadding = 10;
+    private final double heartsDimensions = 50;
+
     private Group imageGroup;
+    private ArrayList<Heart> hearts;
+    private HBox heartsBox;
 
     public Player(int coins) {
         coins = 0;
+        // hitbox
         width = 100;
         height = 100;
 
@@ -42,8 +53,13 @@ public class Player implements Touchable {
         imageGroup = new Group();
         imageGroup.getChildren().add(imageView);
 
-        currentHealth = 9999;
-        maxHealth = 9999;
+        // hp
+        currentHealth = 250;
+        // oldHealth = currentHealth;
+        maxHealth = 250;
+        numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
+        
+        updatePlayerMaxHp();
     }
 
     public Player(Player player, int x, int y) {
@@ -73,6 +89,8 @@ public class Player implements Touchable {
             public void handle(long currentNanoTime) {
                 // game logic
                 damageCooldown -= 1;
+
+                // movement
                 if (input.size() > 1) {
                     speed = 7;
                 } else {
@@ -106,8 +124,53 @@ public class Player implements Touchable {
         imageGroup.relocate(positionX, positionY);
     }
 
+    public void updatePlayerHp() {
+        new AnimationTimer() {
+            double oldHealth = getCurrentHealth();
+            public void handle(long currentNanoTime) {
+                double currentHealth = getCurrentHealth();
+                
+                if (currentHealth != oldHealth) {
+                    System.out.println("Updating Damage!");
+
+                    if (currentHealth <= 0) {
+                        Controller.goToDeathScreen();
+                        this.stop();
+                    }
+
+                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); i >= 0 && i < hearts.size(); i++) {
+                        hearts.get(i).setEmpty();
+                    }
+                    ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
+                    for (int j = 0; j < hearts.size(); j++) {  
+                        heartsImages.add(hearts.get(j).getImageView());
+                    }
+                    heartsBox.getChildren().setAll(heartsImages);
+                }
+                
+                oldHealth = currentHealth;
+            }
+        }.start();
+    }
+
+    public void updatePlayerMaxHp() {
+        this.hearts = new ArrayList<Heart>(numHearts);
+        this.heartsBox = new HBox(heartsPadding);
+        for (int i = 0; i < numHearts; i++) {
+            Heart heart = new Heart(heartsDimensions, heartsDimensions, true);
+            hearts.add(heart);
+            heartsBox.getChildren().add(heart.getImageView());
+        }
+        heartsBox.setLayoutX(heartsPadding);
+        heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
+    }
+
     public Group getGroup() {
         return imageGroup;
+    }
+
+    public HBox getHeartsBox() {
+        return heartsBox;
     }
 
     public Rectangle2D getBoundary() {
@@ -163,6 +226,16 @@ public class Player implements Touchable {
     }
     public void takeDamage(double damage) {
         addHealth(-damage);
+    }
+
+    public void addMaximumHealth(double value) {
+        this.maxHealth += value;
+        this.numHearts += (int) Math.floor(value / Heart.HEALTH_PER_HEART);
+        updatePlayerMaxHp();
+    }
+
+    public void subtractMaximumHealth(double value) {
+        addMaximumHealth(-value);
     }
 
     public double getCurrentHealth() {

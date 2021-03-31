@@ -8,11 +8,12 @@ import java.util.ArrayList;
 public class GameLoop {
 
     public static ArrayList<Monster> monsters = new ArrayList<>();
+    public static AnimationTimer monsterLoop;
 
 
     public static void gameLoop() {
 
-        new AnimationTimer() {
+        monsterLoop = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 for(int i = 0; i < monsters.size(); i++) {
@@ -20,9 +21,9 @@ public class GameLoop {
                 }
 
             }
-        }.start();
-
-
+        };
+        
+        monsterLoop.start();
     }
 
 }

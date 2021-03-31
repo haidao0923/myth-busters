@@ -15,6 +15,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import views.ConfigurationScreen;
+import views.DeathScreen;
 import views.GameScreen;
 import views.WelcomeScreen;
 import javafx.application.Application;
@@ -108,6 +109,7 @@ public class Controller extends Application {
         GameLoop.gameLoop();
 
         player.movePlayer(gameScreen.getScene());
+        player.updatePlayerHp();
 
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
@@ -178,6 +180,21 @@ public class Controller extends Application {
                                         roomLayout.getBossRoomColumn());
         gameScreen.updateBoard(currentRoom);
         player.moveAbsolute(W / 2, H / 2);
+    }
+
+    public static void goToDeathScreen() {
+        GameLoop.monsterLoop.stop();
+        DeathScreen deathScreen = new DeathScreen(W, H);
+        player = new Player(0);
+
+        Button restartButton = deathScreen.getRestartButton();
+        restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            goToConfigurationScreen();
+        });
+
+        Scene scene = deathScreen.getScene();
+        mainWindow.setScene(scene);
+        mainWindow.show();
     }
 
     private static void setDifficulty(Difficulty difficulty) {
