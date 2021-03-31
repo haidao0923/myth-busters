@@ -28,7 +28,7 @@ public class MonsterTests extends ApplicationTest {
         clickOn("Begin!");
 
         int i = 0;
-        while(i == 0){
+        while(i == 0) {
             for (Monster monster : GameLoop.monsters){
                 i++;
             }

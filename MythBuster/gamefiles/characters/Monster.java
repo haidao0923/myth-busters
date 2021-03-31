@@ -132,5 +132,8 @@ public abstract class Monster implements Touchable {
     public double getCurrentHealth() {
         return currentHealth;
     }
+    public double getMaxHealth() {
+        return maxHealth;
+    }
 
 }
