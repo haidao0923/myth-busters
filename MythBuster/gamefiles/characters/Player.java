@@ -4,14 +4,22 @@ import java.util.ArrayList;
 
 import controller.Controller;
 import gamefiles.Heart;
+import controller.GameLoop;
+import controller.SpriteAnimation;
 import gamefiles.Touchable;
-import gamefiles.Weapon;
+import gamefiles.weapons.Bow;
+import gamefiles.weapons.Spear;
+import gamefiles.weapons.Sword;
+import gamefiles.weapons.Weapon;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 public class Player implements Touchable {
     private String name;
@@ -24,8 +32,15 @@ public class Player implements Touchable {
     private double currentHealth;
     // private double oldHealth;
     private double percentageHealth;
+    private double attackCD = 0;
+    private double moveCD = 0;
+    private double damage = 10;
     private double damageCooldown;
-
+    private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
+    private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
+    private Image bowSprite = new Image("sprites/Player/bowPlayer.png");
+    private ImageView imageView;
+    private int direction = 0; //left = 0, right = 1
 
     private double positionX;
     private double positionY;
@@ -35,17 +50,32 @@ public class Player implements Touchable {
     private final double heartsPadding = 10;
     private final double heartsDimensions = 50;
 
+    private int spriteWidth = 63;
+    private int spriteHeight = 55;
+    private int spriteX = 0;
+    private int spriteY = 585;
+
     private Group imageGroup;
     private ArrayList<Heart> hearts;
     private HBox heartsBox;
 
-    public Player(int coins) {
-        coins = 0;
-        // hitbox
+    public Player(int coins, Weapon weapon) {
+        this.coins = coins;
+        this.weapon = weapon;
         width = 100;
         height = 100;
-
-        ImageView imageView = new ImageView("sprites/Medusa.png");
+        damage = weapon.getDamage() * damage;
+        imageView = new ImageView();
+        if (weapon instanceof Spear) {
+            imageView.setImage(spearSprite);
+        } else if (weapon instanceof Sword) {
+            imageView.setImage(swordSprite);
+        } else if (weapon instanceof Bow) {
+            imageView.setImage(bowSprite);
+        }
+        Rectangle2D viewport = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+        imageView.setViewport(viewport);
+        imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         imageView.setLayoutX(100);
@@ -62,13 +92,30 @@ public class Player implements Touchable {
         updatePlayerMaxHp();
     }
 
-    public Player(Player player, int x, int y) {
-        this(player.coins);
-
-        moveAbsolute(x, y);
+    public void attack(Scene scene) {
+        Animation animation;
+        int currX = spriteX;
+        int currY = spriteY;
+        if (weapon instanceof Spear) {
+            spriteY = spriteY - 256; //go to the attack frames
+            animation = new SpriteAnimation(imageView, Duration.millis(500), 8, 8, 0, spriteY, spriteWidth,
+                    spriteHeight);
+            animation.setCycleCount(1);
+            animation.play();
+            for (Monster monster : GameLoop.monsters) {
+                if (this.intersects(monster)) {
+                    System.out.println("player attacked" + monster.getName());
+                    monster.takeDamage(damage);
+                }
+            }
+        }
+        spriteX = currX;
+        spriteY = currY;
+        Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+        imageView.setViewport(viewpoint);
     }
 
-    public void movePlayer(Scene scene) {
+    public void play(Scene scene) {
         ArrayList<String> input = new ArrayList<>();
 
         scene.setOnKeyPressed(
@@ -86,28 +133,40 @@ public class Player implements Touchable {
             });
 
         new AnimationTimer() {
-            public void handle(long currentNanoTime) {
+            public void handle(long now) {
                 // game logic
-                damageCooldown -= 1;
-
-                // movement
-                if (input.size() > 1) {
+                if (attackCD > 0) {
+                    attackCD--;
+                }
+                if (input.contains("J") && attackCD <= 0) {
+                    speed = 0;
+                    attackCD = 60;
+                    attack(scene);
+                    moveCD = 30;
+                } else if (input.size() > 1) {
                     speed = 7;
                 } else {
                     speed = 10;
                 }
-                if (input.contains("A") && positionX > 0) {
-                    moveRelative(-speed, 0);
+                if (moveCD > 0) {
+                    moveCD--;
+                } else {
+                    if (input.contains("A") && positionX > 0) {
+                        imageView.setScaleX(1);
+                        moveRelative(-speed, 0);
+                    }
+                    if (input.contains("D") && positionX + width < scene.getWidth()) {
+                        imageView.setScaleX(-1);
+                        moveRelative(speed, 0);
+                    }
+                    if (input.contains("W") && positionY > 0) {
+                        moveRelative(0, -speed);
+                    }
+                    if (input.contains("S") && positionY + height < scene.getHeight()) {
+                        moveRelative(0, speed);
+                    }
                 }
-                if (input.contains("D") && positionX + width < scene.getWidth()) {
-                    moveRelative(speed, 0);
-                }
-                if (input.contains("W") && positionY > 0) {
-                    moveRelative(0, -speed);
-                }
-                if (input.contains("S") && positionY + height < scene.getHeight()) {
-                    moveRelative(0, speed);
-                }
+
             }
         }.start();
     }
@@ -226,6 +285,11 @@ public class Player implements Touchable {
     }
     public void takeDamage(double damage) {
         addHealth(-damage);
+        System.out.println(currentHealth);
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     public void addMaximumHealth(double value) {

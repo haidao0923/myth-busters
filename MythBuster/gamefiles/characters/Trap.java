@@ -23,7 +23,7 @@ public class Trap extends Monster {
         redrawHealthBar();
         if (Controller.getPlayer().intersects(this)) {
             Controller.getPlayer().takeDamage(damage);
-            System.out.println("Triggered Trap! Health: " + Controller.getPlayer().getCurrentHealth());
+            //System.out.println("Triggered Trap! Health: " + Controller.getPlayer().getCurrentHealth());
             currentHealth = 0;
             checkDeath();
         }

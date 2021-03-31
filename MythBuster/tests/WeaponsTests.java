@@ -30,7 +30,7 @@ public class WeaponsTests extends ApplicationTest {
         clickOn("#HeroNameTextField");
         write("BOB");
         clickOn("#startingWeaponSelector");
-        clickOn("SHIELD");
+        clickOn("SPEAR");
         clickOn("Begin!");
         verifyThat("#weaponDisplay", TextMatchers.hasText("Weapon: Shield"));
     }

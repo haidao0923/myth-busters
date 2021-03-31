@@ -1,16 +1,12 @@
 package controller;
-import java.util.ArrayList;
-import java.util.List;
 
 //import com.google.common.collect.TreeMultimap; what is this for lol
 
 import gamefiles.*;
-import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
-import gamefiles.characters.Soldier;
-import gamefiles.characters.TrapMonster;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
+import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
@@ -41,7 +37,6 @@ public class Controller extends Application {
     private static int gameDifficulty;
 
     public void start(Stage primaryStage) throws Exception {
-        player = new Player(0);
         roomLayout = new RoomLayout();
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
@@ -108,8 +103,8 @@ public class Controller extends Application {
 
         GameLoop.gameLoop();
 
-        player.movePlayer(gameScreen.getScene());
         player.updatePlayerHp();
+        player.play(gameScreen.getScene());
 
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
@@ -185,7 +180,7 @@ public class Controller extends Application {
     public static void goToDeathScreen() {
         GameLoop.monsterLoop.stop();
         DeathScreen deathScreen = new DeathScreen(W, H);
-        player = new Player(0);
+        player = new Player(0, null);
 
         Button restartButton = deathScreen.getRestartButton();
         restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
@@ -224,10 +219,9 @@ public class Controller extends Application {
      */
     private static void initializeStats(String nameEntry,
                                  int startingWeaponIndex, Difficulty difficultyEntry) {
+        player = new Player(0, WeaponDatabase.getWeapon(startingWeaponIndex));
         player.setName(nameEntry);
-        player.setWeapon(WeaponDatabase.getWeapon(startingWeaponIndex));
-        Difficulty difficulty = difficultyEntry;
-        switch (difficulty) {
+        switch (difficultyEntry) {
         case EASY:
             player.setCoins(30);
             break;

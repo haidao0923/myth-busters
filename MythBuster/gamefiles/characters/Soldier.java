@@ -44,7 +44,7 @@ public class Soldier extends Monster {
             } else {
                 damageCooldown = 20;
                 Controller.getPlayer().takeDamage(damage);
-                System.out.println(Controller.getPlayer().getCurrentHealth());
+                //System.out.println(Controller.getPlayer().getCurrentHealth());
             }
         } else if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10) {
             moveRelative(movementSpeed * offsetX / magnitude, movementSpeed * offsetY / magnitude);

@@ -22,7 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gamefiles.StartingWeapon;
-import gamefiles.WeaponDatabase;
+import gamefiles.weapons.WeaponDatabase;
 
 public class Game extends Application {
 
