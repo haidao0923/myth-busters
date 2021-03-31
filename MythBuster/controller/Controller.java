@@ -4,6 +4,7 @@ package controller;
 
 import gamefiles.*;
 import gamefiles.characters.Player;
+import gamefiles.characters.Trap;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.WeaponDatabase;
@@ -176,6 +177,7 @@ public class Controller extends Application {
 
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
+        Trap.trapCount = 0;
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 

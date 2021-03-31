@@ -15,8 +15,8 @@ public class WeaponDatabase {
      * Create a weapon database.
      */
     public static void initialize() {
-        weapons.put(0, new Sword(0, "Sword", 1, 3));
-        weapons.put(1, new Spear(1, "Spear", 2, 2));
+        weapons.put(0, new Spear(1, "Spear", 2, 2));
+        weapons.put(1, new Sword(0, "Sword", 1, 3));
         weapons.put(2, new Bow(2, "Bow", 2, 1));
     }
 

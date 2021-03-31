@@ -42,12 +42,12 @@ public class Mage extends Monster {
                 Controller.getGameScreen().getBoard().getChildren().add(fireball.getGroup());
                 GameLoop.monsters.add(fireball);
 
-                spawnFireballCooldown = 100;
+                spawnFireballCooldown = 500;
                 targetPositionX = Math.random() * (Controller.getW() - width);
                 targetPositionY = Math.random() * (Controller.getH() - height);
             }
         }
-        if (Controller.getPlayer().intersects(this)) {
+        /*if (Controller.getPlayer().intersects(this)) {
             if (damageCooldown > 0) {
                 damageCooldown--;
             } else {
@@ -55,6 +55,6 @@ public class Mage extends Monster {
                 Controller.getPlayer().takeDamage(damage);
                 //System.out.println("Collided with Mage! Health: " + Controller.getPlayer().getCurrentHealth());
             }
-        }
+        }*/
     }
 }

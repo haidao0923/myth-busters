@@ -91,7 +91,7 @@ public class Player implements Touchable {
         // oldHealth = currentHealth;
         maxHealth = 250;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
-        
+
         updatePlayerMaxHp();
     }
 
@@ -107,7 +107,7 @@ public class Player implements Touchable {
             animation.play();
             for (Monster monster : GameLoop.monsters) {
                 if (this.intersects(monster)) {
-                    System.out.println("player attacked" + monster.getName());
+                    //System.out.println("player attacked" + monster.getName());
                     monster.takeDamage(damage);
                 }
             }
@@ -174,7 +174,7 @@ public class Player implements Touchable {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
                         moveRelative(-speed, 0);
-                        lastDirection = 0; 
+                        lastDirection = 0;
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
@@ -212,9 +212,9 @@ public class Player implements Touchable {
             double oldHealth = getCurrentHealth();
             public void handle(long currentNanoTime) {
                 double currentHealth = getCurrentHealth();
-                
+
                 if (currentHealth != oldHealth) {
-                    System.out.println("Updating Damage!");
+                    //System.out.println("Updating Damage!");
 
                     if (currentHealth <= 25) { // higher number b/c some glitch
                         Controller.goToDeathScreen();
@@ -225,12 +225,12 @@ public class Player implements Touchable {
                         hearts.get(i).setEmpty();
                     }
                     ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
-                    for (int j = 0; j < hearts.size(); j++) {  
+                    for (int j = 0; j < hearts.size(); j++) {
                         heartsImages.add(hearts.get(j).getImageView());
                     }
                     heartsBox.getChildren().setAll(heartsImages);
                 }
-                
+
                 oldHealth = currentHealth;
             }
         };

@@ -34,7 +34,7 @@ public class TrapMonster extends Monster {
             targetPositionX = Math.random() * (Controller.getW() - width);
             targetPositionY = Math.random() * (Controller.getH() - height);
         }
-        if (Controller.getPlayer().intersects(this)) {
+        /*if (Controller.getPlayer().intersects(this)) {
             if (damageCooldown > 0) {
                 damageCooldown--;
             } else {
@@ -43,7 +43,7 @@ public class TrapMonster extends Monster {
                 //System.out.println("Collided with Trap Monster! Health: " + Controller.getPlayer().getCurrentHealth
                 // ());
             }
-        }
+        }*/
         if (spawnTrapCooldown > 0) {
             spawnTrapCooldown--;
         } else {
