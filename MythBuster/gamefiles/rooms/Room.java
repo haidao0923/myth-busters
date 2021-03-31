@@ -38,19 +38,13 @@ public abstract class Room {
 
         //Randomly add more monsters
         for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            Soldier soldier = new Soldier();
-            soldier.moveAbsolute(Math.random() * width, Math.random() * height);
-            monsters.add(soldier);
+            spawnSoldier();
         }
         for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            TrapMonster trapMonster = new TrapMonster();
-            trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
-            monsters.add(trapMonster);
+            spawnMage();
         }
         for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            Mage mage = new Mage();
-            mage.moveAbsolute(Math.random() * width, Math.random() * height);
-            monsters.add(mage);
+            spawnTrapMonster();
         }
 
     }
@@ -126,6 +120,21 @@ public abstract class Room {
         return column;
     }
 
+    public void spawnSoldier() {
+        Soldier soldier = new Soldier();
+        soldier.moveAbsolute(Math.random() * width, Math.random() * height);
+        monsters.add(soldier);
+    }
+    public void spawnMage() {
+        Mage mage = new Mage();
+        mage.moveAbsolute(Math.random() * width, Math.random() * height);
+        monsters.add(mage);
+    }
+    public void spawnTrapMonster() {
+        TrapMonster trapMonster = new TrapMonster();
+        trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
+        monsters.add(trapMonster);
+    }
     // abstract methods for generating monsters and chests will be here.
 
 
