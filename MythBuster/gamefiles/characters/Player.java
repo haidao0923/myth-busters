@@ -29,7 +29,7 @@ public class Player implements Touchable {
     private double percentageHealth;
     private double attackCD = 0;
     private double moveCD = 0;
-    private double damage = 1;
+    private double damage = 10;
     private double damageCooldown;
     private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
@@ -225,6 +225,7 @@ public class Player implements Touchable {
     }
     public void takeDamage(double damage) {
         addHealth(-damage);
+        System.out.println(currentHealth);
     }
 
     public void setDirection(int direction) {

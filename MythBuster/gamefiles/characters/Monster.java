@@ -122,4 +122,8 @@ public abstract class Monster implements Touchable {
         return this.name;
     }
 
+    public double getCurrentHealth() {
+        return currentHealth;
+    }
+
 }
