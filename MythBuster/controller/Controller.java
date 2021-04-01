@@ -127,7 +127,8 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                            if ((r.getColumn() == prevRoom.getColumn()) 
+                                && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
                         }
@@ -148,7 +149,8 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                            if ((r.getColumn() == prevRoom.getColumn()) 
+                                && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
                         }
@@ -169,7 +171,8 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                            if ((r.getColumn() == prevRoom.getColumn()) 
+                                && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
                         }
@@ -190,7 +193,8 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                            if ((r.getColumn() == prevRoom.getColumn()) 
+                                && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
                         }

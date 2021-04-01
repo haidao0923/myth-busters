@@ -13,12 +13,9 @@ import static org.junit.Assert.assertEquals;
 
 public class TestDoorLocks extends ApplicationTest {
 
-    private Controller controller;
-    private Player player;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        controller = new Controller();
+        Controller controller = new Controller();
         controller.start(primaryStage);
         Controller.goToConfigurationScreen();
     }
@@ -29,17 +26,17 @@ public class TestDoorLocks extends ApplicationTest {
         clickOn("#HeroNameTextField");
         write(name);
         clickOn("Begin!");
-        player = controller.getPlayer();
+        Player player = Controller.getPlayer();
 
-        Room currRoom = controller.getCurrentRoom();
+        Room currRoom = Controller.getCurrentRoom();
 
         int currentRoomRow = currRoom.getRow();
         double doorPos = currRoom.getTopDoor().getPositionY();
         while (player.getPositionY() > doorPos && currentRoomRow
-                == controller.getCurrentRoom().getRow()) {
+                == Controller.getCurrentRoom().getRow()) {
             push(KeyCode.W);
         }
-        int newRoomRow = controller.getCurrentRoom().getRow();
+        int newRoomRow = Controller.getCurrentRoom().getRow();
 
         assertEquals(currentRoomRow, newRoomRow);
     }
@@ -50,18 +47,18 @@ public class TestDoorLocks extends ApplicationTest {
         clickOn("#HeroNameTextField");
         write(name);
         clickOn("Begin!");
-        player = controller.getPlayer();
+        Player player = Controller.getPlayer();
 
-        Room currRoom = controller.getCurrentRoom();
+        Room currRoom = Controller.getCurrentRoom();
         currRoom.unlockDoors();
 
         int currentRoomRow = currRoom.getRow();
         double doorPos = currRoom.getTopDoor().getPositionY();
         while (player.getPositionY() > doorPos && currentRoomRow
-                == controller.getCurrentRoom().getRow()) {
+                == Controller.getCurrentRoom().getRow()) {
             push(KeyCode.W);
         }
-        int newRoomRow = controller.getCurrentRoom().getRow();
+        int newRoomRow = Controller.getCurrentRoom().getRow();
 
         assertEquals(currentRoomRow - 1, newRoomRow);
     }
