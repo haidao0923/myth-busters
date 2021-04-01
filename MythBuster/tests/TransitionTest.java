@@ -67,8 +67,6 @@ public class TransitionTest extends ApplicationTest {
         }
         int newRoomRow = controller.getCurrentRoom().getRow();
         assertEquals(currentRoomRow, newRoomRow);
-
-
     }
 
 }
