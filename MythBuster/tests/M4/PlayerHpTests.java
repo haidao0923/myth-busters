@@ -29,7 +29,7 @@ public class PlayerHpTests extends ApplicationTest {
         clickOn("#startingWeaponSelector");
         clickOn("SPEAR");
         clickOn("Begin!");
-        GameLoop.monsters = new ArrayList<Monster>();
+        GameLoop.setMonsters(new ArrayList<Monster>());
 
         Player player = Controller.getPlayer();
         
@@ -49,7 +49,7 @@ public class PlayerHpTests extends ApplicationTest {
         clickOn("#startingWeaponSelector");
         clickOn("SPEAR");
         clickOn("Begin!");
-        GameLoop.monsters = new ArrayList<Monster>();
+        GameLoop.setMonsters(new ArrayList<Monster>());
 
         Player player = Controller.getPlayer();
 

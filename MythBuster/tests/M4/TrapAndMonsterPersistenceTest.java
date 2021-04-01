@@ -9,16 +9,14 @@ import gamefiles.characters.Trap;
 import gamefiles.characters.TrapMonster;
 import gamefiles.rooms.Room;
 import javafx.application.Platform;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import views.GameScreen;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.*;
 
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 
 public class TrapAndMonsterPersistenceTest extends ApplicationTest {
@@ -40,7 +38,8 @@ public class TrapAndMonsterPersistenceTest extends ApplicationTest {
         Platform.runLater(() -> {
             Controller.getGameScreen().getBoard().getChildren().add(trapMonster.getGroup());
         });
-        assertNotEquals(GameLoop.monsters.size(), 0);
+        ArrayList<Monster> monsters = GameLoop.getMonsters();
+        assertNotEquals(monsters.size(), 0);
         for (int countdown = 5; countdown > 0; countdown--) {
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -49,15 +48,15 @@ public class TrapAndMonsterPersistenceTest extends ApplicationTest {
             }
             Controller.getPlayer().addHealth(500);
         }
-        for (int i = GameLoop.monsters.size() - 1; i >= 0; i--) {
-            if (!(GameLoop.monsters.get(i) instanceof Trap)) {
-                GameLoop.monsters.get(i).loseAllHealth();
+        for (int i = monsters.size() - 1; i >= 0; i--) {
+            if (!(monsters.get(i) instanceof Trap)) {
+                monsters.get(i).loseAllHealth();
             }
         }
-        for (int i = GameLoop.monsters.size() - 1; i >= 0; i--) {
-            GameLoop.monsters.get(i).update();
+        for (int i = monsters.size() - 1; i >= 0; i--) {
+            monsters.get(i).update();
         }
-        assertEquals(0, GameLoop.monsters.size());
+        assertEquals(0, monsters.size());
     }
     @Test
     public void testFireBallLimit() throws InterruptedException {
@@ -66,18 +65,19 @@ public class TrapAndMonsterPersistenceTest extends ApplicationTest {
         write("BOB");
         clickOn("Begin!");
         Room currentRoom = Controller.getCurrentRoom();
+        ArrayList<Monster> monsters = GameLoop.getMonsters();
         Mage mage = currentRoom.spawnMage();
         Platform.runLater(() -> {
             Controller.getGameScreen().getBoard().getChildren().add(mage.getGroup());
         });
         int mageCount = 0;
         int fireballCount = 0;
-        for (Monster monster: GameLoop.monsters) {
+        for (Monster monster: monsters) {
             if (monster instanceof Mage) {
                 mageCount++;
             }
         }
-        assertNotEquals(GameLoop.monsters.size(), 0);
+        assertNotEquals(monsters.size(), 0);
         for (int countdown = 10; countdown > 0; countdown--) {
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -86,7 +86,7 @@ public class TrapAndMonsterPersistenceTest extends ApplicationTest {
             }
             Controller.getPlayer().addHealth(500);
             fireballCount = 0;
-            for (Monster monster: GameLoop.monsters) {
+            for (Monster monster: monsters) {
                 if (monster instanceof Fireball) {
                     fireballCount++;
                 }

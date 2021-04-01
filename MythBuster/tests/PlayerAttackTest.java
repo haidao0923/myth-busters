@@ -1,6 +1,5 @@
 package tests;
 
-import com.sun.glass.ui.Application;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.characters.Monster;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class PlayerAttackTest extends ApplicationTest {
     @Override
@@ -33,7 +31,7 @@ public class PlayerAttackTest extends ApplicationTest {
         for (int i = 0; i < 10; i++) {
             press(KeyCode.J);
             release(KeyCode.J);
-            for (Monster monster : GameLoop.monsters) {
+            for (Monster monster : GameLoop.getMonsters()) {
                 if (monster.getCurrentHealth() < monster.getMaxHealth()) {
                     assertTrue(true);
                 }

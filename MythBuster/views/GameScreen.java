@@ -4,8 +4,6 @@ import controller.GameLoop;
 import gamefiles.characters.Player;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
-import gamefiles.rooms.StartingRoom;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -167,8 +165,8 @@ public class GameScreen {
         }*/
         board.getChildren().addAll(displays);
 
-        GameLoop.monsters.clear();
-        GameLoop.monsters.addAll(currentRoom.getMonsters());
+        GameLoop.getMonsters().clear();
+        GameLoop.getMonsters().addAll(currentRoom.getMonsters());
     }
 
 

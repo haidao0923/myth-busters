@@ -100,11 +100,11 @@ public class Player implements Touchable {
         int currY = spriteY;
         if (weapon instanceof Spear) {
             spriteY = spriteY - 256; //go to the attack frames
-            animation = new SpriteAnimation(imageView, Duration.millis(500), 8, 8, 0, spriteY, spriteWidth,
-                    spriteHeight);
+            animation = new SpriteAnimation(imageView, Duration.millis(500), 
+                    8, 8, 0, spriteY, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
-            for (Monster monster : GameLoop.monsters) {
+            for (Monster monster : GameLoop.getMonsters()) {
                 if (this.intersects(monster)) {
                     //System.out.println("player attacked" + monster.getName());
                     monster.takeDamage(damage);
@@ -135,8 +135,8 @@ public class Player implements Touchable {
             });
 
         this.playerLogic = new AnimationTimer() {
-            int lastDirection = 0;
-            int invisibilityCd = 0;
+            private int lastDirection = 0;
+            private int invisibilityCd = 0;
             public void handle(long now) {
                 // game logic
                 if (attackCD > 0) {
@@ -209,7 +209,7 @@ public class Player implements Touchable {
 
     public void updatePlayerHp() {
         this.playerHpUpdate = new AnimationTimer() {
-            double oldHealth = getCurrentHealth();
+            private double oldHealth = getCurrentHealth();
             public void handle(long currentNanoTime) {
                 double currentHealth = getCurrentHealth();
 
@@ -221,7 +221,8 @@ public class Player implements Touchable {
                         this.stop();
                     }
 
-                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); i >= 0 && i < hearts.size(); i++) {
+                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); 
+                        i >= 0 && i < hearts.size(); i++) {
                         hearts.get(i).setEmpty();
                     }
                     ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());

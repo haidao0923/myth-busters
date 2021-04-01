@@ -15,7 +15,7 @@ public class Door implements Touchable {
     private double width = 60;
     private double height = 80;
 
-    public boolean locked;
+    private boolean locked;
 
     private Group doorGroup;
     public Door(double x, double y, Room destination) {
