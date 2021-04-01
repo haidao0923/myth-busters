@@ -33,11 +33,11 @@ public class PlayerHpTests extends ApplicationTest {
 
         Player player = Controller.getPlayer();
         
-        assertEquals(250, player.getCurrentHealth(), .1);
+        assertEquals(300, player.getCurrentHealth(), .1);
 
         ArrayList<Heart> hearts = player.getHearts();
         for (Heart heart : hearts) {
-            assertEquals(true, heart.isFull());
+            assertTrue(heart.isFull());
         }
     }
 
@@ -60,14 +60,14 @@ public class PlayerHpTests extends ApplicationTest {
             e.printStackTrace();
         }
 
-        assertEquals(150, player.getCurrentHealth(), .1);
+        assertEquals(200, player.getCurrentHealth(), .1);
 
         ArrayList<Heart> hearts = player.getHearts();
         for (int i = 0; i < hearts.size(); i++) {
-            if (i > 2) {
-                assertEquals(false, hearts.get(i).isFull());
+            if (i > 3) {
+                assertFalse(hearts.get(i).isFull());
             } else {
-                assertEquals(true, hearts.get(i).isFull());
+                assertTrue(hearts.get(i).isFull());
             }
         }
     }
