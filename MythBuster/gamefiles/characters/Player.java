@@ -87,8 +87,8 @@ public class Player implements Touchable {
         imageGroup.getChildren().add(imageView);
 
         // hp
-        currentHealth = 250;
-        maxHealth = 250;
+        currentHealth = 300;
+        maxHealth = 300;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
 
         updatePlayerMaxHp();
@@ -101,7 +101,7 @@ public class Player implements Touchable {
         if (weapon instanceof Spear) {
             spriteY = spriteY - 256; //go to the attack frames
             animation = new SpriteAnimation(imageView, Duration.millis(500), 
-                    8, 8, 0, spriteY, spriteWidth, spriteHeight);
+                    8, 8, spriteY, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
             for (Monster monster : GameLoop.getMonsters()) {

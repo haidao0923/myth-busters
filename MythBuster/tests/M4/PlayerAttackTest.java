@@ -1,4 +1,4 @@
-package tests;
+package tests.M4;
 
 import controller.Controller;
 import controller.GameLoop;
