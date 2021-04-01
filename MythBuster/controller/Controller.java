@@ -34,6 +34,7 @@ public class Controller extends Application {
     private static GameScreen gameScreen;
     private static RoomLayout roomLayout;
     private static Room currentRoom;
+    private static Room prevRoom;
     private static AnimationTimer controllerLoop;
 
     private static int gameDifficulty;
@@ -118,9 +119,19 @@ public class Controller extends Application {
                             && player.intersects(currentRoom.getLeftDoor()) 
                             && !currentRoom.getLeftDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
+                    prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
                     gameScreen.updateBoard(currentRoom);
+                    for (int i = 0; i < 4; i++) {
+                        Door d = currentRoom.getDoors()[i];
+                        if (d != null) {
+                            Room r = d.getDestination();
+                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                                d.unlock();
+                            }
+                        }
+                    }
                     player.moveAbsolute(W - 200, H / 2);
                 }
 
@@ -129,9 +140,19 @@ public class Controller extends Application {
                             && player.intersects(currentRoom.getRightDoor()) 
                             && !currentRoom.getRightDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
+                    prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
                     gameScreen.updateBoard(currentRoom);
+                    for (int i = 0; i < 4; i++) {
+                        Door d = currentRoom.getDoors()[i];
+                        if (d != null) {
+                            Room r = d.getDestination();
+                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                                d.unlock();
+                            }
+                        }
+                    }
                     player.moveAbsolute(200, H / 2);
                 }
 
@@ -140,9 +161,19 @@ public class Controller extends Application {
                             && player.intersects(currentRoom.getTopDoor()) 
                             && !currentRoom.getTopDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
+                    prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
+                    for (int i = 0; i < 4; i++) {
+                        Door d = currentRoom.getDoors()[i];
+                        if (d != null) {
+                            Room r = d.getDestination();
+                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                                d.unlock();
+                            }
+                        }
+                    }
                     player.moveAbsolute(W / 2, H - 200);
                 }
 
@@ -151,9 +182,19 @@ public class Controller extends Application {
                             && player.intersects(currentRoom.getBottomDoor()) 
                             && !currentRoom.getBottomDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
+                    prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
                     gameScreen.updateBoard(currentRoom);
+                    for (int i = 0; i < 4; i++) {
+                        Door d = currentRoom.getDoors()[i];
+                        if (d != null) {
+                            Room r = d.getDestination();
+                            if ((r.getColumn() == prevRoom.getColumn()) && (r.getRow() == prevRoom.getRow())) {
+                                d.unlock();
+                            }
+                        }
+                    }
                     player.moveAbsolute(W / 2, 200);
                 }
 

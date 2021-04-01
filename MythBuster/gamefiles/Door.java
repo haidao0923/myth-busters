@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Door implements Touchable {
    
-    private Room destination; //Placeholder, maybe not needed.
+    private Room destination;
 
     private double positionX;
     private double positionY;

@@ -49,6 +49,9 @@ public abstract class Room {
         }
 
     }
+    public Door[] getDoors() {
+        return doors;
+    }
     public Door getLeftDoor() {
         return doors[0];
     }
