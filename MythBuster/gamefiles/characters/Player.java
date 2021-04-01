@@ -88,7 +88,6 @@ public class Player implements Touchable {
 
         // hp
         currentHealth = 250;
-        // oldHealth = currentHealth;
         maxHealth = 250;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
 
@@ -140,21 +139,6 @@ public class Player implements Touchable {
             int invisibilityCd = 0;
             public void handle(long now) {
                 // game logic
-                damageCooldown--;
-                invisibilityCd--;
-                if (damageCooldown > 0) { // got hit
-                    if (now % (15) == 0) {
-                        invisibilityCd = 5;
-                    } else if (invisibilityCd > 0) { // longer invis frames
-                        imageView.setScaleX(0);
-                    } else {
-                        if (lastDirection == 0) { // same direction
-                            imageView.setScaleX(1);
-                        } else if (lastDirection == 1) {
-                            imageView.setScaleX(-1);
-                        }
-                    }
-                }
                 if (attackCD > 0) {
                     attackCD--;
                 }
@@ -168,6 +152,12 @@ public class Player implements Touchable {
                 } else {
                     speed = 10;
                 }
+
+                if (damageCooldown > 0 && damageCooldown % 15 == 0) { // got hit
+                    invisibilityCd = 5; // set invis frames
+                }
+                damageCooldown--; // so dmgcd triggers for first frame (60 % 15)
+
                 if (moveCD > 0) {
                     moveCD--;
                 } else {
@@ -191,6 +181,16 @@ public class Player implements Touchable {
                     }
                 }
 
+                if (invisibilityCd > 0) { // Overwrite setScale if invis frames
+                    imageView.setScaleX(0);
+                } else if (imageView.getScaleX() == 0) { // If player didn't move
+                    if (lastDirection == 0) { // same direction
+                        imageView.setScaleX(1);
+                    } else if (lastDirection == 1) {
+                        imageView.setScaleX(-1);
+                    }
+                }
+                invisibilityCd--;
             }
         };
     }
@@ -250,6 +250,10 @@ public class Player implements Touchable {
 
     public Group getGroup() {
         return imageGroup;
+    }
+
+    public ArrayList<Heart> getHearts() {
+        return hearts;
     }
 
     public HBox getHeartsBox() {
