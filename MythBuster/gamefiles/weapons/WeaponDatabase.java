@@ -1,10 +1,5 @@
 package gamefiles.weapons;
 
-import gamefiles.weapons.Bow;
-import gamefiles.weapons.Spear;
-import gamefiles.weapons.Sword;
-import gamefiles.weapons.Weapon;
-
 import java.util.HashMap;
 import java.util.Map;
 

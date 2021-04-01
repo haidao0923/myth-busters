@@ -2,7 +2,6 @@ package gamefiles.characters;
 
 import controller.Controller;
 import controller.GameLoop;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 
 public class Mage extends Monster {
@@ -11,16 +10,17 @@ public class Mage extends Monster {
         super("Mage Enemy", 100, 5, "sprites/FF1Mage.png", 100, 100);
     }
 
-    public Mage(double health, double movementSpeed, String spritePath, double width, double height) {
+    public Mage(double health, double movementSpeed, String spritePath, 
+                double width, double height) {
         super("Mage Enemy", health, movementSpeed, spritePath, width, height);
 
     }
 
-    int damage = 50;
-    int damageCooldown = 0;
-    int spawnFireballCooldown = 15;
-    double targetPositionX = Math.random() * (Controller.getW() - width);
-    double targetPositionY = Math.random() * (Controller.getH() - height);
+    // private int damage = 50;
+    // private int damageCooldown = 0;
+    private int spawnFireballCooldown = 15;
+    private double targetPositionX = Math.random() * (Controller.getW() - width);
+    private double targetPositionY = Math.random() * (Controller.getH() - height);
 
 
     public void update() {
@@ -30,9 +30,9 @@ public class Mage extends Monster {
         // move
         double offsetX = targetPositionX - positionX;
         double offsetY = targetPositionY - positionY;
-        double magnitude = Math.sqrt(offsetX*offsetX + offsetY*offsetY);
+        double magnitude = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
         if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10) {
-            moveRelative(movementSpeed * offsetX/magnitude, movementSpeed * offsetY/magnitude);
+            moveRelative(movementSpeed * offsetX / magnitude, movementSpeed * offsetY / magnitude);
         } else {
             if (spawnFireballCooldown > 0) {
                 spawnFireballCooldown--;
@@ -43,7 +43,7 @@ public class Mage extends Monster {
                 Platform.runLater(() -> {
                     Controller.getGameScreen().getBoard().getChildren().add(fireball.getGroup());
                 });
-                GameLoop.monsters.add(fireball);
+                GameLoop.getMonsters().add(fireball);
 
                 spawnFireballCooldown = 500;
                 targetPositionX = Math.random() * (Controller.getW() - width);
@@ -57,7 +57,8 @@ public class Mage extends Monster {
             } else {
                 damageCooldown = 20;
                 Controller.getPlayer().takeDamage(damage);
-                //System.out.println("Collided with Mage! Health: " + Controller.getPlayer().getCurrentHealth());
+                //System.out.println("Collided with Mage! Health: " 
+                // + Controller.getPlayer().getCurrentHealth());
             }
         }*/
     }

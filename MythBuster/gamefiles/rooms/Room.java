@@ -7,7 +7,6 @@ import gamefiles.characters.Mage;
 import gamefiles.characters.Monster;
 import gamefiles.characters.Soldier;
 import gamefiles.characters.TrapMonster;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 
@@ -21,7 +20,7 @@ public abstract class Room {
     private int height;
     private Text roomInfo;
 
-    ArrayList<Monster> monsters = new ArrayList<>();
+    private ArrayList<Monster> monsters = new ArrayList<>();
 
     private Group roomGroup;
 
@@ -39,13 +38,13 @@ public abstract class Room {
         monsters.add(defaultMonster);
 
         //Randomly add more monsters
-        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             spawnSoldier();
         }
-        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             spawnMage();
         }
-        for(int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
             spawnTrapMonster();
         }
 
@@ -97,7 +96,7 @@ public abstract class Room {
         if (doors[3] != null) {
             roomGroup.getChildren().add(doors[3].getGroup());
         }
-        for(Monster monster : monsters){
+        for (Monster monster : monsters) {
             roomGroup.getChildren().add(monster.getGroup());
         }
 
@@ -126,21 +125,21 @@ public abstract class Room {
         Soldier soldier = new Soldier();
         soldier.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(soldier);
-        GameLoop.monsters.add(soldier);
+        GameLoop.getMonsters().add(soldier);
         return soldier;
     }
     public Mage spawnMage() {
         Mage mage = new Mage();
         mage.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(mage);
-        GameLoop.monsters.add(mage);
+        GameLoop.getMonsters().add(mage);
         return mage;
     }
     public TrapMonster spawnTrapMonster() {
         TrapMonster trapMonster = new TrapMonster();
         trapMonster.moveAbsolute(Math.random() * width, Math.random() * height);
         monsters.add(trapMonster);
-        GameLoop.monsters.add(trapMonster);
+        GameLoop.getMonsters().add(trapMonster);
         return trapMonster;
     }
     // abstract methods for generating monsters and chests will be here.

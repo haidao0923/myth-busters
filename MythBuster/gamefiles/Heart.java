@@ -48,4 +48,8 @@ public class Heart {
     public ImageView getImageView() {
         return this.imageView;
     }
+
+    public boolean isFull() {
+        return full;
+    }
 }

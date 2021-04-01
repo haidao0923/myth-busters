@@ -1,6 +1,5 @@
 package gamefiles.characters;
 
-import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Touchable;
 import javafx.application.Platform;
@@ -36,7 +35,8 @@ public abstract class Monster implements Touchable {
         this.name = name;
         this.maxHealth = health;
         currentHealth = maxHealth;
-        this.movementSpeed = ((Math.random() * 0.5) + 0.5) * movementSpeed; //Somewhat randomize movespeed to prevent stacking.
+        //Somewhat randomize movespeed to prevent stacking.
+        this.movementSpeed = ((Math.random() * 0.5) + 0.5) * movementSpeed;
         this.width = width;
         this.height = height;
         this.healthBarWidth = width;
@@ -74,7 +74,7 @@ public abstract class Monster implements Touchable {
             Platform.runLater(() -> {
                 monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
             });
-            GameLoop.monsters.remove(this);
+            GameLoop.getMonsters().remove(this);
         }
     }
 

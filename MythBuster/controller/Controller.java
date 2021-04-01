@@ -109,13 +109,14 @@ public class Controller extends Application {
                 HBox displays = gameScreen.getDisplays();
 
                 // if there are no monsters, unlock the doors
-                if (GameLoop.monsters.size() == 0) {
+                if (GameLoop.getMonsters().size() == 0) {
                     currentRoom.unlockDoors();
                 }
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
-                            && player.intersects(currentRoom.getLeftDoor()) && !currentRoom.getLeftDoor().isLocked()) {
+                            && player.intersects(currentRoom.getLeftDoor()) 
+                            && !currentRoom.getLeftDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
@@ -125,7 +126,8 @@ public class Controller extends Application {
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null
-                            && player.intersects(currentRoom.getRightDoor()) && !currentRoom.getRightDoor().isLocked()) {
+                            && player.intersects(currentRoom.getRightDoor()) 
+                            && !currentRoom.getRightDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
@@ -135,7 +137,8 @@ public class Controller extends Application {
 
                 //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null
-                            && player.intersects(currentRoom.getTopDoor()) && !currentRoom.getTopDoor().isLocked()) {
+                            && player.intersects(currentRoom.getTopDoor()) 
+                            && !currentRoom.getTopDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
@@ -145,7 +148,8 @@ public class Controller extends Application {
 
                 //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null
-                            && player.intersects(currentRoom.getBottomDoor()) && !currentRoom.getBottomDoor().isLocked()) {
+                            && player.intersects(currentRoom.getBottomDoor()) 
+                            && !currentRoom.getBottomDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
@@ -157,7 +161,8 @@ public class Controller extends Application {
         };
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
-        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
+        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
     }
 
     public static void goToWinScreen() {
@@ -176,8 +181,9 @@ public class Controller extends Application {
     }
 
     public static void goToDeathScreen() {
-        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), player.getPlayerHpUpdateTimer(), GameLoop.monsterLoop, controllerLoop);
-        Trap.trapCount = 0;
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), 
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
+        Trap.setTrapCount(0);
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 
@@ -193,15 +199,17 @@ public class Controller extends Application {
 
     private static void setDifficulty(Difficulty difficulty) {
         switch (difficulty) {
-            case EASY:
-                gameDifficulty = 0;
-                break;
-            case MEDIUM:
-                gameDifficulty = 1;
-                break;
-            case HARD:
-                gameDifficulty = 2;
-                break;
+        case EASY:
+            gameDifficulty = 0;
+            break;
+        case MEDIUM:
+            gameDifficulty = 1;
+            break;
+        case HARD:
+            gameDifficulty = 2;
+            break;
+        default:
+            break;
         }
     }
 

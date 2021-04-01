@@ -8,18 +8,19 @@ public class Soldier extends Monster {
         super("Soldier Enemy", 100, 5, "sprites/Soldier/FF10WarriorR.png", 100, 100);
     }
 
-    public Soldier(double health, double movementSpeed, String spritePath, double width, double height) {
+    public Soldier(double health, double movementSpeed, String spritePath, 
+                    double width, double height) {
         super("Soldier Enemy", health, movementSpeed, spritePath, width, height);
 
     }
 
-    int damage = 100;
-    int damageCooldown = 50;
+    private int damage = 100;
+    private int damageCooldown = 50;
 
     public void update() {
         double targetPositionX = Controller.getPlayer().getPositionX();
-        double targetPositionY = Controller.getPlayer().getPositionY()-30;
-            // game logic
+        double targetPositionY = Controller.getPlayer().getPositionY() - 30;
+        // game logic
 
         checkDeath();
         redrawHealthBar();
@@ -27,11 +28,11 @@ public class Soldier extends Monster {
         double offsetX = targetPositionX - positionX;
         double offsetY = targetPositionY - positionY;
         if (offsetX > 0) {
-            if(Math.abs(offsetX) > 10) {
+            if (Math.abs(offsetX) > 10) {
                 imageView.setScaleX(1);
             }
         } else {
-            if (Math.abs(offsetX) > 10){
+            if (Math.abs(offsetX) > 10) {
                 imageView.setScaleX(-1);
             }
         }

@@ -1,4 +1,4 @@
-package tests;
+package tests.M4;
 
 import controller.Controller;
 import controller.GameLoop;
@@ -28,8 +28,8 @@ public class MonsterTests extends ApplicationTest {
         clickOn("Begin!");
 
         int i = 0;
-        while(i == 0) {
-            for (Monster monster : GameLoop.monsters){
+        while (i == 0) {
+            for (Monster monster : GameLoop.getMonsters()) {
                 i++;
             }
             if (i == 0) {
@@ -50,8 +50,8 @@ public class MonsterTests extends ApplicationTest {
         clickOn("Begin!");
 
         int i = 0;
-        while(i == 0){
-            for (Monster monster : GameLoop.monsters){
+        while (i == 0) {
+            for (Monster monster : GameLoop.getMonsters()) {
                 i++;
             }
             if (i == 0) {
@@ -59,7 +59,7 @@ public class MonsterTests extends ApplicationTest {
             }
         }
 
-        for (Monster monster : GameLoop.monsters) {
+        for (Monster monster : GameLoop.getMonsters()) {
             double health = monster.getCurrentHealth();
             monster.takeDamage(10);
             assertNotEquals(health, monster.getCurrentHealth());
