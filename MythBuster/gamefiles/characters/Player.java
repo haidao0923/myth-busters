@@ -7,6 +7,7 @@ import gamefiles.Heart;
 import controller.GameLoop;
 import controller.SpriteAnimation;
 import gamefiles.Touchable;
+import gamefiles.items.Item;
 import gamefiles.weapons.Bow;
 import gamefiles.weapons.Spear;
 import gamefiles.weapons.Sword;
@@ -139,6 +140,11 @@ public class Player implements Touchable {
             private int invisibilityCd = 0;
             public void handle(long now) {
                 // game logic
+                // if (damageCooldown == 60 || damageCooldown == 0) {
+                //     System.out.println(System.currentTimeMillis());
+                // }
+                // 60 now's = 1 second!!!
+
                 if (attackCD > 0) {
                     attackCD--;
                 }
@@ -249,6 +255,21 @@ public class Player implements Touchable {
         heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
     }
 
+    public void updateItems() {
+        // this.itemLoop = new AnimationTimer() {
+        //     public void handle(long currentNanoTime) {
+
+        //         // some triggers for onscreen inventory / consumables
+
+        //         for (Item item : getInventory()) {
+        //             if (item.isActive()) {
+        //                 item.effect(currentNanoTime);
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
     public Group getGroup() {
         return imageGroup;
     }
@@ -305,6 +326,19 @@ public class Player implements Touchable {
     public double getSpeed() {
         return speed;
     }
+
+    public void addDamageStat(double value) {
+        this.damage += value;
+    }
+
+    public void subtractDamageStat(double value) {
+        addDamageStat(-value);
+    }
+
+    public double getDamageStat() {
+        return this.damage;
+    }
+
     public double getDamageCooldown() {
         return damageCooldown;
     }
@@ -332,6 +366,10 @@ public class Player implements Touchable {
 
     public void subtractMaximumHealth(double value) {
         addMaximumHealth(-value);
+    }
+
+    public double getMaximumHealth() {
+        return this.maxHealth;
     }
 
     public double getCurrentHealth() {
