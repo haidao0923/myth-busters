@@ -18,7 +18,7 @@ public class Trap extends Monster {
 
     public void update() {
         // game logic
-        System.out.println(GameLoop.getMonsters().size() - trapCount);
+        // System.out.println(GameLoop.getMonsters().size() - trapCount);
         checkDeath();
         redrawHealthBar();
         if (Controller.getPlayer().intersects(this)) {

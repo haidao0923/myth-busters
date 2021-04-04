@@ -14,6 +14,7 @@ public class RagePotion extends Consumable {
 
     public RagePotion(int id, String name, String description, int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
+        updateImageView("sprites/itemAssets/ragePotion.png");
     }
 
     public void effect(long currentNanoTime) {
@@ -24,6 +25,8 @@ public class RagePotion extends Consumable {
             oldDamage = player.getDamageStat();
             player.addDamageStat(oldDamage);
             doubled = true;
+            updateImageView("sprites/itemAssets/ragePotionConsumed.png");
+            player.updateInventoryImages();
         }
 
         boolean updated = update();

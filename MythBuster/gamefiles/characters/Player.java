@@ -96,7 +96,6 @@ public class Player implements Touchable {
         currentHealth = 300;
         maxHealth = 300;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
-
         updatePlayerMaxHp();
 
         // inventory
@@ -215,11 +214,18 @@ public class Player implements Touchable {
 
             public void handle(long currentNanoTime) {
                 ArrayList<Item> currInventory = getInventory();
+                // if (input.size() > 0) {
+                //     for (String s : input) {
+                //         System.out.print(s);
+                //     }
+                //     System.out.println();
+                // }
 
                 // some triggers for onscreen inventory / consumables
                 for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
                     Item item = currInventory.get(i);
-                    if (input.contains(Integer.toString(i + 1))) {
+                    if (input.contains("DIGIT" + Integer.toString(i + 1))) {
+                        System.out.println("Pressed " + (i + 1));
                         item.setActive(true);
                     }
                     if (item.isActive()) {
@@ -247,29 +253,38 @@ public class Player implements Touchable {
     }
 
     public void updateInventory(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
-        if (toDelete.size() > 0 || toAdd.size() > 0) {
-            ArrayList<Item> currInventory = getInventory();
-            if (toDelete != null) {
-                for (int i = toDelete.size() - 1; i >= 0; i--) {
-                    currInventory.remove(toDelete.remove(i).intValue());
-                }
+        boolean update = false;
+        ArrayList<Item> currInventory = getInventory();
+        if (toDelete != null && toDelete.size() > 0) {
+            update = true;
+            for (int i = toDelete.size() - 1; i >= 0; i--) {
+                currInventory.remove(toDelete.remove(i).intValue());
             }
-            if (toAdd != null) {
-                for (Item item : toAdd) {
-                    currInventory.add(item);
-                }
+        }
+        if (toAdd != null && toAdd.size() > 0) {
+            update = true;
+            for (Item item : toAdd) {
+                currInventory.add(item);
             }
+        }
 
+        if (update) {
             // InventoryBox
-            ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
+            updateInventoryImages();
+        }
+    }
+
+    public void updateInventoryImages() {
+        ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
             for (int j = 0; j < inventory.size(); j++) {
                 itemImages.add(inventory.get(j).getImageView());
             }
             inventoryBox.getChildren().setAll(itemImages);
-        }
     }
 
     public void initializeInventory() {
+        ItemDatabase.resetQuantities();
+
         this.inventory = new ArrayList<Item>(0); // UPDATE IF WEAPON IS AN ITEM
         this.inventoryBox = new HBox(inventoryPadding);
 
@@ -277,7 +292,15 @@ public class Player implements Touchable {
         Item healthPotion = ItemDatabase.getItem(0);
         healthPotion.addQuantity(1);
         startingInventory.add(healthPotion);
+        Item ragePotion = ItemDatabase.getItem(1);
+        ragePotion.addQuantity(1);
+        startingInventory.add(ragePotion);
         updateInventory(null, startingInventory);
+
+        System.out.println("Initialized inventory to size " + this.inventory.size());
+        // System.out.println("First inventory item is: " + this.inventory.get(0));
+        // System.out.println("Health potion has qty: " + healthPotion.getQuantity());
+        // System.out.println("Health potion has status: " + healthPotion.isActive());
 
         inventoryBox.setLayoutX(600);
         inventoryBox.setLayoutY(inventoryPadding);
@@ -294,23 +317,31 @@ public class Player implements Touchable {
 
                     if (currentHealth <= 25) { // higher number b/c some glitch
                         Controller.goToDeathScreen();
-                        this.stop();
                     }
 
-                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); 
-                        i >= 0 && i < hearts.size(); i++) {
-                        hearts.get(i).setEmpty();
-                    }
-                    ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
-                    for (int j = 0; j < hearts.size(); j++) {
-                        heartsImages.add(hearts.get(j).getImageView());
-                    }
-                    heartsBox.getChildren().setAll(heartsImages);
+                    updateHearts(currentHealth);
                 }
 
                 oldHealth = currentHealth;
             }
         };
+    }
+
+    public void updateHearts(double currentHealth) {
+        int emptyThreshold = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART);
+        for (int i = 0; i < hearts.size(); i++) {
+            if (i >= emptyThreshold) {
+                hearts.get(i).setEmpty();
+            } else {
+                hearts.get(i).setFull();
+            }
+        }
+
+        ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
+        for (int j = 0; j < hearts.size(); j++) {
+            heartsImages.add(hearts.get(j).getImageView());
+        }
+        heartsBox.getChildren().setAll(heartsImages);
     }
 
     public void updatePlayerMaxHp() {

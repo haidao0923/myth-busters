@@ -18,7 +18,7 @@ public abstract class Item {
         this.description = description;
         this.quantity = quantity;
         this.active = active;
-        updateImageView("../sprites/itemAssets/placeholder.png");
+        updateImageView("sprites/itemAssets/placeholder.png");
     }
 
     /**

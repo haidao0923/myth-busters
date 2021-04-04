@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import views.WinScreen;
 
 
-public class Controller extends Application {
+public class Controller extends Application { 
     private static Stage mainWindow;
     private static final int W = 1200;
     private static final int H = 800;
