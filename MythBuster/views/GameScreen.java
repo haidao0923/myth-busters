@@ -157,7 +157,7 @@ public class GameScreen {
     public void updateBoard(Room currentRoom) {
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
-                player.getGroup(), player.getHeartsBox());
+                player.getGroup(), player.getHeartsBox(), player.getInventoryBox());
         /*if (currentRoom instanceof StartingRoom) {
             displays.getChildren().add(currentRoom.getRoomInfo());
         } else {

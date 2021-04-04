@@ -15,7 +15,6 @@ public abstract class Consumable extends Item {
     public void use() {
         if (!this.isConsumed()) {
             durationTimer = this.getDuration();
-            this.subtractQuantity(1);
             this.toggleConsumed();
         }
     }
@@ -24,6 +23,7 @@ public abstract class Consumable extends Item {
         if (this.durationTimer == 0) {
             this.toggleConsumed();
             this.toggleActive();
+            this.subtractQuantity(1);
             return false; // ended; "no update"
         } else {
             durationTimer--;

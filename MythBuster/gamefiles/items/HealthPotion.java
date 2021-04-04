@@ -12,6 +12,7 @@ public class HealthPotion extends Consumable {
     
     public HealthPotion(int id, String name, String description, int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
+        updateImageView("../sprites/itemAssets/healthPotion.png");
     }
 
     public void effect(long currentNanoTime) {

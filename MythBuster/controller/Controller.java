@@ -5,6 +5,7 @@ package controller;
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
+import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.WeaponDatabase;
@@ -43,6 +44,7 @@ public class Controller extends Application {
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
         WeaponDatabase.initialize();
+        ItemDatabase.initialize();
         initWelcomeScreen();
     }
 
@@ -207,7 +209,7 @@ public class Controller extends Application {
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
         GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
     }
 
     public static void goToWinScreen() {
@@ -227,7 +229,7 @@ public class Controller extends Application {
 
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), 
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
