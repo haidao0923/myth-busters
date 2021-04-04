@@ -211,6 +211,7 @@ public class Player implements Touchable {
         // ITEM LOOP
         this.itemLoop = new AnimationTimer() {
             ArrayList<Integer> toDelete = new ArrayList<Integer>();
+            int itemCD = 0;
 
             public void handle(long currentNanoTime) {
                 ArrayList<Item> currInventory = getInventory();
@@ -220,13 +221,14 @@ public class Player implements Touchable {
                 //     }
                 //     System.out.println();
                 // }
-
+                
                 // some triggers for onscreen inventory / consumables
                 for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
                     Item item = currInventory.get(i);
-                    if (input.contains("DIGIT" + Integer.toString(i + 1))) {
+                    if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
                         System.out.println("Pressed " + (i + 1));
                         item.setActive(true);
+                        itemCD = 30;
                     }
                     if (item.isActive()) {
                         item.effect(currentNanoTime);
@@ -236,6 +238,7 @@ public class Player implements Touchable {
                     }
                 }
                 updateInventory(toDelete, null);
+                itemCD--;
             }
         };
     }

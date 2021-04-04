@@ -1,15 +1,23 @@
 package gamefiles.items;
 
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+import javafx.scene.media.Media;
+
+import java.io.File;
+
 public abstract class Consumable extends Item {
     private long duration;
     private long durationTimer;
     private boolean consumed;
+    private MediaPlayer soundEffect;
 
     public Consumable(int id, String name, String description, int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active);
         this.duration = duration;
         this.durationTimer = 0;
         this.consumed = false;
+        setSoundEffect("MythBuster/sounds/Consumable.wav");
     }
 
     public void use() {
@@ -31,6 +39,14 @@ public abstract class Consumable extends Item {
         }
     }
 
+    public void setSoundEffect(String soundPath) {
+        //Instantiating Media class  
+        Media media = new Media(new File(soundPath).toURI().toString());  
+        //Instantiating MediaPlayer class   
+        this.soundEffect = new MediaPlayer(media);
+        this.soundEffect.setStopTime(Duration.seconds(2));
+    }
+
     public long getDuration() {
         return this.duration;
     }
@@ -43,6 +59,9 @@ public abstract class Consumable extends Item {
         if (this.consumed) {
             this.consumed = false;
         } else {
+            //by setting this property to true, the audio will be played   
+            this.soundEffect.seek(Duration.ZERO);
+            this.soundEffect.play();  
             this.consumed = true;
         }
     }

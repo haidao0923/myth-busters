@@ -16,15 +16,14 @@ public class HealthPotion extends Consumable {
     }
 
     public void effect(long currentNanoTime) {
-        if (this.isActive()) {
-            Player player = Controller.getPlayer();
-            if (player.getCurrentHealth() + 100 > player.getMaximumHealth()) {
-                player.addHealth(player.getMaximumHealth() - player.getCurrentHealth());
-            } else {
-                player.addHealth(100);
-            }
-            player.updateHearts(player.getCurrentHealth());
-            this.update();
+        this.use();
+        Player player = Controller.getPlayer();
+        if (player.getCurrentHealth() + 100 > player.getMaximumHealth()) {
+            player.addHealth(player.getMaximumHealth() - player.getCurrentHealth());
+        } else {
+            player.addHealth(100);
         }
+        player.updateHearts(player.getCurrentHealth());
+        this.update();
     }
 }
