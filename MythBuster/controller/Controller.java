@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sounds.BackgroundMusic;
 import views.WinScreen;
 
 
@@ -45,6 +46,8 @@ public class Controller extends Application {
         mainWindow.setTitle("MythBusters!");
         WeaponDatabase.initialize();
         ItemDatabase.initialize();
+        BackgroundMusic.initialize();
+        BackgroundMusic.getTrack().play();
         initWelcomeScreen();
     }
 
