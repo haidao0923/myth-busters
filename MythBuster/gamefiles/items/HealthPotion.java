@@ -12,18 +12,18 @@ public class HealthPotion extends Consumable {
     
     public HealthPotion(int id, String name, String description, int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
+        updateImageView("sprites/itemAssets/healthPotion.png");
     }
 
     public void effect(long currentNanoTime) {
-        if (this.isActive()) {
-            Player player = Controller.getPlayer();
-            if (player.getCurrentHealth() + 100 > player.getMaximumHealth()) {
-                player.addMaximumHealth(player.getMaximumHealth() - player.getCurrentHealth());
-            } else {
-                player.addHealth(100);
-            }
-            this.use();
-            this.toggleActive();
+        this.use();
+        Player player = Controller.getPlayer();
+        if (player.getCurrentHealth() + 100 > player.getMaximumHealth()) {
+            player.addHealth(player.getMaximumHealth() - player.getCurrentHealth());
+        } else {
+            player.addHealth(100);
         }
+        player.updateHearts(player.getCurrentHealth());
+        this.update();
     }
 }

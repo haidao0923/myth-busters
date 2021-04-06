@@ -5,6 +5,7 @@ package controller;
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
+import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.WeaponDatabase;
@@ -23,10 +24,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sounds.BackgroundMusic;
 import views.WinScreen;
 
 
-public class Controller extends Application {
+public class Controller extends Application { 
     private static Stage mainWindow;
     private static final int W = 1200;
     private static final int H = 800;
@@ -43,6 +45,9 @@ public class Controller extends Application {
         mainWindow = primaryStage;
         mainWindow.setTitle("MythBusters!");
         WeaponDatabase.initialize();
+        ItemDatabase.initialize();
+        BackgroundMusic.initialize();
+        BackgroundMusic.getTrack().play();
         initWelcomeScreen();
     }
 
@@ -207,7 +212,7 @@ public class Controller extends Application {
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
         GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
     }
 
     public static void goToWinScreen() {
@@ -227,7 +232,7 @@ public class Controller extends Application {
 
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), 
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop);
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);

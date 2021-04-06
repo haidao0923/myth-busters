@@ -8,6 +8,7 @@ import controller.GameLoop;
 import controller.SpriteAnimation;
 import gamefiles.Touchable;
 import gamefiles.items.Item;
+import gamefiles.items.ItemDatabase;
 import gamefiles.weapons.Bow;
 import gamefiles.weapons.Spear;
 import gamefiles.weapons.Sword;
@@ -50,6 +51,7 @@ public class Player implements Touchable {
 
     private final double heartsPadding = 10;
     private final double heartsDimensions = 50;
+    private final double inventoryPadding = 10;
 
     private int spriteWidth = 63;
     private int spriteHeight = 55;
@@ -59,9 +61,12 @@ public class Player implements Touchable {
     private Group imageGroup;
     private ArrayList<Heart> hearts;
     private HBox heartsBox;
+    private ArrayList<Item> inventory;
+    private HBox inventoryBox;
 
     private AnimationTimer playerLogic;
     private AnimationTimer playerHpUpdate;
+    private AnimationTimer itemLoop;
 
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
@@ -91,8 +96,10 @@ public class Player implements Touchable {
         currentHealth = 300;
         maxHealth = 300;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
-
         updatePlayerMaxHp();
+
+        // inventory
+        initializeInventory();
     }
 
     public void attack(Scene scene) {
@@ -134,7 +141,8 @@ public class Player implements Touchable {
                 String code = e.getCode().toString();
                 input.remove(code);
             });
-
+        
+        // PLAYER LOGIC
         this.playerLogic = new AnimationTimer() {
             private int lastDirection = 0;
             private int invisibilityCd = 0;
@@ -199,6 +207,40 @@ public class Player implements Touchable {
                 invisibilityCd--;
             }
         };
+
+        // ITEM LOOP
+        this.itemLoop = new AnimationTimer() {
+            ArrayList<Integer> toDelete = new ArrayList<Integer>();
+            int itemCD = 0;
+
+            public void handle(long currentNanoTime) {
+                ArrayList<Item> currInventory = getInventory();
+                // if (input.size() > 0) {
+                //     for (String s : input) {
+                //         System.out.print(s);
+                //     }
+                //     System.out.println();
+                // }
+                
+                // some triggers for onscreen inventory / consumables
+                for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
+                    Item item = currInventory.get(i);
+                    if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
+                        System.out.println("Pressed " + (i + 1));
+                        item.setActive(true);
+                        itemCD = 30;
+                    }
+                    if (item.isActive()) {
+                        item.effect(currentNanoTime);
+                    }
+                    if (item.getQuantity() == 0) {
+                        toDelete.add(i);
+                    }
+                }
+                updateInventory(toDelete, null);
+                itemCD--;
+            }
+        };
     }
 
     public void moveAbsolute(double x, double y) {
@@ -213,6 +255,60 @@ public class Player implements Touchable {
         imageGroup.relocate(positionX, positionY);
     }
 
+    public void updateInventory(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
+        boolean update = false;
+        ArrayList<Item> currInventory = getInventory();
+        if (toDelete != null && toDelete.size() > 0) {
+            update = true;
+            for (int i = toDelete.size() - 1; i >= 0; i--) {
+                currInventory.remove(toDelete.remove(i).intValue());
+            }
+        }
+        if (toAdd != null && toAdd.size() > 0) {
+            update = true;
+            for (Item item : toAdd) {
+                currInventory.add(item);
+            }
+        }
+
+        if (update) {
+            // InventoryBox
+            updateInventoryImages();
+        }
+    }
+
+    public void updateInventoryImages() {
+        ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
+            for (int j = 0; j < inventory.size(); j++) {
+                itemImages.add(inventory.get(j).getImageView());
+            }
+            inventoryBox.getChildren().setAll(itemImages);
+    }
+
+    public void initializeInventory() {
+        ItemDatabase.resetQuantities();
+
+        this.inventory = new ArrayList<Item>(0); // UPDATE IF WEAPON IS AN ITEM
+        this.inventoryBox = new HBox(inventoryPadding);
+
+        ArrayList<Item> startingInventory = new ArrayList<Item>();
+        Item healthPotion = ItemDatabase.getItem(0);
+        healthPotion.addQuantity(1);
+        startingInventory.add(healthPotion);
+        Item ragePotion = ItemDatabase.getItem(1);
+        ragePotion.addQuantity(1);
+        startingInventory.add(ragePotion);
+        updateInventory(null, startingInventory);
+
+        System.out.println("Initialized inventory to size " + this.inventory.size());
+        // System.out.println("First inventory item is: " + this.inventory.get(0));
+        // System.out.println("Health potion has qty: " + healthPotion.getQuantity());
+        // System.out.println("Health potion has status: " + healthPotion.isActive());
+
+        inventoryBox.setLayoutX(600);
+        inventoryBox.setLayoutY(inventoryPadding);
+    }
+
     public void updatePlayerHp() {
         this.playerHpUpdate = new AnimationTimer() {
             private double oldHealth = getCurrentHealth();
@@ -224,23 +320,31 @@ public class Player implements Touchable {
 
                     if (currentHealth <= 25) { // higher number b/c some glitch
                         Controller.goToDeathScreen();
-                        this.stop();
                     }
 
-                    for (int i = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART); 
-                        i >= 0 && i < hearts.size(); i++) {
-                        hearts.get(i).setEmpty();
-                    }
-                    ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
-                    for (int j = 0; j < hearts.size(); j++) {
-                        heartsImages.add(hearts.get(j).getImageView());
-                    }
-                    heartsBox.getChildren().setAll(heartsImages);
+                    updateHearts(currentHealth);
                 }
 
                 oldHealth = currentHealth;
             }
         };
+    }
+
+    public void updateHearts(double currentHealth) {
+        int emptyThreshold = (int) Math.floor(currentHealth / Heart.HEALTH_PER_HEART);
+        for (int i = 0; i < hearts.size(); i++) {
+            if (i >= emptyThreshold) {
+                hearts.get(i).setEmpty();
+            } else {
+                hearts.get(i).setFull();
+            }
+        }
+
+        ArrayList<ImageView> heartsImages = new ArrayList<ImageView>(hearts.size());
+        for (int j = 0; j < hearts.size(); j++) {
+            heartsImages.add(hearts.get(j).getImageView());
+        }
+        heartsBox.getChildren().setAll(heartsImages);
     }
 
     public void updatePlayerMaxHp() {
@@ -253,21 +357,6 @@ public class Player implements Touchable {
         }
         heartsBox.setLayoutX(heartsPadding);
         heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
-    }
-
-    public void updateItems() {
-        // this.itemLoop = new AnimationTimer() {
-        //     public void handle(long currentNanoTime) {
-
-        //         // some triggers for onscreen inventory / consumables
-
-        //         for (Item item : getInventory()) {
-        //             if (item.isActive()) {
-        //                 item.effect(currentNanoTime);
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     public Group getGroup() {
@@ -327,6 +416,11 @@ public class Player implements Touchable {
         return speed;
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    // DAMAGE || HP
     public void addDamageStat(double value) {
         this.damage += value;
     }
@@ -354,10 +448,6 @@ public class Player implements Touchable {
         System.out.println(currentHealth);
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
     public void addMaximumHealth(double value) {
         this.maxHealth += value;
         this.numHearts += (int) Math.floor(value / Heart.HEALTH_PER_HEART);
@@ -376,12 +466,24 @@ public class Player implements Touchable {
         return currentHealth;
     }
 
+    public ArrayList<Item> getInventory() {
+        return this.inventory;
+    }
+
+    public HBox getInventoryBox() {
+        return this.inventoryBox;
+    }
+
     public AnimationTimer getPlayerLogicTimer() {
         return playerLogic;
     }
 
     public AnimationTimer getPlayerHpUpdateTimer() {
         return playerHpUpdate;
+    }
+
+    public AnimationTimer getItemLoop() {
+        return itemLoop;
     }
 
     public String toString() {

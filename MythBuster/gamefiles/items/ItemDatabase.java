@@ -2,6 +2,7 @@ package gamefiles.items;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
 
 public class ItemDatabase {
     private static Map<Integer, Item> items = new HashMap<>();
@@ -25,5 +26,12 @@ public class ItemDatabase {
      */
     public static Item getItem(int key) {
         return items.get(key);
+    }
+
+    public static void resetQuantities() {
+        Collection<Item> currItems = items.values();
+        for (Item item : currItems) {
+            item.subtractQuantity(item.getQuantity());
+        }
     }
 }
