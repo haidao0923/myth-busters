@@ -114,7 +114,6 @@ public class Player implements Touchable {
             animation.play();
             for (Monster monster : GameLoop.getMonsters()) {
                 if (this.intersects(monster)) {
-                    //System.out.println("player attacked" + monster.getName());
                     monster.takeDamage(damage);
                 }
             }
@@ -215,12 +214,6 @@ public class Player implements Touchable {
 
             public void handle(long currentNanoTime) {
                 ArrayList<Item> currInventory = getInventory();
-                // if (input.size() > 0) {
-                //     for (String s : input) {
-                //         System.out.print(s);
-                //     }
-                //     System.out.println();
-                // }
                 
                 // some triggers for onscreen inventory / consumables
                 for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
