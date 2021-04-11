@@ -108,7 +108,7 @@ public class Player implements Touchable {
         int currY = spriteY;
         if (weapon instanceof Spear) {
             spriteY = spriteY - 256; //go to the attack frames
-            animation = new SpriteAnimation(imageView, Duration.millis(500), 
+            animation = new SpriteAnimation(imageView, Duration.millis(500),
                     8, 8, spriteY, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
@@ -140,7 +140,7 @@ public class Player implements Touchable {
                 String code = e.getCode().toString();
                 input.remove(code);
             });
-        
+
         // PLAYER LOGIC
         this.playerLogic = new AnimationTimer() {
             private int lastDirection = 0;
@@ -214,7 +214,7 @@ public class Player implements Touchable {
 
             public void handle(long currentNanoTime) {
                 ArrayList<Item> currInventory = getInventory();
-                
+
                 // some triggers for onscreen inventory / consumables
                 for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
                     Item item = currInventory.get(i);
@@ -382,9 +382,17 @@ public class Player implements Touchable {
         return coins;
     }
     public void setCoins(int amount) {
-        coins = coins + amount;
+        coins = amount;
+        if (Controller.getGameScreen() != null) {
+            Controller.getGameScreen().getCoinDisplay().setText("Coins: " + getCoins());
+        }
     }
-
+    public void addCoins(int amount) {
+        setCoins(coins + amount);
+    }
+    public void subtractCoins(int amount) {
+        setCoins(coins - amount);
+    }
     public void setWeapon(Weapon w) {
         weapon = w;
     }

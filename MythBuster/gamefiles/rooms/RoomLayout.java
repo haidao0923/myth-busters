@@ -30,6 +30,7 @@ public class RoomLayout {
         this.fillRooms();
         this.growingTreeAlgorithm();
         this.setBossRoom();
+        this.setTreasureRoom();
         this.toFile();
     }
 
@@ -197,22 +198,54 @@ public class RoomLayout {
         bossRoomColumn = c;
     }
 
+    private void setTreasureRoom() {
+        int row = 0;
+        int column = 0;
+        for (int i = 0; i < 3; i++) {
+            do {
+                row = (int) Math.floor(Math.random() * TOTAL_ROWS);
+                column = (int) Math.floor(Math.random() * TOTAL_COLUMNS);
+            } while (!(rooms[row][column] instanceof BasicRoom));
+
+            Room oldRoom = rooms[row][column];
+            TreasureRoom treasureRoom = new TreasureRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
+
+            if (oldRoom.getLeftDoor() != null) {
+                treasureRoom.setLeftDoor(oldRoom.getLeftDoor().getDestination());
+                oldRoom.getLeftDoor().getDestination().setRightDoor(treasureRoom);
+            }
+            if (oldRoom.getTopDoor() != null) {
+                treasureRoom.setTopDoor(oldRoom.getTopDoor().getDestination());
+                oldRoom.getTopDoor().getDestination().setBottomDoor(treasureRoom);
+            }
+            if (oldRoom.getRightDoor() != null) {
+                treasureRoom.setRightDoor(oldRoom.getRightDoor().getDestination());
+                oldRoom.getRightDoor().getDestination().setLeftDoor(treasureRoom);
+            }
+            if (oldRoom.getBottomDoor() != null) {
+                treasureRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
+                oldRoom.getBottomDoor().getDestination().setTopDoor(treasureRoom);
+            }
+            rooms[row][column] = treasureRoom;
+        }
+    }
+
     private void toFile() {
         try {
             String filepath = System.getProperty("user.dir")
                     + "/MythBuster/gamefiles/printables/RoomLayout.txt";
             String filepathDir = System.getProperty("user.dir")
                     + "/MythBuster/gamefiles/printables";
-            
+
             File printablesDir = new File(filepathDir);
             if (!printablesDir.exists()) {
                 printablesDir.mkdirs();
             }
-            
+
             File roomLayoutToText = new File(filepath);
             roomLayoutToText.createNewFile();
             new FileWriter(filepath, false).close();
-        
+
             FileWriter writer = new FileWriter(filepath);
 
             for (int row = 0; row < rooms.length; row++) {
@@ -228,6 +261,8 @@ public class RoomLayout {
                         content = "S";
                     } else if (currRoom instanceof BossRoom) {
                         content = "B";
+                    } else if (currRoom instanceof TreasureRoom) {
+                        content = "T";
                     } else {
                         content = " ";
                     }
