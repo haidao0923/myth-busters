@@ -7,6 +7,7 @@ import gamefiles.Heart;
 import controller.GameLoop;
 import controller.SpriteAnimation;
 import gamefiles.Touchable;
+import gamefiles.items.Consumable;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.weapons.Bow;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;
 
 public class Player implements Touchable {
     private String name;
@@ -222,12 +224,12 @@ public class Player implements Touchable {
                         System.out.println("Pressed " + (i + 1));
                         item.setActive(true);
                         itemCD = 30;
+                        if (item instanceof Consumable) {
+                            toDelete.add(i);
+                        }
                     }
                     if (item.isActive()) {
                         item.effect(currentNanoTime);
-                    }
-                    if (item.getQuantity() == 0) {
-                        toDelete.add(i);
                     }
                 }
                 updateInventory(toDelete, null);
@@ -273,7 +275,10 @@ public class Player implements Touchable {
     public void updateInventoryImages() {
         ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
             for (int j = 0; j < inventory.size(); j++) {
-                itemImages.add(inventory.get(j).getImageView());
+                ImageView imageView = new ImageView(inventory.get(j).getImageView());
+                imageView.setFitWidth(inventory.get(j).getWidth());
+                imageView.setFitHeight(inventory.get(j).getHeight());
+                itemImages.add(imageView);
             }
             inventoryBox.getChildren().setAll(itemImages);
     }
@@ -350,6 +355,10 @@ public class Player implements Touchable {
         }
         heartsBox.setLayoutX(heartsPadding);
         heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
+        if (Controller.getGameScreen() != null) {
+            Controller.getGameScreen().getBoard().getChildren().remove(heartsBox);
+            Controller.getGameScreen().getBoard().getChildren().add(heartsBox);
+        }
     }
 
     public Group getGroup() {
@@ -451,6 +460,7 @@ public class Player implements Touchable {
 
     public void addMaximumHealth(double value) {
         this.maxHealth += value;
+        this.currentHealth += value;
         this.numHearts += (int) Math.floor(value / Heart.HEALTH_PER_HEART);
         updatePlayerMaxHp();
     }

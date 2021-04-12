@@ -10,7 +10,7 @@ public class GreenTreasureChest extends TreasureChest {
     @Override
     public void open() {
         Controller.getPlayer().subtractCoins(cost);
-        Controller.getPlayer().addHealth(100);
+        Controller.getPlayer().addHealth(500);
         opened = true;
     }
 }

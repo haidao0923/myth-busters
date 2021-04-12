@@ -1,5 +1,6 @@
 package gamefiles.items;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Item {
@@ -9,6 +10,7 @@ public abstract class Item {
     private int quantity;
     private boolean active;
     private ImageView imageView;
+    private Image image;
     private final int height = 50;
     private final int width = 50;
 
@@ -32,6 +34,7 @@ public abstract class Item {
         this.imageView = new ImageView(spritePath);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
+        image = imageView.getImage();
     }
 
     public void addQuantity(int value) {
@@ -48,7 +51,7 @@ public abstract class Item {
 
     public String getDescription() {
         return this.description;
-    } 
+    }
 
     public int getQuantity() {
         return this.quantity;
@@ -70,7 +73,14 @@ public abstract class Item {
         return this.active;
     }
 
-    public ImageView getImageView() {
-        return this.imageView;
+    public Image getImageView() {
+        return this.image;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    public int getWidth() {
+        return width;
     }
 }

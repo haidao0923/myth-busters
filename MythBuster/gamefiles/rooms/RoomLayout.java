@@ -201,7 +201,7 @@ public class RoomLayout {
     private void setTreasureRoom() {
         int row = 0;
         int column = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             do {
                 row = (int) Math.floor(Math.random() * TOTAL_ROWS);
                 column = (int) Math.floor(Math.random() * TOTAL_COLUMNS);
