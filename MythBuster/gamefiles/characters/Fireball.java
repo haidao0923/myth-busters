@@ -6,7 +6,7 @@ public class Fireball extends Monster {
 
 
     public Fireball(double posX, double posY) {
-        super("Fireball", 100, 5, "sprites/SuperMarioFireball.png", 50, 50);
+        super("Fireball", 20, 5, "sprites/SuperMarioFireball.png", 50, 50);
         moveAbsolute(posX, posY);
     }
 
@@ -26,7 +26,7 @@ public class Fireball extends Monster {
         double magnitude = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
         if (Controller.getPlayer().intersects(this)) {
             Controller.getPlayer().takeDamage(damage);
-            //System.out.println("Fireballed! Health: " 
+            //System.out.println("Fireballed! Health: "
             // + Controller.getPlayer().getCurrentHealth());
             currentHealth = 0;
             checkDeath();

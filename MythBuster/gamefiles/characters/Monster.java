@@ -1,5 +1,6 @@
 package gamefiles.characters;
 
+import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Touchable;
 import javafx.application.Platform;
@@ -72,8 +73,13 @@ public abstract class Monster implements Touchable {
         if (currentHealth <= 0) {
             isDead = true;
             Platform.runLater(() -> {
+                Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
+                Controller.getCurrentRoom().getMonsters().remove(this);
                 monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
             });
+            if (this instanceof Trap) {
+                Trap.decrementTrapCount(1);
+            }
             GameLoop.getMonsters().remove(this);
         }
     }

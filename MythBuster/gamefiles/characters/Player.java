@@ -133,7 +133,7 @@ public class Player implements Touchable {
                     spriteHeight);
             animation.setCycleCount(1);
             animation.play();
-            ((Bow) weapon).fireArrow(direction, positionX, positionY, damage);
+            ((Bow) weapon).fireArrow(direction, positionX, positionY + width / 2, damage);
         }
         animation.setOnFinished(actionEvent -> {
             spriteX = currX;
