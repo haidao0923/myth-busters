@@ -7,6 +7,7 @@ import gamefiles.characters.Trap;
 import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
+import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -210,8 +211,13 @@ public class Controller extends Application {
         };
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
-        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        if (player.getWeapon() instanceof Bow) {
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), ((Bow) player.getWeapon()).getArrowTimer(),
+                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        } else {
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
+                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        }
     }
 
     public static void goToWinScreen() {
