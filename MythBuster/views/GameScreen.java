@@ -4,6 +4,7 @@ import controller.GameLoop;
 import gamefiles.characters.Player;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
+import gamefiles.rooms.TreasureRoom;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -155,6 +156,9 @@ public class GameScreen {
     }
 
     public void updateBoard(Room currentRoom) {
+        if (TreasureRoom.getAnimationTimer() != null) {
+            TreasureRoom.getAnimationTimer().stop();
+        }
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
                 player.getGroup(), player.getHeartsBox(), player.getInventoryBox());

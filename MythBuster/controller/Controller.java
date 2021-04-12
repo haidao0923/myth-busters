@@ -27,7 +27,7 @@ import sounds.BackgroundMusic;
 import views.WinScreen;
 
 
-public class Controller extends Application { 
+public class Controller extends Application {
     private static Stage mainWindow;
     private static final int W = 1200;
     private static final int H = 800;
@@ -120,7 +120,7 @@ public class Controller extends Application {
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
-                            && player.intersects(currentRoom.getLeftDoor()) 
+                            && player.intersects(currentRoom.getLeftDoor())
                             && !currentRoom.getLeftDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -131,7 +131,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -142,7 +142,7 @@ public class Controller extends Application {
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null
-                            && player.intersects(currentRoom.getRightDoor()) 
+                            && player.intersects(currentRoom.getRightDoor())
                             && !currentRoom.getRightDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -153,7 +153,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -164,7 +164,7 @@ public class Controller extends Application {
 
                 //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null
-                            && player.intersects(currentRoom.getTopDoor()) 
+                            && player.intersects(currentRoom.getTopDoor())
                             && !currentRoom.getTopDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -175,7 +175,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -186,7 +186,7 @@ public class Controller extends Application {
 
                 //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null
-                            && player.intersects(currentRoom.getBottomDoor()) 
+                            && player.intersects(currentRoom.getBottomDoor())
                             && !currentRoom.getBottomDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -197,7 +197,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -210,7 +210,7 @@ public class Controller extends Application {
         };
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
-        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
+        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
     }
 
@@ -230,7 +230,7 @@ public class Controller extends Application {
     }
 
     public static void goToDeathScreen() {
-        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), 
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
         DeathScreen deathScreen = new DeathScreen(W, H);
