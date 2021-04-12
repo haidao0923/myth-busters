@@ -447,6 +447,9 @@ public class Player implements Touchable {
         return damageCooldown;
     }
 
+    public void setHealth(double value) {
+        this.currentHealth = value;
+    }
     public void addHealth(double value) {
         this.currentHealth += value;
     }
