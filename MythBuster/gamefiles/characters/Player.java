@@ -36,7 +36,7 @@ public class Player implements Touchable {
     private double percentageHealth;
     private double attackCD = 0;
     private double moveCD = 0;
-    private double damage = 10;
+    private double damage = 10; //TEMPORARY CHANGE FOR TESTING PURPOSES
     private double damageCooldown;
     private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
@@ -67,6 +67,9 @@ public class Player implements Touchable {
     private AnimationTimer playerLogic;
     private AnimationTimer playerHpUpdate;
     private AnimationTimer itemLoop;
+    private AnimationTimer attackLogic;
+
+
 
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
@@ -102,26 +105,41 @@ public class Player implements Touchable {
         initializeInventory();
     }
 
-    public void attack(Scene scene) {
-        Animation animation;
+    public int attack(Scene scene) {
+        Animation animation = null;
         int currX = spriteX;
         int currY = spriteY;
+        double duration = 0;
         if (weapon instanceof Spear) {
             spriteY = spriteY - 256; //go to the attack frames
-            animation = new SpriteAnimation(imageView, Duration.millis(500), 
+            duration = 500;
+            animation = new SpriteAnimation(imageView, Duration.millis(duration),
                     8, 8, spriteY, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
-            for (Monster monster : GameLoop.getMonsters()) {
-                if (this.intersects(monster)) {
-                    monster.takeDamage(damage);
-                }
-            }
+        } else if (weapon instanceof Sword) {
+            spriteY = spriteY + 1025;
+            duration = 500;
+            //spriteX = spriteX + 45;
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 5, 5, spriteY, 105, spriteHeight);
+            animation.setCycleCount(1);
+            animation.play();
+        } else if (weapon instanceof Bow) {
+            spriteY += 510;
+            duration = 500;
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, 12, spriteY, spriteWidth,
+                    spriteHeight);
+            animation.setCycleCount(1);
+            animation.play();
+            ((Bow) weapon).fireArrow(direction, positionX, positionY, damage);
         }
-        spriteX = currX;
-        spriteY = currY;
-        Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
-        imageView.setViewport(viewpoint);
+        animation.setOnFinished(actionEvent -> {
+            spriteX = currX;
+            spriteY = currY;
+            Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+            imageView.setViewport(viewpoint);
+        });
+        return (int) ((duration / 1000) * 60);
     }
 
     public void play(Scene scene) {
@@ -140,32 +158,37 @@ public class Player implements Touchable {
                 String code = e.getCode().toString();
                 input.remove(code);
             });
-        
+
         // PLAYER LOGIC
         this.playerLogic = new AnimationTimer() {
-            private int lastDirection = 0;
             private int invisibilityCd = 0;
+            private int damageWindow = 0;
             public void handle(long now) {
                 // game logic
-                // if (damageCooldown == 60 || damageCooldown == 0) {
-                //     System.out.println(System.currentTimeMillis());
-                // }
                 // 60 now's = 1 second!!!
-
                 if (attackCD > 0) {
                     attackCD--;
                 }
                 if (input.contains("J") && attackCD <= 0) {
                     speed = 0;
                     attackCD = 60;
-                    attack(scene);
-                    moveCD = 30;
+                    int temp = attack(scene);
+                    damageWindow = temp;
+                    moveCD = temp;
                 } else if (input.size() > 1) {
                     speed = 7;
                 } else {
                     speed = 10;
                 }
-
+                if (damageWindow > 0) {
+                    for (Monster monster : GameLoop.getMonsters()) {
+                        if (Controller.getPlayer().intersects(monster)) {
+                            monster.takeDamage(damage);
+                            damageWindow = 0;
+                        }
+                    }
+                    damageWindow--;
+                }
                 if (damageCooldown > 0 && damageCooldown % 15 == 0) { // got hit
                     invisibilityCd = 5; // set invis frames
                 }
@@ -177,29 +200,27 @@ public class Player implements Touchable {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
                         moveRelative(-speed, 0);
-                        lastDirection = 0;
+                        direction = 0;
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
                         moveRelative(speed, 0);
-                        lastDirection = 1;
+                        direction = 1;
                     }
                     if (input.contains("W") && positionY > 0) {
                         moveRelative(0, -speed);
-                        //lastDirection = 2;
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
                         moveRelative(0, speed);
-                        //lastDirection = 3;
                     }
                 }
 
                 if (invisibilityCd > 0) { // Overwrite setScale if invis frames
                     imageView.setScaleX(0);
                 } else if (imageView.getScaleX() == 0) { // If player didn't move
-                    if (lastDirection == 0) { // same direction
+                    if (direction == 0) { // same direction
                         imageView.setScaleX(1);
-                    } else if (lastDirection == 1) {
+                    } else if (direction == 1) {
                         imageView.setScaleX(-1);
                     }
                 }
