@@ -3,8 +3,8 @@ package gamefiles.weapons;
 public abstract class Weapon {
     private int id;
     private String name;
-    private double speed;
-    private double damage;
+    protected double speed;
+    protected double damage;
 
     /**
      * Create new weapon object with initial name, speed, and damage.
