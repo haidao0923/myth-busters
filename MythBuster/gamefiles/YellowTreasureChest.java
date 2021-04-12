@@ -10,7 +10,7 @@ public class YellowTreasureChest extends TreasureChest {
     @Override
     public void open() {
         Controller.getPlayer().subtractCoins(cost);
-        Controller.getPlayer().addHealth(100);
+        Controller.getPlayer().addCoins((int) (Math.random() * 9 + 2) * 5);
         opened = true;
     }
 }
