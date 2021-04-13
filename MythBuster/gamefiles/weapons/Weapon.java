@@ -31,4 +31,8 @@ public abstract class Weapon {
     public double getDamage() {
         return this.damage;
     }
+
+    public boolean equals(Weapon w) {
+        return this.getName() == w.getName();
+    }
 }
