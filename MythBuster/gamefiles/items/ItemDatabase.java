@@ -28,7 +28,13 @@ public class ItemDatabase {
      * @return the item from the passed in id
      */
     public static Item getItem(int key) {
-        return items.get(key);
+        if (key == 0) {
+            return new HealthPotion(0, "Health Potion", "Restores 2 hearts.", 0, false, 0);
+        }
+        else if (key == 1) {
+            return new RagePotion(0, "Rage Potion", "Doubles your attack output for 10 seconds.", 0, false, 600);
+        }
+        return new RagePotion(0, "Rage Potion", "Doubles your attack output for 10 seconds.", 0, false, 600);
     }
 
     public static Weapon getWeaponItem(int key) {

@@ -1,5 +1,6 @@
 package gamefiles.characters;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import controller.Controller;
 import gamefiles.Heart;
 import controller.GameLoop;
 import controller.SpriteAnimation;
+import gamefiles.Inventory;
 import gamefiles.Touchable;
 import gamefiles.items.Consumable;
 import gamefiles.items.Item;
@@ -25,6 +27,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Player implements Touchable {
@@ -32,12 +36,9 @@ public class Player implements Touchable {
     private int coins;
     private Weapon weapon;
     private double speed;
-    private boolean shooting;
     private int numHearts;
     private double maxHealth;
     private double currentHealth;
-    // private double oldHealth;
-    private double percentageHealth;
     private double attackCD = 0;
     private double moveCD = 0;
     private double damage = 10; //TEMPORARY CHANGE FOR TESTING PURPOSES
@@ -55,7 +56,7 @@ public class Player implements Touchable {
 
     private final double heartsPadding = 10;
     private final double heartsDimensions = 50;
-    private final double inventoryPadding = 10;
+    private final double hotbarPadding = 10;
 
     private int spriteWidth = 63;
     private int spriteHeight = 55;
@@ -65,13 +66,12 @@ public class Player implements Touchable {
     private Group imageGroup;
     private ArrayList<Heart> hearts;
     private HBox heartsBox;
-    private ArrayList<Item> inventory;
-    private HBox inventoryBox;
+    private Item[] hotbar;
+    private HBox hotbarBox;
 
     private AnimationTimer playerLogic;
     private AnimationTimer playerHpUpdate;
     private AnimationTimer itemLoop;
-    private AnimationTimer attackLogic;
 
 
 
@@ -105,8 +105,7 @@ public class Player implements Touchable {
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
         updatePlayerMaxHp();
 
-        // inventory
-        initializeInventory();
+        initializeHotbar();
     }
 
     public int attack(Scene scene) {
@@ -132,6 +131,7 @@ public class Player implements Touchable {
         } else if (weapon instanceof Bow) {
             spriteY += 510;
             duration = 500;
+            System.out.println("Bow");
             animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, 12, spriteY, spriteWidth,
                     spriteHeight);
             animation.setCycleCount(1);
@@ -164,10 +164,17 @@ public class Player implements Touchable {
                 input.remove(code);
             });
 
+
+
+
         // PLAYER LOGIC
         this.playerLogic = new AnimationTimer() {
             private int invisibilityCd = 0;
             private int damageWindow = 0;
+
+            //For checking if 'I' is pressed and released.
+            boolean containedI = false;
+
             public void handle(long now) {
                 // game logic
                 // 60 now's = 1 second!!!
@@ -230,6 +237,18 @@ public class Player implements Touchable {
                     }
                 }
                 invisibilityCd--;
+
+
+                //Keyboard transitions to screens
+                if(input.contains("I")) {
+                    containedI = true;
+                }
+                if(containedI && !input.contains("I")) { //Go to inventory if I was released.
+                    Controller.goToInventory();
+                    input.remove("I");
+                    containedI = false;
+                }
+
             }
         };
 
@@ -239,24 +258,27 @@ public class Player implements Touchable {
             int itemCD = 0;
 
             public void handle(long currentNanoTime) {
-                ArrayList<Item> currInventory = getInventory();
+                Item[] currHotbar = Inventory.getHotbar();
 
-                // some triggers for onscreen inventory / consumables
-                for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
-                    Item item = currInventory.get(i);
-                    if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
-                        System.out.println("Pressed " + (i + 1));
-                        item.setActive(true);
-                        itemCD = 30;
-                        if (item instanceof Consumable) {
-                            toDelete.add(i);
+                // some triggers for onscreen hotbar / consumables
+                for (int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) { // max hotbar size of 5
+                    Item item = currHotbar[i];
+                    if(item != null) {
+                        if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
+                            System.out.println("Pressed " + (i + 1));
+                            item.setActive(true);
+                            itemCD = 30;
+                            if (item instanceof Consumable) {
+                                toDelete.add(i);
+                                System.out.println("Trying to delete at index " + i);
+                            }
                         }
                     }
-                    if (item.isActive()) {
-                        item.effect(currentNanoTime);
+                    if (item instanceof Consumable && item.isActive()) {
+                        ((Consumable)item).effect(currentNanoTime);
                     }
                 }
-                updateInventory(toDelete, null);
+                updateHotbar(toDelete, null);
                 itemCD--;
             }
         };
@@ -274,62 +296,84 @@ public class Player implements Touchable {
         imageGroup.relocate(positionX, positionY);
     }
 
-    public void updateInventory(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
+
+    public void updateHotbar(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
         boolean update = false;
-        ArrayList<Item> currInventory = getInventory();
+        Item[] currHotbar = Inventory.getHotbar();
         if (toDelete != null && toDelete.size() > 0) {
             update = true;
             for (int i = toDelete.size() - 1; i >= 0; i--) {
-                currInventory.remove(toDelete.remove(i).intValue());
+                currHotbar[toDelete.remove(i).intValue()] = null;
+                Inventory.setHotbarSize(Inventory.getHotbarSize() - 1);
             }
         }
         if (toAdd != null && toAdd.size() > 0) {
+
             update = true;
             for (Item item : toAdd) {
-                currInventory.add(item);
+                if(Inventory.getHotbarSize() < Inventory.getMAXHOTBARSIZE()) {
+                    currHotbar[Inventory.getHotbarSize()] = item;
+                } else {
+                    Inventory.addToInventory(item);
+                }
+
             }
+
         }
 
         if (update) {
-            // InventoryBox
-            updateInventoryImages();
+            // hotbarBox
+            updateHotbarImages();
         }
     }
 
-    public void updateInventoryImages() {
-        ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
-            for (int j = 0; j < inventory.size(); j++) {
-                ImageView imageView = new ImageView(inventory.get(j).getImageView());
-                imageView.setFitWidth(inventory.get(j).getWidth());
-                imageView.setFitHeight(inventory.get(j).getHeight());
-                itemImages.add(imageView);
-            }
-            inventoryBox.getChildren().setAll(itemImages);
-    }
-
-    public void initializeInventory() {
+    public void initializeHotbar() {
         ItemDatabase.resetQuantities();
 
-        this.inventory = new ArrayList<Item>(0); // UPDATE IF WEAPON IS AN ITEM
-        this.inventoryBox = new HBox(inventoryPadding);
+        this.hotbar = Inventory.getHotbar(); // UPDATE IF WEAPON IS AN ITEM
+        this.hotbarBox = new HBox(hotbarPadding);
+        for (int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) {
+            Group hotbarSlot = new Group();
+            hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+            hotbarBox.getChildren().add(hotbarSlot);
 
-        ArrayList<Item> startingInventory = new ArrayList<Item>();
-        Item healthPotion = ItemDatabase.getItem(0);
-        healthPotion.addQuantity(1);
-        startingInventory.add(healthPotion);
-        Item ragePotion = ItemDatabase.getItem(1);
-        ragePotion.addQuantity(1);
-        startingInventory.add(ragePotion);
-        updateInventory(null, startingInventory);
+            ImageView imageView = null;
+            if (hotbar[i] != null) {
+                imageView = new ImageView(hotbar[i].getImage());
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                hotbarSlot.getChildren().add(imageView);
+            }
 
-        System.out.println("Initialized inventory to size " + this.inventory.size());
-        // System.out.println("First inventory item is: " + this.inventory.get(0));
-        // System.out.println("Health potion has qty: " + healthPotion.getQuantity());
-        // System.out.println("Health potion has status: " + healthPotion.isActive());
-
-        inventoryBox.setLayoutX(600);
-        inventoryBox.setLayoutY(inventoryPadding);
+            hotbarBox.setLayoutX(700);
+            hotbarBox.setLayoutY(hotbarPadding);
+        }
     }
+
+
+    public void updateHotbarImages() {
+            for (int j = 0; j < Inventory.getMAXHOTBARSIZE(); j++) {
+                if (hotbar[j] != null) {
+                    ImageView imageView = new ImageView(hotbar[j].getImage());
+                    imageView.setFitWidth(hotbar[j].getWidth());
+                    imageView.setFitHeight(hotbar[j].getHeight());
+                    Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
+                    hotbarSlot.getChildren().clear();
+                    hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                    hotbarSlot.getChildren().add(imageView);
+                } else {
+                    Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
+                    hotbarSlot.getChildren().clear();
+                    hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                }
+            }
+
+    }
+
+
+
+
+
 
     public void updatePlayerHp() {
         this.playerHpUpdate = new AnimationTimer() {
@@ -522,12 +566,9 @@ public class Player implements Touchable {
         return currentHealth;
     }
 
-    public ArrayList<Item> getInventory() {
-        return this.inventory;
-    }
 
-    public HBox getInventoryBox() {
-        return this.inventoryBox;
+    public HBox gethotbarBox() {
+        return this.hotbarBox;
     }
 
     public AnimationTimer getPlayerLogicTimer() {

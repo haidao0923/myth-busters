@@ -8,27 +8,23 @@ public abstract class Item {
     private String name;
     private String description;
     private int quantity;
-    private boolean active;
     private ImageView imageView;
     private Image image;
     private final int height = 50;
     private final int width = 50;
+    private boolean active;
 
-    public Item(int id, String name, String description, int quantity, boolean active) {
+    public Item(int id, String name, String description, int quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
-        this.active = active;
+        this.active = false;
+
         updateImageView("sprites/itemAssets/placeholder.png");
     }
 
-    /**
-     * Abstract function that goes in AnimationTimer to dictate what happens
-     * due to item presence.
-     * @param currentNanoTime same long as AnimationTimer
-     */
-    public abstract void effect(long currentNanoTime);
+
 
     public void updateImageView(String spritePath) {
         this.imageView = new ImageView(spritePath);
@@ -36,6 +32,7 @@ public abstract class Item {
         imageView.setFitHeight(this.height);
         image = imageView.getImage();
     }
+
 
     public void addQuantity(int value) {
         this.quantity += value;
@@ -73,7 +70,7 @@ public abstract class Item {
         return this.active;
     }
 
-    public Image getImageView() {
+    public Image getImage() {
         return this.image;
     }
 

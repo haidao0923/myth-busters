@@ -20,7 +20,7 @@ public class BlueTreasureChest extends TreasureChest {
         for (int i = 0; i < amountToAdd; i++) {
             addRandomPotion(itemsToAdd);
         }
-        Controller.getPlayer().updateInventory(null, itemsToAdd);
+        Controller.getPlayer().updateHotbar(null, itemsToAdd);
 
         opened = true;
     }

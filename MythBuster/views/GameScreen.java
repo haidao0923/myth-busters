@@ -47,6 +47,8 @@ public class GameScreen {
         this.board = new Group();
         this.roomLayout = roomLayout;
         initScene();
+
+
     }
 
     private void initScene() {
@@ -90,7 +92,7 @@ public class GameScreen {
         }
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
-                player.getGroup(), player.getHeartsBox(), player.getInventoryBox());
+                player.getGroup(), player.getHeartsBox(), player.gethotbarBox());
         /*if (currentRoom instanceof StartingRoom) {
             displays.getChildren().add(currentRoom.getRoomInfo());
         } else {
