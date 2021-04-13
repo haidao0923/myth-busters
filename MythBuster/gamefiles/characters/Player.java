@@ -1,6 +1,7 @@
 package gamefiles.characters;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import controller.Controller;
 import gamefiles.Heart;
@@ -19,6 +20,8 @@ import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -382,6 +385,17 @@ public class Player implements Touchable {
         }
     }
 
+    public void swapWeapon(Weapon w) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setTitle("Weapon Swap");
+        a.setHeaderText("Swapping Weapons");
+        a.setContentText("Would you like to swap weapons?");
+        Optional<ButtonType> response = a.showAndWait();
+        if (response.isPresent() && response.get() == ButtonType.OK) {
+            setWeapon(w);
+        }
+    }
+
     public Group getGroup() {
         return imageGroup;
     }
@@ -425,6 +439,13 @@ public class Player implements Touchable {
     }
     public void setWeapon(Weapon w) {
         weapon = w;
+        if (weapon instanceof Spear) {
+            imageView.setImage(spearSprite);
+        } else if (weapon instanceof Sword) {
+            imageView.setImage(swordSprite);
+        } else if (weapon instanceof Bow) {
+            imageView.setImage(bowSprite);
+        }
     }
     public Weapon getWeapon() {
         return weapon;

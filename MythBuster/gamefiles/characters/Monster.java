@@ -3,6 +3,9 @@ package gamefiles.characters;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Touchable;
+import gamefiles.items.Item;
+import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.*;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -10,6 +13,11 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Monster implements Touchable {
     protected String name;
@@ -29,6 +37,8 @@ public abstract class Monster implements Touchable {
     protected Rectangle healthBarBacking;
     protected double healthBarWidth;
 
+    private Map<Integer, Integer> lootTable = new HashMap<>();
+
     protected Group monsterGroup;
     public Monster(String name, double health, double movementSpeed, String spritePath,
         double width, double height) {
@@ -44,6 +54,8 @@ public abstract class Monster implements Touchable {
 
         isDead = false;
 
+        initLootTable();
+
         imageView = new ImageView(spritePath);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
@@ -55,6 +67,21 @@ public abstract class Monster implements Touchable {
         monsterGroup = new Group();
         monsterGroup.getChildren().addAll(image, healthBarBacking, healthBar);
 
+    }
+
+    private void initLootTable() {
+        int total = 100;
+        for (int i = 0; i <= 1; i++) {
+            int probability = (int)(7 * Math.random() + 22);
+            lootTable.put(i, probability);
+            total = total - probability;
+        }
+        for (int i = 100; i <= 102; i++) {
+            int probability = (int)(3 * Math.random() + 4);
+            lootTable.put(i, probability);
+            total = total - probability;
+        }
+        lootTable.put(-1, total);
     }
 
 
@@ -81,7 +108,50 @@ public abstract class Monster implements Touchable {
                 Trap.decrementTrapCount(1);
             }
             GameLoop.getMonsters().remove(this);
+            if (!(this instanceof Trap)) {
+                addItems();
+            }
         }
+    }
+
+    public void addItems() {
+        ArrayList<Item> toAdd = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            int prob = (int)(Math.random() * 100);
+            int total = -1;
+            Set<Integer> keySet = lootTable.keySet();
+            for (int key: keySet) {
+                System.out.println(key);
+            }
+            for (int key: keySet) {
+                total = total + lootTable.get(key);
+                if (prob < total) {
+                    if (key >= 100) {
+                        Weapon w = ItemDatabase.getWeaponItem(key % 100);
+                        if(!checkWeapon(w)) {
+                            Controller.getPlayer().swapWeapon(w);
+                            break;
+                        } else {
+                            int newCoins = (int)(15 + Math.random() * 20);
+                            Controller.getPlayer().addCoins(newCoins);
+                            break;
+                        }
+                    } else if (key >= 0) {
+                        toAdd.add(ItemDatabase.getItem(key));
+                        break;
+                    } else {
+                        int newCoins = (int)(15 + Math.random() * 20);
+                        Controller.getPlayer().addCoins(newCoins);
+                        break;
+                    }
+                }
+            }
+        }
+        Controller.getPlayer().updateInventory(null, toAdd);
+    }
+
+    private boolean checkWeapon(Weapon w) {
+        return w.equals(Controller.getPlayer().getWeapon());
     }
 
 
