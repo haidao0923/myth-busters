@@ -9,6 +9,7 @@ import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
@@ -26,6 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sounds.BackgroundMusic;
 import views.WinScreen;
+
+import java.util.ArrayList;
 
 
 public class Controller extends Application {
@@ -94,6 +97,11 @@ public class Controller extends Application {
 
     }
 
+    public static void goToInventory() {
+        Scene scene = Inventory.getScene();
+        mainWindow.setScene(scene);
+    }
+
     public static void goToStartingRoom() {
         //Initialize starting room.
         roomLayout = new RoomLayout();
@@ -108,8 +116,21 @@ public class Controller extends Application {
     }
 
     public static void playGame() {
+        //Take in inputs
+        ArrayList<String> input = new ArrayList<>();
+
+        //Keyboard shortcuts related to the overall game go here
+        gameScreen.getScene().setOnKeyReleased(
+                e -> {
+                    String code = e.getCode().toString();
+                    input.add(code);
+                });
+
+        System.out.println("Test!");
+
         controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
+
                 // game logic
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
@@ -218,6 +239,11 @@ public class Controller extends Application {
             GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                     player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         }
+    }
+
+    public static void goToGameScreen() {
+        Scene scene = gameScreen.getScene();
+        mainWindow.setScene(scene);
     }
 
     public static void goToWinScreen() {
@@ -340,6 +366,9 @@ public class Controller extends Application {
         return roomLayout;
     }
 
+    public static AnimationTimer getControllerLoop() {
+        return controllerLoop;
+    }
 
     /**
      * Private testing method to return a String representation of the Label of the window.
@@ -364,6 +393,8 @@ public class Controller extends Application {
     public static int getH() {
         return H;
     }
+
+
 
 
 }

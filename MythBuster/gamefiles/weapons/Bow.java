@@ -19,8 +19,11 @@ public class Bow extends Weapon {
     private Group arrowGroup = new Group();
     private AnimationTimer arrowTimer;
 
-    public Bow(int id, String name, double speed, double damage) {
-        super(id, name, speed, damage);
+    public Bow(int id, String name, String description, double speed, double damage) {
+
+        super(id, name, description, speed, damage);
+        updateImageView("sprites/itemAssets/BowAndArrow.png");
+
     }
 
     private class Arrow implements Touchable {
