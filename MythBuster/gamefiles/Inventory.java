@@ -69,10 +69,11 @@ public class Inventory {
 
         //Display Text
         Text instructions = new Text(800, 300, "Click on a consumable and then press 1-5 to equip to hotbar.");
-        Text instructions2 = new Text(800, 400,"Click on a weapon and press E to equip");
+        Text instructions2 = new Text(800, 350,"Click on a weapon and press E to equip");
+        Text instructions3 = new Text(800, 400,"Press I to go back.");
 
 
-        board.getChildren().addAll(instructions, instructions2);
+        board.getChildren().addAll(instructions, instructions2, instructions3);
 
         //Display inventory
         inventoryRows.getChildren().clear();
