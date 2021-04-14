@@ -1,11 +1,14 @@
 package gamefiles;
 
 import controller.Controller;
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.skin.TextAreaSkin;
 import javafx.scene.image.ImageView;
+import views.GameScreen;
 
 public abstract class TreasureChest implements Touchable {
 
@@ -55,6 +58,28 @@ public abstract class TreasureChest implements Touchable {
         return false;
     }
     public abstract void open();
+
+    public void displayReward(String text) {
+        Label display = new Label(text);
+        display.setPrefWidth(Controller.getW());
+        display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
+                + "-fx-alignment:CENTER;");
+        display.setLayoutY(200);
+        Controller.getGameScreen().getBoard().getChildren().add(display);
+
+        new AnimationTimer() {
+            int timer = 3 * 60;
+            @Override
+            public void handle(long currentNanoTime) {
+                timer--;
+                if (timer <= 0) {
+                    Controller.getGameScreen().getBoard().getChildren().remove(display);
+                    this.stop();
+                }
+            }
+        }.start();
+    }
+
 
     public boolean isOpened() {
         return opened;
