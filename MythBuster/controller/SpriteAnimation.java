@@ -11,6 +11,7 @@ public class SpriteAnimation extends Transition {
     private final ImageView imageView;
     private final int count;
     private final int offsetY;
+    private final int offsetX;
     private final int width;
     private final int height;
 
@@ -20,11 +21,12 @@ public class SpriteAnimation extends Transition {
             ImageView imageView,
             Duration duration,
             int count,
-            int offsetY,
+            int offsetY, int offsetX,
             int width,   int height) {
         this.imageView = imageView;
         this.count     = count;
         this.offsetY   = offsetY;
+        this.offsetX   = offsetX;
         this.width     = width;
         this.height    = height;
         setCycleDuration(duration);
@@ -34,7 +36,7 @@ public class SpriteAnimation extends Transition {
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {
-            final int x = (index % count) * width;
+            final int x = (index % count) * width + offsetX;
             final int y = (index / count) * height + offsetY;
             imageView.setViewport(new Rectangle2D(x, y, width, height));
             lastIndex = index;

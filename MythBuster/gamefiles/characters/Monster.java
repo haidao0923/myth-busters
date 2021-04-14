@@ -147,7 +147,7 @@ public abstract class Monster implements Touchable {
                 }
             }
         }
-        Controller.getPlayer().updateInventory(null, toAdd);
+        Controller.getPlayer().updateHotbar(null, toAdd);
     }
 
     private boolean checkWeapon(Weapon w) {
