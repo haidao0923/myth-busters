@@ -32,22 +32,23 @@ public abstract class Room {
         roomInfo = new Text(410, 10, toString());
         roomInfo.setStyle("-fx-font-size: 30;");
 
-        //Add at least 1 monster
-        Monster defaultMonster = new Soldier();
-        defaultMonster.moveAbsolute(Math.random() * width, Math.random() * height);
-        monsters.add(defaultMonster);
+        if (this instanceof BasicRoom) {
+            //Add at least 1 monster
+            Monster defaultMonster = new Soldier();
+            defaultMonster.moveAbsolute(Math.random() * width, Math.random() * height);
+            monsters.add(defaultMonster);
 
-        //Randomly add more monsters
-        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            spawnSoldier();
+            //Randomly add more monsters
+            for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+                spawnSoldier();
+            }
+            for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+                spawnMage();
+            }
+            for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
+                spawnTrapMonster();
+            }
         }
-        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            spawnMage();
-        }
-        for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
-            spawnTrapMonster();
-        }
-
     }
     public Door[] getDoors() {
         return doors;

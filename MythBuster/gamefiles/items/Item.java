@@ -1,5 +1,6 @@
 package gamefiles.items;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Item {
@@ -7,32 +8,31 @@ public abstract class Item {
     private String name;
     private String description;
     private int quantity;
-    private boolean active;
     private ImageView imageView;
+    private Image image;
     private final int height = 50;
     private final int width = 50;
+    private boolean active;
 
-    public Item(int id, String name, String description, int quantity, boolean active) {
+    public Item(int id, String name, String description, int quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
-        this.active = active;
+        this.active = false;
+
         updateImageView("sprites/itemAssets/placeholder.png");
     }
 
-    /**
-     * Abstract function that goes in AnimationTimer to dictate what happens
-     * due to item presence.
-     * @param currentNanoTime same long as AnimationTimer
-     */
-    public abstract void effect(long currentNanoTime);
+
 
     public void updateImageView(String spritePath) {
         this.imageView = new ImageView(spritePath);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
+        image = imageView.getImage();
     }
+
 
     public void addQuantity(int value) {
         this.quantity += value;
@@ -48,7 +48,7 @@ public abstract class Item {
 
     public String getDescription() {
         return this.description;
-    } 
+    }
 
     public int getQuantity() {
         return this.quantity;
@@ -70,7 +70,14 @@ public abstract class Item {
         return this.active;
     }
 
-    public ImageView getImageView() {
-        return this.imageView;
+    public Image getImage() {
+        return this.image;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    public int getWidth() {
+        return width;
     }
 }

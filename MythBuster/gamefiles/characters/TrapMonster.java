@@ -10,7 +10,7 @@ public class TrapMonster extends Monster {
         super("Trap Monster", 100, 5, "sprites/Medusa.png", 100, 100);
     }
 
-    public TrapMonster(double health, double movementSpeed, String spritePath, 
+    public TrapMonster(double health, double movementSpeed, String spritePath,
                         double width, double height) {
         super("Trap Monster", health, movementSpeed, spritePath, width, height);
     }
@@ -23,6 +23,8 @@ public class TrapMonster extends Monster {
 
     public void update() {
         // game logic
+        System.out.println("Trap: " + Trap.getTrapCount());
+        System.out.println("Monster: " + GameLoop.getMonsters().size());
         checkDeath();
         redrawHealthBar();
         // move
@@ -35,17 +37,6 @@ public class TrapMonster extends Monster {
             targetPositionX = Math.random() * (Controller.getW() - width);
             targetPositionY = Math.random() * (Controller.getH() - height);
         }
-        /*if (Controller.getPlayer().intersects(this)) {
-            if (damageCooldown > 0) {
-                damageCooldown--;
-            } else {
-                damageCooldown = 20;
-                Controller.getPlayer().takeDamage(damage);
-                //System.out.println("Collided with Trap Monster! Health: " 
-                    + Controller.getPlayer().getCurrentHealth
-                // ());
-            }
-        }*/
         if (spawnTrapCooldown > 0) {
             spawnTrapCooldown--;
         } else {

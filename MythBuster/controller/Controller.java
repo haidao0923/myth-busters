@@ -1,14 +1,16 @@
 package controller;
 
-//import com.google.common.collect.TreeMultimap; what is this for lol
 
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
+import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
+import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
@@ -27,8 +29,10 @@ import javafx.stage.Stage;
 import sounds.BackgroundMusic;
 import views.WinScreen;
 
+import java.util.ArrayList;
 
-public class Controller extends Application { 
+
+public class Controller extends Application {
     private static Stage mainWindow;
     private static final int W = 1200;
     private static final int H = 800;
@@ -94,6 +98,11 @@ public class Controller extends Application {
 
     }
 
+    public static void goToInventory() {
+        Scene scene = Inventory.getScene();
+        mainWindow.setScene(scene);
+    }
+
     public static void goToStartingRoom() {
         //Initialize starting room.
         roomLayout = new RoomLayout();
@@ -108,8 +117,21 @@ public class Controller extends Application {
     }
 
     public static void playGame() {
+        //Take in inputs
+        ArrayList<String> input = new ArrayList<>();
+
+        //Keyboard shortcuts related to the overall game go here
+        gameScreen.getScene().setOnKeyReleased(
+                e -> {
+                    String code = e.getCode().toString();
+                    input.add(code);
+                });
+
+        System.out.println("Test!");
+
         controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
+
                 // game logic
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
@@ -121,7 +143,7 @@ public class Controller extends Application {
 
                 //If there is a left door and we are at it.
                 if (currentRoom.getLeftDoor() != null
-                            && player.intersects(currentRoom.getLeftDoor()) 
+                            && player.intersects(currentRoom.getLeftDoor())
                             && !currentRoom.getLeftDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -132,7 +154,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -143,7 +165,7 @@ public class Controller extends Application {
 
                 //If there is a right door and we are at it.
                 if (currentRoom.getRightDoor() != null
-                            && player.intersects(currentRoom.getRightDoor()) 
+                            && player.intersects(currentRoom.getRightDoor())
                             && !currentRoom.getRightDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -154,7 +176,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -165,7 +187,7 @@ public class Controller extends Application {
 
                 //If there is a top door and we are at it.
                 if (currentRoom.getTopDoor() != null
-                            && player.intersects(currentRoom.getTopDoor()) 
+                            && player.intersects(currentRoom.getTopDoor())
                             && !currentRoom.getTopDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -176,7 +198,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -187,7 +209,7 @@ public class Controller extends Application {
 
                 //If there is a bottom door and we are at it.
                 if (currentRoom.getBottomDoor() != null
-                            && player.intersects(currentRoom.getBottomDoor()) 
+                            && player.intersects(currentRoom.getBottomDoor())
                             && !currentRoom.getBottomDoor().isLocked()) {
                     displays.getChildren().remove(currentRoom.getRoomInfo());
                     prevRoom = currentRoom;
@@ -198,7 +220,7 @@ public class Controller extends Application {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
                             Room r = d.getDestination();
-                            if ((r.getColumn() == prevRoom.getColumn()) 
+                            if ((r.getColumn() == prevRoom.getColumn())
                                 && (r.getRow() == prevRoom.getRow())) {
                                 d.unlock();
                             }
@@ -211,8 +233,18 @@ public class Controller extends Application {
         };
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
-        GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        if (player.getWeapon() instanceof Bow) {
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), ((Bow) player.getWeapon()).getArrowTimer(),
+                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        } else {
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
+                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+        }
+    }
+
+    public static void goToGameScreen() {
+        Scene scene = gameScreen.getScene();
+        mainWindow.setScene(scene);
     }
 
     public static void goToWinScreen() {
@@ -231,9 +263,16 @@ public class Controller extends Application {
     }
 
     public static void goToDeathScreen() {
-        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(), 
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
+
+        for (int i = 0; i < 5; i++) {
+            Inventory.removeFromHotbar(i);
+        }
+        Inventory.setHotbarSize(0);
+        Inventory.clearInventory();
+
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 
@@ -335,6 +374,9 @@ public class Controller extends Application {
         return roomLayout;
     }
 
+    public static AnimationTimer getControllerLoop() {
+        return controllerLoop;
+    }
 
     /**
      * Private testing method to return a String representation of the Label of the window.
@@ -359,6 +401,8 @@ public class Controller extends Application {
     public static int getH() {
         return H;
     }
+
+
 
 
 }

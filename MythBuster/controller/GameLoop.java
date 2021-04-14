@@ -2,6 +2,9 @@ package controller;
 
 import gamefiles.characters.Player;
 import gamefiles.characters.Monster;
+import gamefiles.weapons.Bow;
+import gamefiles.weapons.Weapon;
+import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
 import views.GameScreen;
 
@@ -11,6 +14,7 @@ public class GameLoop {
 
     private static ArrayList<Monster> monsters = new ArrayList<>();
     private static AnimationTimer monsterLoop;
+    private static Weapon bow = WeaponDatabase.getWeapon(2);
 
 
     public static void gameLoop() {
@@ -29,6 +33,7 @@ public class GameLoop {
     public static void initializeAllAnimationTimers(Player player, GameScreen gameScreen) {
         GameLoop.gameLoop();
         player.updatePlayerHp();
+        ((Bow) bow).arrowTimer();
         player.play(gameScreen.getScene());
     }
 

@@ -11,12 +11,16 @@ public abstract class Consumable extends Item {
     private long durationTimer;
     private boolean consumed;
     private MediaPlayer soundEffect;
+    private boolean active;
+
 
     public Consumable(int id, String name, String description, int quantity, boolean active, long duration) {
-        super(id, name, description, quantity, active);
+        super(id, name, description, quantity);
         this.duration = duration;
         this.durationTimer = 0;
         this.consumed = false;
+        this.active = active;
+
         setSoundEffect("MythBuster/sounds/Consumable.wav");
     }
 
@@ -26,6 +30,13 @@ public abstract class Consumable extends Item {
             this.toggleConsumed();
         }
     }
+
+    /**
+     * Abstract function that goes in AnimationTimer to dictate what happens
+     * due to item presence.
+     * @param currentNanoTime same long as AnimationTimer
+     */
+    public abstract void effect(long currentNanoTime);
 
     public boolean update() {
         if (this.durationTimer == 0) {

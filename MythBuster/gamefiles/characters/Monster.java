@@ -1,14 +1,27 @@
 package gamefiles.characters;
 
+import controller.Controller;
 import controller.GameLoop;
+import gamefiles.Inventory;
 import gamefiles.Touchable;
+import gamefiles.items.Item;
+import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class Monster implements Touchable {
     protected String name;
@@ -28,6 +41,8 @@ public abstract class Monster implements Touchable {
     protected Rectangle healthBarBacking;
     protected double healthBarWidth;
 
+    private Map<Integer, Integer> lootTable = new HashMap<>();
+
     protected Group monsterGroup;
     public Monster(String name, double health, double movementSpeed, String spritePath,
         double width, double height) {
@@ -43,6 +58,8 @@ public abstract class Monster implements Touchable {
 
         isDead = false;
 
+        initLootTable();
+
         imageView = new ImageView(spritePath);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
@@ -54,6 +71,21 @@ public abstract class Monster implements Touchable {
         monsterGroup = new Group();
         monsterGroup.getChildren().addAll(image, healthBarBacking, healthBar);
 
+    }
+
+    private void initLootTable() {
+        int total = 100;
+        for (int i = 0; i <= 1; i++) {
+            int probability = (int)(7 * Math.random() + 22);
+            lootTable.put(i, probability);
+            total = total - probability;
+        }
+        for (int i = 100; i <= 102; i++) {
+            int probability = (int)(3 * Math.random() + 4);
+            lootTable.put(i, probability);
+            total = total - probability;
+        }
+        lootTable.put(-1, total);
     }
 
 
@@ -72,10 +104,67 @@ public abstract class Monster implements Touchable {
         if (currentHealth <= 0) {
             isDead = true;
             Platform.runLater(() -> {
+                Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
+                Controller.getCurrentRoom().getMonsters().remove(this);
                 monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
             });
+            if (this instanceof Trap) {
+                Trap.decrementTrapCount(1);
+            }
             GameLoop.getMonsters().remove(this);
+            if (!(this instanceof Trap)) {
+                addItems();
+            }
         }
+    }
+
+    public void addItems() {
+        ArrayList<Item> toAdd = new ArrayList<>();
+        int prob = (int)(Math.random() * 100);
+        int total = -1;
+        Set<Integer> keySet = lootTable.keySet();
+        for (int key: keySet) {
+            total = total + lootTable.get(key);
+            if (prob < total) {
+                if (key >= 100) {
+                    Weapon w = WeaponDatabase.getWeapon(key % 100);
+                    if(!checkWeapon(w)) {
+                        toAdd.add(w);
+                        displayReward("You picked up a " + w.getName());
+                        Inventory.addToInventory(w);
+                        break;
+                    } else {
+                        int newCoins = (int)(5 + Math.random() * 5);
+                        displayReward("You picked up " + newCoins + " coins");
+                        Controller.getPlayer().addCoins(newCoins);
+                        break;
+                    }
+                } else if (key >= 0) {
+                    displayReward("You picked up a " + ItemDatabase.getItem(key).getName());
+                    toAdd.add(ItemDatabase.getItem(key));
+                    Controller.getPlayer().updateHotbar(null, toAdd);
+                    break;
+                } else {
+                    int newCoins = (int)(5 + Math.random() * 5);
+                    displayReward("You picked up " + newCoins + " coins");
+                    Controller.getPlayer().addCoins(newCoins);
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean checkWeapon(Weapon w) {
+        List<Item> inventory = Inventory.getInventory();
+        for (Item i: inventory) {
+            if ((i instanceof Weapon)) {
+                Weapon w2 = (Weapon)(i);
+                if (w.equals(w2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -134,6 +223,27 @@ public abstract class Monster implements Touchable {
     }
     public double getMaxHealth() {
         return maxHealth;
+    }
+
+    public void displayReward(String text) {
+        Label display = new Label(text);
+        display.setPrefWidth(Controller.getW());
+        display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
+                + "-fx-alignment:CENTER;");
+        display.setLayoutY(200);
+        Controller.getGameScreen().getBoard().getChildren().add(display);
+
+        new AnimationTimer() {
+            int timer = 60;
+            @Override
+            public void handle(long currentNanoTime) {
+                timer--;
+                if (timer <= 0) {
+                    Controller.getGameScreen().getBoard().getChildren().remove(display);
+                    this.stop();
+                }
+            }
+        }.start();
     }
 
 }

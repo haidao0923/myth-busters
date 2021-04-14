@@ -1,10 +1,10 @@
 package gamefiles.weapons;
 
-public abstract class Weapon {
-    private int id;
-    private String name;
-    private double speed;
-    private double damage;
+import gamefiles.items.Item;
+
+public abstract class Weapon extends Item {
+    protected double speed;
+    protected double damage;
 
     /**
      * Create new weapon object with initial name, speed, and damage.
@@ -13,22 +13,18 @@ public abstract class Weapon {
      * @param speed  the speed of the weapon
      * @param damage the damage of the weapon
      */
-    public Weapon(int id, String name, double speed, double damage) {
-        this.id = id;
-        this.name = name;
+    public Weapon(int id, String name, String description, double speed, double damage) {
+        super(id, name, description, 1);
         this.speed = speed;
         this.damage = damage;
     }
 
-    /**
-     * Get the name of the weapon.
-     *
-     * @return the name of the weapon
-     */
-    public String getName() {
-        return name;
-    }
+
     public double getDamage() {
         return this.damage;
+    }
+
+    public boolean equals(Weapon w) {
+        return this.getName() == w.getName();
     }
 }

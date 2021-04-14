@@ -1,12 +1,16 @@
 package gamefiles.characters;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import controller.Controller;
 import gamefiles.Heart;
 import controller.GameLoop;
 import controller.SpriteAnimation;
+import gamefiles.Inventory;
 import gamefiles.Touchable;
+import gamefiles.items.Consumable;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.weapons.Bow;
@@ -18,9 +22,13 @@ import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Player implements Touchable {
@@ -28,17 +36,14 @@ public class Player implements Touchable {
     private int coins;
     private Weapon weapon;
     private double speed;
-    private boolean shooting;
     private int numHearts;
     private double maxHealth;
     private double currentHealth;
-    // private double oldHealth;
-    private double percentageHealth;
     private double attackCD = 0;
     private double moveCD = 0;
     private double damage = 10;
     private double damageCooldown;
-    private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
+    private Image swordSprite = new Image("sprites/Player/daggerPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
     private Image bowSprite = new Image("sprites/Player/bowPlayer.png");
     private ImageView imageView;
@@ -46,12 +51,12 @@ public class Player implements Touchable {
 
     private double positionX;
     private double positionY;
-    private double width;
-    private double height;
+    private double width = 100;
+    private double height = 100;
 
     private final double heartsPadding = 10;
     private final double heartsDimensions = 50;
-    private final double inventoryPadding = 10;
+    private final double hotbarPadding = 10;
 
     private int spriteWidth = 63;
     private int spriteHeight = 55;
@@ -61,24 +66,31 @@ public class Player implements Touchable {
     private Group imageGroup;
     private ArrayList<Heart> hearts;
     private HBox heartsBox;
-    private ArrayList<Item> inventory;
-    private HBox inventoryBox;
+    private Item[] hotbar;
+    private HBox hotbarBox;
 
     private AnimationTimer playerLogic;
     private AnimationTimer playerHpUpdate;
     private AnimationTimer itemLoop;
 
+
+
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
-        width = 100;
-        height = 100;
+        
+        if (weapon != null) {
+            Inventory.addToInventory(weapon);
+        }
+
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
             imageView.setImage(spearSprite);
         } else if (weapon instanceof Sword) {
             imageView.setImage(swordSprite);
+//            spriteX = 80;
+//            spriteY = 1995;
         } else if (weapon instanceof Bow) {
             imageView.setImage(bowSprite);
         }
@@ -98,31 +110,58 @@ public class Player implements Touchable {
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
         updatePlayerMaxHp();
 
-        // inventory
-        initializeInventory();
+        initializeHotbar();
     }
 
-    public void attack(Scene scene) {
-        Animation animation;
+    public int attack(Scene scene) {
+        Animation animation = null;
         int currX = spriteX;
         int currY = spriteY;
+        double duration = 0;
         if (weapon instanceof Spear) {
             spriteY = spriteY - 256; //go to the attack frames
-            animation = new SpriteAnimation(imageView, Duration.millis(500), 
-                    8, 8, spriteY, spriteWidth, spriteHeight);
+
+            duration = 500;
+            animation = new SpriteAnimation(imageView, Duration.millis(duration),
+                    8, spriteY,  0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
-            for (Monster monster : GameLoop.getMonsters()) {
-                if (this.intersects(monster)) {
-                    //System.out.println("player attacked" + monster.getName());
-                    monster.takeDamage(damage);
-                }
-            }
+        } else if (weapon instanceof Sword) {
+            spriteY += 259;
+            duration = 500;
+//            imageView.setFitWidth(289.5);
+//            imageView.setFitHeight(82.5);
+//            if (direction == 0) {
+//                positionX -= 63;
+//            } else {
+//                positionX += 63;
+//            }
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, spriteY, 0, spriteWidth,
+                    spriteHeight);
+            animation.setCycleCount(1);
+            animation.play();
+            //moveAbsolute(positionX, positionY);
+        } else if (weapon instanceof Bow) {
+            spriteY += 510;
+            duration = 500;
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, spriteY, 0, spriteWidth,
+                    spriteHeight);
+            animation.setCycleCount(1);
+            animation.play();
+            ((Bow) weapon).fireArrow(direction, positionX, positionY + width / 2, damage);
         }
-        spriteX = currX;
-        spriteY = currY;
-        Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
-        imageView.setViewport(viewpoint);
+        animation.setOnFinished(actionEvent -> {
+            spriteX = currX;
+            spriteY = currY;
+            Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+            //imageView.setFitWidth(width);
+            imageView.setViewport(viewpoint);
+            if (weapon instanceof Sword) {
+                //positionX += 63;
+                //moveAbsolute(positionX, positionY);
+            }
+        });
+        return (int) ((duration / 1000) * 60);
     }
 
     public void play(Scene scene) {
@@ -141,32 +180,44 @@ public class Player implements Touchable {
                 String code = e.getCode().toString();
                 input.remove(code);
             });
-        
+
+
+
+
         // PLAYER LOGIC
         this.playerLogic = new AnimationTimer() {
-            private int lastDirection = 0;
             private int invisibilityCd = 0;
+            private int damageWindow = 0;
+
+            //For checking if 'I' is pressed and released.
+            boolean containedI = false;
+
             public void handle(long now) {
                 // game logic
-                // if (damageCooldown == 60 || damageCooldown == 0) {
-                //     System.out.println(System.currentTimeMillis());
-                // }
                 // 60 now's = 1 second!!!
-
                 if (attackCD > 0) {
                     attackCD--;
                 }
                 if (input.contains("J") && attackCD <= 0) {
                     speed = 0;
                     attackCD = 60;
-                    attack(scene);
-                    moveCD = 30;
+                    int temp = attack(scene);
+                    damageWindow = temp;
+                    moveCD = temp;
                 } else if (input.size() > 1) {
                     speed = 7;
                 } else {
                     speed = 10;
                 }
-
+                if (damageWindow > 0) {
+                    for (Monster monster : GameLoop.getMonsters()) {
+                        if (Controller.getPlayer().intersects(monster)) {
+                            monster.takeDamage(damage);
+                            damageWindow = 0;
+                        }
+                    }
+                    damageWindow--;
+                }
                 if (damageCooldown > 0 && damageCooldown % 15 == 0) { // got hit
                     invisibilityCd = 5; // set invis frames
                 }
@@ -178,33 +229,43 @@ public class Player implements Touchable {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
                         moveRelative(-speed, 0);
-                        lastDirection = 0;
+                        direction = 0;
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
                         moveRelative(speed, 0);
-                        lastDirection = 1;
+                        direction = 1;
                     }
                     if (input.contains("W") && positionY > 0) {
                         moveRelative(0, -speed);
-                        //lastDirection = 2;
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
                         moveRelative(0, speed);
-                        //lastDirection = 3;
                     }
                 }
 
                 if (invisibilityCd > 0) { // Overwrite setScale if invis frames
                     imageView.setScaleX(0);
                 } else if (imageView.getScaleX() == 0) { // If player didn't move
-                    if (lastDirection == 0) { // same direction
+                    if (direction == 0) { // same direction
                         imageView.setScaleX(1);
-                    } else if (lastDirection == 1) {
+                    } else if (direction == 1) {
                         imageView.setScaleX(-1);
                     }
                 }
                 invisibilityCd--;
+
+
+                //Keyboard transitions to screens
+                if(input.contains("I")) {
+                    containedI = true;
+                }
+                if(containedI && !input.contains("I")) { //Go to inventory if I was released.
+                    Controller.goToInventory();
+                    input.remove("I");
+                    containedI = false;
+                }
+
             }
         };
 
@@ -214,30 +275,27 @@ public class Player implements Touchable {
             int itemCD = 0;
 
             public void handle(long currentNanoTime) {
-                ArrayList<Item> currInventory = getInventory();
-                // if (input.size() > 0) {
-                //     for (String s : input) {
-                //         System.out.print(s);
-                //     }
-                //     System.out.println();
-                // }
-                
-                // some triggers for onscreen inventory / consumables
-                for (int i = 0; i < currInventory.size(); i++) { // max inventory size of 9
-                    Item item = currInventory.get(i);
-                    if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
-                        System.out.println("Pressed " + (i + 1));
-                        item.setActive(true);
-                        itemCD = 30;
+                Item[] currHotbar = Inventory.getHotbar();
+
+                // some triggers for onscreen hotbar / consumables
+                for (int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) { // max hotbar size of 5
+                    Item item = currHotbar[i];
+                    if(item != null) {
+                        if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
+                            System.out.println("Pressed " + (i + 1));
+                            item.setActive(true);
+                            itemCD = 30;
+                            if (item instanceof Consumable) {
+                                toDelete.add(i);
+                                System.out.println("Trying to delete at index " + i);
+                            }
+                        }
                     }
-                    if (item.isActive()) {
-                        item.effect(currentNanoTime);
-                    }
-                    if (item.getQuantity() == 0) {
-                        toDelete.add(i);
+                    if (item instanceof Consumable && item.isActive()) {
+                        ((Consumable)item).effect(currentNanoTime);
                     }
                 }
-                updateInventory(toDelete, null);
+                updateHotbar(toDelete, null);
                 itemCD--;
             }
         };
@@ -255,59 +313,90 @@ public class Player implements Touchable {
         imageGroup.relocate(positionX, positionY);
     }
 
-    public void updateInventory(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
+
+    public void updateHotbar(ArrayList<Integer> toDelete, ArrayList<Item> toAdd) {
         boolean update = false;
-        ArrayList<Item> currInventory = getInventory();
+        Item[] currHotbar = Inventory.getHotbar();
         if (toDelete != null && toDelete.size() > 0) {
             update = true;
             for (int i = toDelete.size() - 1; i >= 0; i--) {
-                currInventory.remove(toDelete.remove(i).intValue());
+                currHotbar[toDelete.remove(i).intValue()] = null;
+                Inventory.setHotbarSize(Inventory.getHotbarSize() - 1);
             }
         }
         if (toAdd != null && toAdd.size() > 0) {
+
             update = true;
             for (Item item : toAdd) {
-                currInventory.add(item);
+                if(Inventory.getHotbarSize() < Inventory.getMAXHOTBARSIZE()) {
+                    for(int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) {
+                        if (currHotbar[i] == null) {
+                            currHotbar[i] = item;
+                            Inventory.setHotbarSize(Inventory.getHotbarSize() + 1);
+                            break;
+                        }
+                    }
+                } else {
+                    Inventory.addToInventory(item);
+                }
+
             }
+
         }
 
         if (update) {
-            // InventoryBox
-            updateInventoryImages();
+            // hotbarBox
+            updateHotbarImages();
         }
     }
 
-    public void updateInventoryImages() {
-        ArrayList<ImageView> itemImages = new ArrayList<ImageView>(inventory.size());
-            for (int j = 0; j < inventory.size(); j++) {
-                itemImages.add(inventory.get(j).getImageView());
-            }
-            inventoryBox.getChildren().setAll(itemImages);
-    }
-
-    public void initializeInventory() {
+    public void initializeHotbar() {
         ItemDatabase.resetQuantities();
 
-        this.inventory = new ArrayList<Item>(0); // UPDATE IF WEAPON IS AN ITEM
-        this.inventoryBox = new HBox(inventoryPadding);
+        this.hotbar = Inventory.getHotbar(); // UPDATE IF WEAPON IS AN ITEM
+        this.hotbarBox = new HBox(hotbarPadding);
+        for (int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) {
+            Group hotbarSlot = new Group();
+            hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+            hotbarBox.getChildren().add(hotbarSlot);
 
-        ArrayList<Item> startingInventory = new ArrayList<Item>();
-        Item healthPotion = ItemDatabase.getItem(0);
-        healthPotion.addQuantity(1);
-        startingInventory.add(healthPotion);
-        Item ragePotion = ItemDatabase.getItem(1);
-        ragePotion.addQuantity(1);
-        startingInventory.add(ragePotion);
-        updateInventory(null, startingInventory);
+            ImageView imageView = null;
+            if (hotbar[i] != null) {
+                imageView = new ImageView(hotbar[i].getImage());
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                hotbarSlot.getChildren().add(imageView);
+            }
 
-        System.out.println("Initialized inventory to size " + this.inventory.size());
-        // System.out.println("First inventory item is: " + this.inventory.get(0));
-        // System.out.println("Health potion has qty: " + healthPotion.getQuantity());
-        // System.out.println("Health potion has status: " + healthPotion.isActive());
-
-        inventoryBox.setLayoutX(600);
-        inventoryBox.setLayoutY(inventoryPadding);
+            hotbarBox.setLayoutX(700);
+            hotbarBox.setLayoutY(hotbarPadding);
+        }
     }
+
+
+    public void updateHotbarImages() {
+            for (int j = 0; j < Inventory.getMAXHOTBARSIZE(); j++) {
+                if (hotbar[j] != null) {
+                    ImageView imageView = new ImageView(hotbar[j].getImage());
+                    imageView.setFitWidth(hotbar[j].getWidth());
+                    imageView.setFitHeight(hotbar[j].getHeight());
+                    Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
+                    hotbarSlot.getChildren().clear();
+                    hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                    hotbarSlot.getChildren().add(imageView);
+                } else {
+                    Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
+                    hotbarSlot.getChildren().clear();
+                    hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                }
+            }
+
+    }
+
+
+
+
+
 
     public void updatePlayerHp() {
         this.playerHpUpdate = new AnimationTimer() {
@@ -357,6 +446,21 @@ public class Player implements Touchable {
         }
         heartsBox.setLayoutX(heartsPadding);
         heartsBox.setLayoutY(800 - heartsDimensions - heartsPadding);
+        if (Controller.getGameScreen() != null) {
+            Controller.getGameScreen().getBoard().getChildren().remove(heartsBox);
+            Controller.getGameScreen().getBoard().getChildren().add(heartsBox);
+        }
+    }
+
+    public void swapWeapon(Weapon w) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setTitle("Weapon Swap");
+        a.setHeaderText("Swapping Weapons");
+        a.setContentText("Would you like to swap weapons?");
+        Optional<ButtonType> response = a.showAndWait();
+        if (response.isPresent() && response.get() == ButtonType.OK) {
+            setWeapon(w);
+        }
     }
 
     public Group getGroup() {
@@ -389,11 +493,26 @@ public class Player implements Touchable {
         return coins;
     }
     public void setCoins(int amount) {
-        coins = coins + amount;
+        coins = amount;
+        if (Controller.getGameScreen() != null) {
+            Controller.getGameScreen().getCoinDisplay().setText("Coins: " + getCoins());
+        }
     }
-
+    public void addCoins(int amount) {
+        setCoins(coins + amount);
+    }
+    public void subtractCoins(int amount) {
+        setCoins(coins - amount);
+    }
     public void setWeapon(Weapon w) {
         weapon = w;
+        if (weapon instanceof Spear) {
+            imageView.setImage(spearSprite);
+        } else if (weapon instanceof Sword) {
+            imageView.setImage(swordSprite);
+        } else if (weapon instanceof Bow) {
+            imageView.setImage(bowSprite);
+        }
     }
     public Weapon getWeapon() {
         return weapon;
@@ -437,6 +556,9 @@ public class Player implements Touchable {
         return damageCooldown;
     }
 
+    public void setHealth(double value) {
+        this.currentHealth = value;
+    }
     public void addHealth(double value) {
         this.currentHealth += value;
     }
@@ -450,6 +572,7 @@ public class Player implements Touchable {
 
     public void addMaximumHealth(double value) {
         this.maxHealth += value;
+        this.currentHealth += value;
         this.numHearts += (int) Math.floor(value / Heart.HEALTH_PER_HEART);
         updatePlayerMaxHp();
     }
@@ -466,12 +589,9 @@ public class Player implements Touchable {
         return currentHealth;
     }
 
-    public ArrayList<Item> getInventory() {
-        return this.inventory;
-    }
 
-    public HBox getInventoryBox() {
-        return this.inventoryBox;
+    public HBox gethotbarBox() {
+        return this.hotbarBox;
     }
 
     public AnimationTimer getPlayerLogicTimer() {
