@@ -1,10 +1,12 @@
 package gamefiles;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import controller.Controller;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.Weapon;
 import gamefiles.weapons.WeaponDatabase;
 
 public class BlueTreasureChest extends TreasureChest {
@@ -22,9 +24,7 @@ public class BlueTreasureChest extends TreasureChest {
                 addPotion();
                 break;
             case 1:
-                int weaponIndex = (int) (Math.random() * 3);
-                Inventory.addToInventory(WeaponDatabase.getWeapon(weaponIndex));
-                displayReward("You have found a " + WeaponDatabase.getWeapon(weaponIndex).getName());
+                addWeapon();
                 break;
         }
         opened = true;
@@ -58,5 +58,31 @@ public class BlueTreasureChest extends TreasureChest {
             hastePotion.addQuantity(1);
             itemsToAdd.add(hastePotion);
         }
+    }
+
+    private void addWeapon() {
+        Weapon weapon = WeaponDatabase.getWeapon((int) (Math.random() * 3));
+        if (!hasWeapon(weapon)) {
+            Inventory.addToInventory(weapon);
+            displayReward("You have found a " + weapon.getName() + "!");
+        } else {
+            addPotion();
+        }
+    }
+
+    public boolean hasWeapon(Weapon w) {
+        if (w.equals(Controller.getPlayer().getWeapon())) {
+            return true;
+        }
+        List<Item> inventory = Inventory.getInventory();
+        for (Item i: inventory) {
+            if ((i instanceof Weapon)) {
+                Weapon w2 = (Weapon)(i);
+                if (w.equals(w2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

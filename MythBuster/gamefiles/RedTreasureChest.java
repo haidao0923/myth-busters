@@ -22,12 +22,7 @@ public class RedTreasureChest extends TreasureChest {
         case 0:
         case 1:
         case 2:
-            if (Controller.getPlayer().getCurrentHealth() > 100) {
-                Controller.getPlayer().takeDamage(100);
-            } else {
-                Controller.getPlayer().setHealth(50);
-            }
-            displayReward("You got cursed and loss some hearts");
+            cursePlayer();
             break;
         case 3:
             int coinAmount = (int) (Math.random() * 9 + 4) * 5;
@@ -70,5 +65,14 @@ public class RedTreasureChest extends TreasureChest {
             hastePotion.addQuantity(1);
             itemsToAdd.add(hastePotion);
         }
+    }
+
+    public void cursePlayer() {
+        if (Controller.getPlayer().getCurrentHealth() > 100) {
+            Controller.getPlayer().takeDamage(100);
+        } else {
+            Controller.getPlayer().setHealth(50);
+        }
+        displayReward("You got cursed and loss some hearts");
     }
 }
