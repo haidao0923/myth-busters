@@ -324,7 +324,13 @@ public class Player implements Touchable {
             update = true;
             for (Item item : toAdd) {
                 if(Inventory.getHotbarSize() < Inventory.getMAXHOTBARSIZE()) {
-                    currHotbar[Inventory.getHotbarSize()] = item;
+                    for(int i = 0; i < Inventory.getMAXHOTBARSIZE(); i++) {
+                        if (currHotbar[i] == null) {
+                            currHotbar[i] = item;
+                            Inventory.setHotbarSize(Inventory.getHotbarSize() + 1);
+                            break;
+                        }
+                    }
                 } else {
                     Inventory.addToInventory(item);
                 }
