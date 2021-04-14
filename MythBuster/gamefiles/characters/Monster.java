@@ -156,6 +156,9 @@ public abstract class Monster implements Touchable {
     }
 
     public boolean checkWeapon(Weapon w) {
+        if (w.equals(Controller.getPlayer().getWeapon())) {
+            return true;
+        }
         List<Item> inventory = Inventory.getInventory();
         for (Item i: inventory) {
             if ((i instanceof Weapon)) {
