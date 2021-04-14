@@ -4,6 +4,7 @@ package controller;
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
+import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
@@ -265,6 +266,13 @@ public class Controller extends Application {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
+
+        for (int i = 0; i < 5; i++) {
+            Inventory.removeFromHotbar(i);
+        }
+        Inventory.setHotbarSize(0);
+        Inventory.clearInventory();
+
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 

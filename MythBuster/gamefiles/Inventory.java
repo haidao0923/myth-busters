@@ -50,13 +50,13 @@ public class Inventory {
     public static Scene getScene() {
 
         //For testing purposes.
-        if (inventory.size() < 5) {
+        /*if (inventory.size() < 5) {
             addToInventory(ItemDatabase.getItem(0));
             addToInventory(ItemDatabase.getItem(1));
             addToInventory(WeaponDatabase.getWeapon(0));
             addToInventory(WeaponDatabase.getWeapon(1));
             addToInventory(WeaponDatabase.getWeapon(2));
-        }
+        }*/
 
         //Pause the game when we go to inventory.
         Player player = Controller.getPlayer();
@@ -252,6 +252,11 @@ public class Inventory {
 
     public static void removeFromHotbar(int index) {
         hotbar[index] = null;
+    }
+
+    public static void clearInventory() {
+        inventory.clear();
+        refreshDisplays();
     }
 
     public static void refreshDisplays() {
