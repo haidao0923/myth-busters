@@ -112,7 +112,7 @@ public abstract class Monster implements Touchable {
                 Trap.decrementTrapCount(1);
             }
             GameLoop.getMonsters().remove(this);
-            if (!(this instanceof Trap)) {
+            if (!(this instanceof Trap) && !(this instanceof Fireball)) {
                 addItems();
             }
         }

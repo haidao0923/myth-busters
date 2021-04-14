@@ -32,7 +32,7 @@ public class RedTreasureChest extends TreasureChest {
         case 3:
             int coinAmount = (int) (Math.random() * 9 + 4) * 5;
             Controller.getPlayer().addCoins(coinAmount);
-            displayReward("You have gained " + Integer.toString(coinAmount) + " coins!");
+            displayReward("You found " + Integer.toString(coinAmount) + " coins!");
             break;
         case 4:
             Controller.getPlayer().addMaximumHealth(100);
@@ -65,6 +65,10 @@ public class RedTreasureChest extends TreasureChest {
             ragePotion.addQuantity(1);
             itemsToAdd.add(ragePotion);
             break;
+        case 2:
+            Item hastePotion = ItemDatabase.getItem(2);
+            hastePotion.addQuantity(1);
+            itemsToAdd.add(hastePotion);
         }
     }
 }
