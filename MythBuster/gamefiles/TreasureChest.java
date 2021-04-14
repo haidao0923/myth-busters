@@ -2,6 +2,7 @@ package gamefiles;
 
 import controller.Controller;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -65,7 +66,9 @@ public abstract class TreasureChest implements Touchable {
         display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
                 + "-fx-alignment:CENTER;");
         display.setLayoutY(200);
-        Controller.getGameScreen().getBoard().getChildren().add(display);
+        Platform.runLater(() -> {
+            Controller.getGameScreen().getBoard().getChildren().add(display);
+        });
 
         new AnimationTimer() {
             int timer = 60;
