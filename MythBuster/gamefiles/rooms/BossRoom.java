@@ -45,6 +45,7 @@ public class BossRoom extends Room {
     public Group getRoomGroup() {
         Group roomGroup = super.getRoomGroup();
         roomGroup.getChildren().addAll(boss, bossName);
+        Controller.getGameScreen().changeBackgroundColor(Color.RED);
         return roomGroup;
     }
     public String toString() {

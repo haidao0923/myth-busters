@@ -70,7 +70,7 @@ public class GameScreen {
 
         board.getChildren().addAll(displays);
         scene = new Scene(board, width, height);
-        scene.setFill(Color.PURPLE);
+        changeBackgroundColor(Color.PURPLE);
     }
 
 
@@ -115,6 +115,13 @@ public class GameScreen {
 
     public HBox getDisplays() {
         return displays;
+    }
+
+    public void changeBackgroundColor(String color) {
+        scene.setFill(Color.web(color));;
+    }
+    public void changeBackgroundColor(Color color) {
+        scene.setFill(color);
     }
 
     /**
