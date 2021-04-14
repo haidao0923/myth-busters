@@ -41,7 +41,7 @@ public class BlueTreasureChest extends TreasureChest {
     }
 
     private void addRandomPotion(ArrayList<Item> itemsToAdd) {
-        int random = (int) (Math.random() * 2);
+        int random = (int) (Math.random() * 3);
         switch (random) {
         case 0:
             Item healthPotion = ItemDatabase.getItem(0);
@@ -53,6 +53,10 @@ public class BlueTreasureChest extends TreasureChest {
             ragePotion.addQuantity(1);
             itemsToAdd.add(ragePotion);
             break;
+        case 2:
+            Item hastePotion = ItemDatabase.getItem(2);
+            hastePotion.addQuantity(1);
+            itemsToAdd.add(hastePotion);
         }
     }
 }

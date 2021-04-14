@@ -81,11 +81,6 @@ public class Player implements Touchable {
         this.weapon = weapon;
         this.speed = 10;
         this.currSpeed = speed;
-        
-        if (weapon != null) {
-            Inventory.addToInventory(weapon);
-        }
-        Inventory.addToInventory(ItemDatabase.getItem(2));
 
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();

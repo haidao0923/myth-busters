@@ -68,7 +68,7 @@ public abstract class TreasureChest implements Touchable {
         Controller.getGameScreen().getBoard().getChildren().add(display);
 
         new AnimationTimer() {
-            int timer = 3 * 60;
+            int timer = 60;
             @Override
             public void handle(long currentNanoTime) {
                 timer--;
