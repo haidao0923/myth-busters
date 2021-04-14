@@ -36,6 +36,7 @@ public class Player implements Touchable {
     private int coins;
     private Weapon weapon;
     private double speed;
+    private double currSpeed;
     private int numHearts;
     private double maxHealth;
     private double currentHealth;
@@ -78,10 +79,13 @@ public class Player implements Touchable {
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
+        this.speed = 10;
+        this.currSpeed = speed;
         
         if (weapon != null) {
             Inventory.addToInventory(weapon);
         }
+        Inventory.addToInventory(ItemDatabase.getItem(2));
 
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
@@ -199,15 +203,15 @@ public class Player implements Touchable {
                     attackCD--;
                 }
                 if (input.contains("J") && attackCD <= 0) {
-                    speed = 0;
+                    currSpeed = 0;
                     attackCD = 60;
                     int temp = attack(scene);
                     damageWindow = temp;
                     moveCD = temp;
                 } else if (input.size() > 1) {
-                    speed = 7;
+                    currSpeed = speed / Math.sqrt(2);
                 } else {
-                    speed = 10;
+                    currSpeed = speed;
                 }
                 if (damageWindow > 0) {
                     for (Monster monster : GameLoop.getMonsters()) {
@@ -228,19 +232,19 @@ public class Player implements Touchable {
                 } else {
                     if (input.contains("A") && positionX > 0) {
                         imageView.setScaleX(1);
-                        moveRelative(-speed, 0);
+                        moveRelative(-currSpeed, 0);
                         direction = 0;
                     }
                     if (input.contains("D") && positionX + width < scene.getWidth()) {
                         imageView.setScaleX(-1);
-                        moveRelative(speed, 0);
+                        moveRelative(currSpeed, 0);
                         direction = 1;
                     }
                     if (input.contains("W") && positionY > 0) {
-                        moveRelative(0, -speed);
+                        moveRelative(0, -currSpeed);
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
-                        moveRelative(0, speed);
+                        moveRelative(0, currSpeed);
                     }
                 }
 
@@ -533,6 +537,10 @@ public class Player implements Touchable {
     }
     public double getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(double value) {
+        this.speed = value;
     }
 
     public void setDirection(int direction) {
