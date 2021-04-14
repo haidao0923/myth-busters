@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controller.Controller;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.WeaponDatabase;
 
 public class BlueTreasureChest extends TreasureChest {
     public BlueTreasureChest(double positionX, double positionY, int cost) {
@@ -15,14 +16,26 @@ public class BlueTreasureChest extends TreasureChest {
     public void open() {
         Controller.getPlayer().subtractCoins(cost);
 
+        int random = (int) (Math.random() * 2);
+        switch (random) {
+            case 0:
+                addPotion();
+                break;
+            case 1:
+                Inventory.addToInventory(WeaponDatabase.getWeapon((int) (Math.random() * 3)));
+                break;
+        }
+
+        opened = true;
+    }
+
+    private void addPotion() {
         int amountToAdd = (int)(Math.random() * 3 + 2);
         ArrayList<Item> itemsToAdd = new ArrayList<Item>();
         for (int i = 0; i < amountToAdd; i++) {
             addRandomPotion(itemsToAdd);
         }
         Controller.getPlayer().updateHotbar(null, itemsToAdd);
-
-        opened = true;
     }
 
     private void addRandomPotion(ArrayList<Item> itemsToAdd) {

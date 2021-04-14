@@ -6,6 +6,7 @@ import controller.Controller;
 import gamefiles.characters.Player;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.WeaponDatabase;
 
 public class RedTreasureChest extends TreasureChest {
     public RedTreasureChest(double positionX, double positionY, int cost) {
@@ -21,8 +22,10 @@ public class RedTreasureChest extends TreasureChest {
         case 0:
         case 1:
         case 2:
-            if (Controller.getPlayer().getCurrentHealth() > 50) {
-                Controller.getPlayer().takeDamage(50);
+            if (Controller.getPlayer().getCurrentHealth() > 100) {
+                Controller.getPlayer().takeDamage(100);
+            } else {
+                Controller.getPlayer().setHealth(50);
             }
             break;
         case 3:
