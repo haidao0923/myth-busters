@@ -22,10 +22,11 @@ public class BlueTreasureChest extends TreasureChest {
                 addPotion();
                 break;
             case 1:
-                Inventory.addToInventory(WeaponDatabase.getWeapon((int) (Math.random() * 3)));
+                int weaponIndex = (int) (Math.random() * 3);
+                Inventory.addToInventory(WeaponDatabase.getWeapon(weaponIndex));
+                displayReward("You have found a " + WeaponDatabase.getWeapon(weaponIndex).getName());
                 break;
         }
-
         opened = true;
     }
 
@@ -36,6 +37,7 @@ public class BlueTreasureChest extends TreasureChest {
             addRandomPotion(itemsToAdd);
         }
         Controller.getPlayer().updateHotbar(null, itemsToAdd);
+        displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
     }
 
     private void addRandomPotion(ArrayList<Item> itemsToAdd) {

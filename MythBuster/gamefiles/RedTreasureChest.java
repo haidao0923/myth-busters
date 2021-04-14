@@ -27,12 +27,16 @@ public class RedTreasureChest extends TreasureChest {
             } else {
                 Controller.getPlayer().setHealth(50);
             }
+            displayReward("You got cursed and loss some hearts");
             break;
         case 3:
-            Controller.getPlayer().addCoins((int) (Math.random() * 9 + 4) * 5);
+            int coinAmount = (int) (Math.random() * 9 + 4) * 5;
+            Controller.getPlayer().addCoins(coinAmount);
+            displayReward("You have gained " + Integer.toString(coinAmount) + " coins!");
             break;
         case 4:
             Controller.getPlayer().addMaximumHealth(100);
+            displayReward("You gained 2 extra heart!");
             break;
         case 5:
             int amountToAdd = (int)(Math.random() * 3 + 3);
@@ -41,6 +45,7 @@ public class RedTreasureChest extends TreasureChest {
                 addRandomPotion(itemsToAdd);
             }
             Controller.getPlayer().updateHotbar(null, itemsToAdd);
+            displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
             break;
         }
 
