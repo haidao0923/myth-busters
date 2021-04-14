@@ -2,6 +2,7 @@ package gamefiles.characters;
 
 import controller.Controller;
 import controller.GameLoop;
+import gamefiles.Inventory;
 import gamefiles.Touchable;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class Monster implements Touchable {
     protected String name;
@@ -129,6 +131,7 @@ public abstract class Monster implements Touchable {
                     if(!checkWeapon(w)) {
                         toAdd.add(w);
                         displayReward("You picked up a " + w.getName());
+                        Inventory.addToInventory(w);
                         break;
                     } else {
                         int newCoins = (int)(5 + Math.random() * 5);
@@ -139,6 +142,7 @@ public abstract class Monster implements Touchable {
                 } else if (key >= 0) {
                     displayReward("You picked up a " + ItemDatabase.getItem(key).getName());
                     toAdd.add(ItemDatabase.getItem(key));
+                    Controller.getPlayer().updateHotbar(null, toAdd);
                     break;
                 } else {
                     int newCoins = (int)(5 + Math.random() * 5);
@@ -148,11 +152,19 @@ public abstract class Monster implements Touchable {
                 }
             }
         }
-        Controller.getPlayer().updateHotbar(null, toAdd);
     }
 
     private boolean checkWeapon(Weapon w) {
-        return w.equals(Controller.getPlayer().getWeapon());
+        List<Item> inventory = Inventory.getInventory();
+        for (Item i: inventory) {
+            if ((i instanceof Weapon)) {
+                Weapon w2 = (Weapon)(i);
+                if (w.equals(w2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

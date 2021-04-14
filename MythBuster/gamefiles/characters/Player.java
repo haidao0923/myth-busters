@@ -78,6 +78,9 @@ public class Player implements Touchable {
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
+        
+        Inventory.addToInventory(weapon);
+
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
