@@ -31,6 +31,7 @@ public class RoomLayout {
         this.growingTreeAlgorithm();
         this.setBossRoom();
         this.setTreasureRoom();
+        this.setChallengeRoom();
         this.toFile();
     }
 
@@ -230,6 +231,38 @@ public class RoomLayout {
         }
     }
 
+    private void setChallengeRoom() {
+        int row = 0;
+        int column = 0;
+        for (int i = 0; i < 3; i++) {
+            do {
+                row = (int) Math.floor(Math.random() * TOTAL_ROWS);
+                column = (int) Math.floor(Math.random() * TOTAL_COLUMNS);
+            } while (!(rooms[row][column] instanceof BasicRoom));
+
+            Room oldRoom = rooms[row][column];
+            ChallengeRoom challengeRoom = new ChallengeRoom(ROOM_WIDTH, ROOM_HEIGHT, row, column);
+
+            if (oldRoom.getLeftDoor() != null) {
+                challengeRoom.setLeftDoor(oldRoom.getLeftDoor().getDestination());
+                oldRoom.getLeftDoor().getDestination().setRightDoor(challengeRoom);
+            }
+            if (oldRoom.getTopDoor() != null) {
+                challengeRoom.setTopDoor(oldRoom.getTopDoor().getDestination());
+                oldRoom.getTopDoor().getDestination().setBottomDoor(challengeRoom);
+            }
+            if (oldRoom.getRightDoor() != null) {
+                challengeRoom.setRightDoor(oldRoom.getRightDoor().getDestination());
+                oldRoom.getRightDoor().getDestination().setLeftDoor(challengeRoom);
+            }
+            if (oldRoom.getBottomDoor() != null) {
+                challengeRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
+                oldRoom.getBottomDoor().getDestination().setTopDoor(challengeRoom);
+            }
+            rooms[row][column] = challengeRoom;
+        }
+    }
+
     private void toFile() {
         try {
             String filepath = System.getProperty("user.dir")
@@ -263,6 +296,8 @@ public class RoomLayout {
                         content = "B";
                     } else if (currRoom instanceof TreasureRoom) {
                         content = "T";
+                    } else if (currRoom instanceof ChallengeRoom) {
+                        content = "C";
                     } else {
                         content = " ";
                     }

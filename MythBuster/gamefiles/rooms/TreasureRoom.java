@@ -11,6 +11,8 @@ import gamefiles.TreasureChest;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import views.GameScreen;
 
 public class TreasureRoom extends Room {
 
@@ -83,6 +85,7 @@ public class TreasureRoom extends Room {
         animationTimer.start();
 
         roomGroup.getChildren().add(treasureGroup);
+        Controller.getGameScreen().changeBackgroundColor("#6e6e65");
         return roomGroup;
     }
     public String toString() {
