@@ -79,7 +79,9 @@ public class Player implements Touchable {
         this.coins = coins;
         this.weapon = weapon;
         
-        Inventory.addToInventory(weapon);
+        if (weapon != null) {
+            Inventory.addToInventory(weapon);
+        }
 
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
