@@ -75,13 +75,13 @@ public abstract class Monster implements Touchable {
 
     private void initLootTable() {
         int total = 100;
-        for (int i = 0; i <= 1; i++) {
-            int probability = (int)(7 * Math.random() + 22);
+        for (int i = 0; i <= 2; i++) {
+            int probability = (int)(6 * Math.random() + 19);
             lootTable.put(i, probability);
             total = total - probability;
         }
         for (int i = 100; i <= 102; i++) {
-            int probability = (int)(3 * Math.random() + 4);
+            int probability = (int)(3 * Math.random() + 3);
             lootTable.put(i, probability);
             total = total - probability;
         }
@@ -118,7 +118,7 @@ public abstract class Monster implements Touchable {
         }
     }
 
-    public void addItems() {
+    public boolean addItems() {
         ArrayList<Item> toAdd = new ArrayList<>();
         int prob = (int)(Math.random() * 100);
         int total = -1;
@@ -132,29 +132,30 @@ public abstract class Monster implements Touchable {
                         toAdd.add(w);
                         displayReward("You picked up a " + w.getName());
                         Inventory.addToInventory(w);
-                        break;
+                        return true;
                     } else {
                         int newCoins = (int)(5 + Math.random() * 5);
                         displayReward("You picked up " + newCoins + " coins");
                         Controller.getPlayer().addCoins(newCoins);
-                        break;
+                        return true;
                     }
                 } else if (key >= 0) {
                     displayReward("You picked up a " + ItemDatabase.getItem(key).getName());
                     toAdd.add(ItemDatabase.getItem(key));
                     Controller.getPlayer().updateHotbar(null, toAdd);
-                    break;
+                    return true;
                 } else {
                     int newCoins = (int)(5 + Math.random() * 5);
                     displayReward("You picked up " + newCoins + " coins");
                     Controller.getPlayer().addCoins(newCoins);
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    private boolean checkWeapon(Weapon w) {
+    public boolean checkWeapon(Weapon w) {
         List<Item> inventory = Inventory.getInventory();
         for (Item i: inventory) {
             if ((i instanceof Weapon)) {

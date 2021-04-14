@@ -82,6 +82,8 @@ public class Player implements Touchable {
         this.speed = 10;
         this.currSpeed = speed;
 
+        Inventory.addToInventory(weapon);
+
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
