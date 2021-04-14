@@ -41,9 +41,9 @@ public class Player implements Touchable {
     private double currentHealth;
     private double attackCD = 0;
     private double moveCD = 0;
-    private double damage = 10; //TEMPORARY CHANGE FOR TESTING PURPOSES
+    private double damage = 10;
     private double damageCooldown;
-    private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
+    private Image swordSprite = new Image("sprites/Player/daggerPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
     private Image bowSprite = new Image("sprites/Player/bowPlayer.png");
     private ImageView imageView;
@@ -51,8 +51,8 @@ public class Player implements Touchable {
 
     private double positionX;
     private double positionY;
-    private double width;
-    private double height;
+    private double width = 100;
+    private double height = 100;
 
     private final double heartsPadding = 10;
     private final double heartsDimensions = 50;
@@ -78,14 +78,14 @@ public class Player implements Touchable {
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
-        width = 100;
-        height = 100;
         damage = weapon != null ? weapon.getDamage() * damage : 0;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
             imageView.setImage(spearSprite);
         } else if (weapon instanceof Sword) {
             imageView.setImage(swordSprite);
+//            spriteX = 80;
+//            spriteY = 1995;
         } else if (weapon instanceof Bow) {
             imageView.setImage(bowSprite);
         }
@@ -118,21 +118,28 @@ public class Player implements Touchable {
 
             duration = 500;
             animation = new SpriteAnimation(imageView, Duration.millis(duration),
-                    8, 8, spriteY, spriteWidth, spriteHeight);
+                    8, spriteY,  0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
         } else if (weapon instanceof Sword) {
-            spriteY = spriteY + 1025;
+            spriteY += 259;
             duration = 500;
-            //spriteX = spriteX + 45;
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 5, 5, spriteY, 105, spriteHeight);
+//            imageView.setFitWidth(289.5);
+//            imageView.setFitHeight(82.5);
+//            if (direction == 0) {
+//                positionX -= 63;
+//            } else {
+//                positionX += 63;
+//            }
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, spriteY, 0, spriteWidth,
+                    spriteHeight);
             animation.setCycleCount(1);
             animation.play();
+            //moveAbsolute(positionX, positionY);
         } else if (weapon instanceof Bow) {
             spriteY += 510;
             duration = 500;
-            System.out.println("Bow");
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, 12, spriteY, spriteWidth,
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, spriteY, 0, spriteWidth,
                     spriteHeight);
             animation.setCycleCount(1);
             animation.play();
@@ -142,7 +149,12 @@ public class Player implements Touchable {
             spriteX = currX;
             spriteY = currY;
             Rectangle2D viewpoint = new Rectangle2D(spriteX, spriteY, spriteWidth, spriteHeight);
+            //imageView.setFitWidth(width);
             imageView.setViewport(viewpoint);
+            if (weapon instanceof Sword) {
+                //positionX += 63;
+                //moveAbsolute(positionX, positionY);
+            }
         });
         return (int) ((duration / 1000) * 60);
     }
