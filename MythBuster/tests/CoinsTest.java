@@ -13,7 +13,7 @@ public class CoinsTest extends ApplicationTest {
     public void start(Stage primaryStage) throws Exception {
         Controller controller = new Controller();
         controller.start(primaryStage);
-        controller.goToConfigurationScreen();
+        Controller.goToConfigurationScreen();
     }
 
     @Test
