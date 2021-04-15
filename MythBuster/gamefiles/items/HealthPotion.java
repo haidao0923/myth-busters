@@ -10,7 +10,8 @@ public class HealthPotion extends Consumable {
     // int quantity = 0;
     // long duration = 0;
     
-    public HealthPotion(int id, String name, String description, int quantity, boolean active, long duration) {
+    public HealthPotion(int id, String name, String description, 
+        int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
         updateImageView("sprites/itemAssets/healthPotion.png");
     }

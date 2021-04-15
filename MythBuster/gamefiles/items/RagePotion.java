@@ -12,7 +12,8 @@ public class RagePotion extends Consumable {
     private boolean doubled;
     private double oldDamage;
 
-    public RagePotion(int id, String name, String description, int quantity, boolean active, long duration) {
+    public RagePotion(int id, String name, String description, 
+        int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
         updateImageView("sprites/itemAssets/ragePotion.png");
     }

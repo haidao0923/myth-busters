@@ -1,7 +1,6 @@
 package tests.M5;
 
 import controller.Controller;
-import controller.GameLoop;
 import gamefiles.Inventory;
 
 import gamefiles.items.ItemDatabase;
@@ -9,19 +8,13 @@ import gamefiles.items.ItemDatabase;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.assertj.core.internal.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
-import org.testfx.service.query.NodeQuery;
-import org.testfx.util.NodeQueryUtils;
-
-import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.junit.Assert.assertTrue;
 
 public class InventoryTest extends ApplicationTest {
 
@@ -54,7 +47,7 @@ public class InventoryTest extends ApplicationTest {
         clickOn("SPEAR");
         clickOn("Begin!");
         push(KeyCode.I);
-        push(KeyCode.I);//Go back.
+        push(KeyCode.I); //Go back.
         verifyThat("Press I to go back.", NodeMatchers.isNotNull());
 
 

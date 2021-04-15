@@ -76,12 +76,12 @@ public abstract class Monster implements Touchable {
     private void initLootTable() {
         int total = 100;
         for (int i = 0; i <= 2; i++) {
-            int probability = (int)(6 * Math.random() + 19);
+            int probability = (int) (6 * Math.random() + 19);
             lootTable.put(i, probability);
             total = total - probability;
         }
         for (int i = 100; i <= 102; i++) {
-            int probability = (int)(3 * Math.random() + 3);
+            int probability = (int) (3 * Math.random() + 3);
             lootTable.put(i, probability);
             total = total - probability;
         }
@@ -120,7 +120,7 @@ public abstract class Monster implements Touchable {
 
     public boolean addItems() {
         ArrayList<Item> toAdd = new ArrayList<>();
-        int prob = (int)(Math.random() * 100);
+        int prob = (int) (Math.random() * 100);
         int total = -1;
         Set<Integer> keySet = lootTable.keySet();
         for (int key: keySet) {
@@ -128,13 +128,13 @@ public abstract class Monster implements Touchable {
             if (prob < total) {
                 if (key >= 100) {
                     Weapon w = WeaponDatabase.getWeapon(key % 100);
-                    if(!checkWeapon(w)) {
+                    if (!checkWeapon(w)) {
                         toAdd.add(w);
                         displayReward("You picked up a " + w.getName());
                         Inventory.addToInventory(w);
                         return true;
                     } else {
-                        int newCoins = (int)(5 + Math.random() * 5);
+                        int newCoins = (int) (5 + Math.random() * 5);
                         displayReward("You picked up " + newCoins + " coins");
                         Controller.getPlayer().addCoins(newCoins);
                         return true;
@@ -145,7 +145,7 @@ public abstract class Monster implements Touchable {
                     Controller.getPlayer().updateHotbar(null, toAdd);
                     return true;
                 } else {
-                    int newCoins = (int)(5 + Math.random() * 5);
+                    int newCoins = (int) (5 + Math.random() * 5);
                     displayReward("You picked up " + newCoins + " coins");
                     Controller.getPlayer().addCoins(newCoins);
                     return true;
@@ -162,7 +162,7 @@ public abstract class Monster implements Touchable {
         List<Item> inventory = Inventory.getInventory();
         for (Item i: inventory) {
             if ((i instanceof Weapon)) {
-                Weapon w2 = (Weapon)(i);
+                Weapon w2 = (Weapon) (i);
                 if (w.equals(w2)) {
                     return true;
                 }
@@ -239,7 +239,7 @@ public abstract class Monster implements Touchable {
         Controller.getGameScreen().getBoard().getChildren().add(display);
 
         new AnimationTimer() {
-            int timer = 60;
+            private int timer = 60;
             @Override
             public void handle(long currentNanoTime) {
                 timer--;

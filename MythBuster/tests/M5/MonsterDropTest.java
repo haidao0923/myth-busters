@@ -1,20 +1,13 @@
 package tests.M5;
 
 import controller.Controller;
-import controller.GameLoop;
-import gamefiles.Inventory;
-import gamefiles.characters.Monster;
-import gamefiles.characters.Player;
 import gamefiles.characters.Soldier;
 import gamefiles.rooms.Room;
 import gamefiles.weapons.WeaponDatabase;
-import javafx.application.Platform;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class MonsterDropTest extends ApplicationTest {
 

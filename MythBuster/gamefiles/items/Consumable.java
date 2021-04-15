@@ -14,7 +14,8 @@ public abstract class Consumable extends Item {
     private boolean active;
 
 
-    public Consumable(int id, String name, String description, int quantity, boolean active, long duration) {
+    public Consumable(int id, String name, String description, 
+        int quantity, boolean active, long duration) {
         super(id, name, description, quantity);
         this.duration = duration;
         this.durationTimer = 0;

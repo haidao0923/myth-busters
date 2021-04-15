@@ -26,6 +26,49 @@ public class Bow extends Weapon {
 
     }
 
+    public AnimationTimer arrowTimer() {
+        arrowTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                for (Iterator<Arrow> iterator = arrows.iterator(); iterator.hasNext();) {
+                    Arrow arrow = iterator.next();
+                    arrow.erase();
+                    for (Monster monster : GameLoop.getMonsters()) {
+                        if (arrow.intersects(monster)) {
+                            monster.takeDamage(arrow.damage);
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                    if (arrow.direction == 1) {
+                        arrow.x += 4;
+                    } else {
+                        arrow.x -= 4;
+                    }
+                    if (arrow.x >= Controller.getW() || arrow.x <= 0) {
+                        iterator.remove();
+                    }
+                    if (arrows.contains(arrow)) {
+                        arrow.update();
+                        arrow.draw();
+                    }
+                }
+            }
+        };
+        return arrowTimer;
+    }
+    public AnimationTimer getArrowTimer() {
+        return arrowTimer;
+    }
+
+    public void fireArrow(int direction, double startX, double startY, double damage) {
+        arrows.add(new Arrow(direction, startX, startY, damage));
+    }
+
+    public Group getArrowGroup() {
+        return arrowGroup;
+    }
+
     private class Arrow implements Touchable {
         private final Image arrow = new Image("sprites/arrow.png");
         private ImageView imageView;
@@ -34,9 +77,9 @@ public class Bow extends Weapon {
         private double damage;
         private final int width = 40;
         private final int height = 12;
-        int direction;
+        protected int direction;
 
-        GameScreen screen = Controller.getGameScreen();
+        private GameScreen screen = Controller.getGameScreen();
 
         public Arrow(int direction, double x, double y, double damage)  {
             this.x = x;
@@ -84,48 +127,6 @@ public class Bow extends Weapon {
             imageView.setLayoutY(y);
         }
 
-    }
-    public AnimationTimer arrowTimer() {
-        arrowTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                for (Iterator<Arrow> iterator = arrows.iterator(); iterator.hasNext() ;) {
-                    Arrow arrow = iterator.next();
-                    arrow.erase();
-                    for (Monster monster : GameLoop.getMonsters()) {
-                        if (arrow.intersects(monster)) {
-                            monster.takeDamage(arrow.damage);
-                            iterator.remove();
-                            break;
-                        }
-                    }
-                    if (arrow.direction == 1) {
-                        arrow.x += 4;
-                    } else {
-                        arrow.x -= 4;
-                    }
-                    if (arrow.x >= Controller.getW() || arrow.x <= 0) {
-                        iterator.remove();
-                    }
-                    if (arrows.contains(arrow)) {
-                        arrow.update();
-                        arrow.draw();
-                    }
-                }
-            }
-        };
-        return arrowTimer;
-    }
-    public AnimationTimer getArrowTimer() {
-        return arrowTimer;
-    }
-
-    public void fireArrow(int direction, double startX, double startY, double damage) {
-        arrows.add(new Arrow(direction, startX, startY, damage));
-    }
-
-    public Group getArrowGroup() {
-        return arrowGroup;
     }
 
 

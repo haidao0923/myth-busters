@@ -3,10 +3,8 @@ package gamefiles;
 import java.util.ArrayList;
 
 import controller.Controller;
-import gamefiles.characters.Player;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
-import gamefiles.weapons.WeaponDatabase;
 
 public class RedTreasureChest extends TreasureChest {
     public RedTreasureChest(double positionX, double positionY, int cost) {
@@ -18,7 +16,7 @@ public class RedTreasureChest extends TreasureChest {
         Controller.getPlayer().subtractCoins(cost);
 
         int random = (int) (Math.random() * 6);
-        switch(random) {
+        switch (random) {
         case 0:
         case 1:
         case 2:
@@ -34,13 +32,15 @@ public class RedTreasureChest extends TreasureChest {
             displayReward("You gained 2 extra heart!");
             break;
         case 5:
-            int amountToAdd = (int)(Math.random() * 3 + 3);
+            int amountToAdd = (int) (Math.random() * 3 + 3);
             ArrayList<Item> itemsToAdd = new ArrayList<Item>();
             for (int i = 0; i < amountToAdd; i++) {
                 addRandomPotion(itemsToAdd);
             }
             Controller.getPlayer().updateHotbar(null, itemsToAdd);
             displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
+            break;
+        default:
             break;
         }
 
@@ -64,6 +64,12 @@ public class RedTreasureChest extends TreasureChest {
             Item hastePotion = ItemDatabase.getItem(2);
             hastePotion.addQuantity(1);
             itemsToAdd.add(hastePotion);
+            break;
+        default:
+            Item hastePotion2 = ItemDatabase.getItem(2);
+            hastePotion2.addQuantity(1);
+            itemsToAdd.add(hastePotion2);
+            break;
         }
     }
 

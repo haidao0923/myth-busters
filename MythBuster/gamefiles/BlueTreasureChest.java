@@ -20,18 +20,21 @@ public class BlueTreasureChest extends TreasureChest {
 
         int random = (int) (Math.random() * 2);
         switch (random) {
-            case 0:
-                addPotion();
-                break;
-            case 1:
-                addWeapon();
-                break;
+        case 0:
+            addPotion();
+            break;
+        case 1:
+            addWeapon();
+            break;
+        default:
+            addWeapon();
+            break;
         }
         opened = true;
     }
 
     private void addPotion() {
-        int amountToAdd = (int)(Math.random() * 3 + 2);
+        int amountToAdd = (int) (Math.random() * 3 + 2);
         ArrayList<Item> itemsToAdd = new ArrayList<Item>();
         for (int i = 0; i < amountToAdd; i++) {
             addRandomPotion(itemsToAdd);
@@ -57,6 +60,12 @@ public class BlueTreasureChest extends TreasureChest {
             Item hastePotion = ItemDatabase.getItem(2);
             hastePotion.addQuantity(1);
             itemsToAdd.add(hastePotion);
+            break;
+        default:
+            Item hastePotion2 = ItemDatabase.getItem(2);
+            hastePotion2.addQuantity(1);
+            itemsToAdd.add(hastePotion2);
+            break;
         }
     }
 
@@ -77,7 +86,7 @@ public class BlueTreasureChest extends TreasureChest {
         List<Item> inventory = Inventory.getInventory();
         for (Item i: inventory) {
             if ((i instanceof Weapon)) {
-                Weapon w2 = (Weapon)(i);
+                Weapon w2 = (Weapon) (i);
                 if (w.equals(w2)) {
                     return true;
                 }

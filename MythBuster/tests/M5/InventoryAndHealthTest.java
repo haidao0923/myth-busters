@@ -2,21 +2,15 @@ package tests.M5;
 
 import controller.Controller;
 import gamefiles.Inventory;
-import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
 import gamefiles.characters.Soldier;
 import gamefiles.items.HealthPotion;
 import gamefiles.rooms.Room;
 import javafx.application.Platform;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
-import org.testfx.matcher.control.TextMatchers;
-
-import java.sql.Time;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -38,7 +32,7 @@ public class InventoryAndHealthTest extends ApplicationTest {
         Room room = Controller.getCurrentRoom();
         Soldier s = room.spawnSoldier();
         Platform.runLater(new Runnable() {
-            boolean test;
+            private boolean test;
             @Override
             public void run() {
                 test = s.addItems();

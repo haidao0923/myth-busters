@@ -1,29 +1,16 @@
 package tests.M5;
 
 import controller.Controller;
-import controller.GameLoop;
 import gamefiles.RedTreasureChest;
-import gamefiles.TreasureChest;
-import gamefiles.characters.Fireball;
-import gamefiles.characters.Mage;
-import gamefiles.characters.Monster;
-import gamefiles.characters.Trap;
-import gamefiles.characters.TrapMonster;
-import gamefiles.rooms.Room;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.*;
 
-import java.util.concurrent.TimeUnit;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 
 public class TreasureRoomAndTrollDeathTest extends ApplicationTest {
@@ -41,13 +28,13 @@ public class TreasureRoomAndTrollDeathTest extends ApplicationTest {
         write("BOB");
         clickOn("Begin!");
         BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir")
-        + "/MythBuster/gamefiles/printables/RoomLayout.txt"));
+            + "/MythBuster/gamefiles/printables/RoomLayout.txt"));
         StringBuilder sb = new StringBuilder();
 
         String line = br.readLine();
         while (line != null) {
-          sb.append(line).append("\n");
-          line = br.readLine();
+            sb.append(line).append("\n");
+            line = br.readLine();
         }
         String map = sb.toString();
         br.close();

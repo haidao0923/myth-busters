@@ -10,9 +10,6 @@ import gamefiles.YellowTreasureChest;
 import gamefiles.TreasureChest;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import views.GameScreen;
 
 public class TreasureRoom extends Room {
 
@@ -23,24 +20,27 @@ public class TreasureRoom extends Room {
     private Group treasureGroup;
     public TreasureRoom(int width, int height, int row, int column) {
         super(width, height, row, column);
-        switch(treasureCount) {
+        switch (treasureCount) {
         case 1:
-            addRandomChest(width/2 - 50, height/2 - 50);
+            addRandomChest(width / 2 - 50, height / 2 - 50);
             break;
         case 2:
-            addRandomChest(width/2 - 150, height/2 - 50);
-            addRandomChest(width/2 + 50, height/2 - 50);
+            addRandomChest(width / 2 - 150, height / 2 - 50);
+            addRandomChest(width / 2 + 50, height / 2 - 50);
             break;
         case 3:
-            addRandomChest(width/2 - 200, height/2 - 50);
-            addRandomChest(width/2 - 50, height/2 - 50);
-            addRandomChest(width/2 + 100, height/2 - 50);
+            addRandomChest(width / 2 - 200, height / 2 - 50);
+            addRandomChest(width / 2 - 50, height / 2 - 50);
+            addRandomChest(width / 2 + 100, height / 2 - 50);
+            break;
+        default:
+            addRandomChest(width / 2 - 50, height / 2 - 50);
             break;
         }
     }
 
     public void addRandomChest(double positionX, double positionY, int cost) {
-        int random = (int)(Math.random() * 4);
+        int random = (int) (Math.random() * 4);
         switch (random) {
         case 0:
             treasureChests.add(new RedTreasureChest(positionX, positionY, cost));
@@ -53,6 +53,9 @@ public class TreasureRoom extends Room {
             break;
         case 3:
             treasureChests.add(new GreenTreasureChest(positionX, positionY, cost));
+            break;
+        default:
+            treasureChests.add(new RedTreasureChest(positionX, positionY, cost));
             break;
         }
     }

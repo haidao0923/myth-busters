@@ -118,8 +118,9 @@ public class GameScreen {
     }
 
     public void changeBackgroundColor(String color) {
-        scene.setFill(Color.web(color));;
+        scene.setFill(Color.web(color));
     }
+
     public void changeBackgroundColor(Color color) {
         scene.setFill(color);
     }

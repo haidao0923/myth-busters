@@ -1,7 +1,6 @@
 package tests.M5;
 
 import controller.Controller;
-import controller.GameLoop;
 import gamefiles.Inventory;
 
 import gamefiles.items.ItemDatabase;
@@ -11,11 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
 
 import static org.junit.Assert.assertEquals;
-import static org.testfx.api.FxAssert.verifyThat;
-import static org.junit.Assert.assertTrue;
 
 public class HotbarTest extends ApplicationTest {
 
@@ -25,7 +21,8 @@ public class HotbarTest extends ApplicationTest {
         controller.start(primaryStage);
 
     }
-        @Test
+    
+    @Test
     public void testInventorySize() {
         Inventory.addToInventory(ItemDatabase.getItem(0));
         Inventory.addToInventory(ItemDatabase.getItem(1));

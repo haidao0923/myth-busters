@@ -12,7 +12,8 @@ public class HastePotion extends Consumable {
     private boolean doubled;
     private double oldSpeed;
 
-    public HastePotion(int id, String name, String description, int quantity, boolean active, long duration) {
+    public HastePotion(int id, String name, String description, 
+        int quantity, boolean active, long duration) {
         super(id, name, description, quantity, active, duration);
         updateImageView("sprites/itemAssets/hastePotion.png");
     }

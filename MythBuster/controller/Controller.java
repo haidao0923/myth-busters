@@ -4,13 +4,11 @@ package controller;
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
-import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
@@ -122,10 +120,10 @@ public class Controller extends Application {
 
         //Keyboard shortcuts related to the overall game go here
         gameScreen.getScene().setOnKeyReleased(
-                e -> {
-                    String code = e.getCode().toString();
-                    input.add(code);
-                });
+            e -> {
+                String code = e.getCode().toString();
+                input.add(code);
+            });
 
         System.out.println("Test!");
 
@@ -234,11 +232,14 @@ public class Controller extends Application {
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
         if (player.getWeapon() instanceof Bow) {
-            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), ((Bow) player.getWeapon()).getArrowTimer(),
-                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
+                ((Bow) player.getWeapon()).getArrowTimer(),
+                    player.getPlayerHpUpdateTimer(), 
+                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         } else {
             GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
-                    player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+                    player.getPlayerHpUpdateTimer(), 
+                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         }
     }
 
@@ -264,7 +265,8 @@ public class Controller extends Application {
 
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), 
+                controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
 
         for (int i = 0; i < 5; i++) {

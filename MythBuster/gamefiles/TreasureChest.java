@@ -7,9 +7,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.skin.TextAreaSkin;
 import javafx.scene.image.ImageView;
-import views.GameScreen;
 
 public abstract class TreasureChest implements Touchable {
 
@@ -53,7 +51,8 @@ public abstract class TreasureChest implements Touchable {
     }
 
     public boolean canOpen() {
-        if (!opened && intersects(Controller.getPlayer()) && Controller.getPlayer().getCoins() >= cost) {
+        if (!opened && intersects(Controller.getPlayer()) 
+            && Controller.getPlayer().getCoins() >= cost) {
             return true;
         }
         return false;
@@ -71,7 +70,7 @@ public abstract class TreasureChest implements Touchable {
         });
 
         new AnimationTimer() {
-            int timer = 60;
+            private int timer = 60;
             @Override
             public void handle(long currentNanoTime) {
                 timer--;
