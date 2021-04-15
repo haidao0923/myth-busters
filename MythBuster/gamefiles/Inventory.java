@@ -226,7 +226,6 @@ public class Inventory {
 
 
     public static void addToInventory(Item item) {
-
         inventory.add(item);
         refreshDisplays();
     }
