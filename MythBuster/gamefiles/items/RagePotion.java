@@ -20,7 +20,8 @@ public class RagePotion extends Consumable {
 
     public void effect(long currentNanoTime) {
         use();
-        
+
+
         if (!doubled) {
             Player player = Controller.getPlayer();
             oldDamage = player.getDamageStat();
@@ -28,10 +29,12 @@ public class RagePotion extends Consumable {
             doubled = true;
             updateImageView("sprites/itemAssets/ragePotionConsumed.png");
             player.updateHotbarImages();
+            System.out.println("First test");
         }
 
         boolean updated = update();
-        
+        System.out.println("Second Test");
+
         if (!updated) {
             Player player = Controller.getPlayer();
             player.subtractDamageStat(oldDamage);
