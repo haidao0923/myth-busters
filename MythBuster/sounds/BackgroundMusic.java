@@ -24,7 +24,7 @@ public class BackgroundMusic {
         //Instantiating MediaPlayer class   
         track = new MediaPlayer(media);
         track.setCycleCount(MediaPlayer.INDEFINITE);
-        track.setVolume(.175);
+        track.setVolume(.125);
     }
 
     public static MediaPlayer getTrack() {

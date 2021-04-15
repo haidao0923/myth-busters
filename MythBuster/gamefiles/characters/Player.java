@@ -537,6 +537,9 @@ public class Player implements Touchable {
     public void setSpeed(double value) {
         this.speed = value;
     }
+    public double getCurrSpeed() {
+        return this.currSpeed;
+    }
 
     public void setDirection(int direction) {
         this.direction = direction;
