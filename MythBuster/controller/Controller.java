@@ -158,7 +158,7 @@ public class Controller extends Application {
                             }
                         }
                     }
-                    player.moveAbsolute(W - 200, H / 2);
+                    player.moveAbsolute(W - 200, H / 2 - player.getHeight() / 2);
                 }
 
                 //If there is a right door and we are at it.
@@ -180,7 +180,7 @@ public class Controller extends Application {
                             }
                         }
                     }
-                    player.moveAbsolute(200, H / 2);
+                    player.moveAbsolute(100, H / 2 - player.getHeight() / 2);
                 }
 
                 //If there is a top door and we are at it.
@@ -202,7 +202,7 @@ public class Controller extends Application {
                             }
                         }
                     }
-                    player.moveAbsolute(W / 2, H - 200);
+                    player.moveAbsolute(W / 2 - player.getWidth() / 2, H - 200);
                 }
 
                 //If there is a bottom door and we are at it.
@@ -224,7 +224,7 @@ public class Controller extends Application {
                             }
                         }
                     }
-                    player.moveAbsolute(W / 2, 200);
+                    player.moveAbsolute(W / 2 - player.getWidth()/ 2, 100);
                 }
 
             }
@@ -232,13 +232,13 @@ public class Controller extends Application {
 
         GameLoop.initializeAllAnimationTimers(player, gameScreen);
         if (player.getWeapon() instanceof Bow) {
-            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(), 
+            GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                 ((Bow) player.getWeapon()).getArrowTimer(),
-                    player.getPlayerHpUpdateTimer(), 
+                    player.getPlayerHpUpdateTimer(),
                     GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         } else {
             GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
-                    player.getPlayerHpUpdateTimer(), 
+                    player.getPlayerHpUpdateTimer(),
                     GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
         }
     }
@@ -265,7 +265,7 @@ public class Controller extends Application {
 
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(), 
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
                 controllerLoop, player.getItemLoop());
         Trap.setTrapCount(0);
 
