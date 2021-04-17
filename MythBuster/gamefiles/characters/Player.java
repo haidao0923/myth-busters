@@ -136,7 +136,7 @@ public class Player implements Touchable {
             // } else {
             //     positionX += 63;
             // }
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, spriteY, 
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, spriteY,
                     0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
@@ -144,7 +144,7 @@ public class Player implements Touchable {
         } else if (weapon instanceof Bow) {
             spriteY += 510;
             duration = 500;
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, spriteY, 
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, spriteY,
                     0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
@@ -539,7 +539,7 @@ public class Player implements Touchable {
     public double getSpeed() {
         return speed;
     }
-    
+
     public void setSpeed(double value) {
         this.speed = value;
     }
@@ -617,6 +617,13 @@ public class Player implements Touchable {
 
     public AnimationTimer getItemLoop() {
         return itemLoop;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+    public double getHeight() {
+        return height;
     }
 
     public String toString() {

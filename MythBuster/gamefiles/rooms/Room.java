@@ -66,16 +66,16 @@ public abstract class Room {
         return doors[3];
     }
     public void setLeftDoor(Room destination) {
-        doors[0] = new Door(100, height / 2, destination);
+        doors[0] = new Door(0, height / 2 - Door.getHeight() / 2, destination);
     }
     public void setTopDoor(Room destination) {
-        doors[1] = new Door(width / 2, 100, destination);
+        doors[1] = new Door(width / 2 - Door.getWidth() / 2, 0, destination);
     }
     public void setRightDoor(Room destination) {
-        doors[2] = new Door(width - 100, height / 2, destination);
+        doors[2] = new Door(width - Door.getWidth(), height / 2 - Door.getHeight() / 2, destination);
     }
     public void setBottomDoor(Room destination) {
-        doors[3] = new Door(width / 2, height - 100, destination);
+        doors[3] = new Door(width / 2 - Door.getWidth() / 2, height - Door.getHeight(), destination);
     }
 
     public void unlockDoors() {
