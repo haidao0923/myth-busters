@@ -3,10 +3,7 @@ package gamefiles.rooms;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Door;
-import gamefiles.characters.Mage;
-import gamefiles.characters.Monster;
-import gamefiles.characters.Soldier;
-import gamefiles.characters.TrapMonster;
+import gamefiles.characters.*;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
 
@@ -48,6 +45,11 @@ public abstract class Room {
             for (int i = 0; i < (Math.random() * (2 + Controller.getDifficulty())) - 1; i++) {
                 spawnTrapMonster();
             }
+        }
+        if (this instanceof BossRoom) {
+            Monster boss = new Boss();
+            boss.moveAbsolute(width / 2, height / 2);
+            monsters.add(boss);
         }
     }
     public Door[] getDoors() {

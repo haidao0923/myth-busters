@@ -5,7 +5,7 @@ import controller.Controller;
 public class Soldier extends Monster {
 
     public Soldier() {
-        super("Soldier Enemy", 100, 5, "sprites/Soldier/FF10WarriorR.png", 100, 100);
+        this(100, 5, "sprites/Soldier/FF10WarriorR.png", 100, 100);
     }
 
     public Soldier(double health, double movementSpeed, String spritePath, 

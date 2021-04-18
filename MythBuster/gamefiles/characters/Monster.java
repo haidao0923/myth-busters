@@ -61,15 +61,15 @@ public abstract class Monster implements Touchable {
         initLootTable();
 
         imageView = new ImageView(spritePath);
+        imageView.setPreserveRatio(true);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
-        image = imageView;
         healthBar = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
         healthBar.setFill(Color.GREEN);
         healthBarBacking = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
         healthBarBacking.setFill(Color.RED);
         monsterGroup = new Group();
-        monsterGroup.getChildren().addAll(image, healthBarBacking, healthBar);
+        monsterGroup.getChildren().addAll(imageView, healthBarBacking, healthBar);
 
     }
 
