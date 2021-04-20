@@ -38,6 +38,7 @@ public class Boss extends Monster {
         double targetPositionY = Controller.getPlayer().getPositionY() - 30;
         checkDeath();
         if (isDead) {
+
             idleAnimation.stop();
             attackAnimation.stop();
             imageView.setImage(deathImage);

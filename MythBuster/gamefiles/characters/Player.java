@@ -44,7 +44,7 @@ public class Player implements Touchable {
     private double moveCD = 0;
     private double damage = 10;
     private double damageCooldown;
-    private Image swordSprite = new Image("sprites/Player/swordPlayer.png");
+    private Image swordSprite = new Image("sprites/Player/daggerPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
     private Image bowSprite = new Image("sprites/Player/bowPlayer.png");
     private ImageView imageView;
