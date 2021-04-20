@@ -36,7 +36,6 @@ public abstract class Monster implements Touchable {
     protected double height;
     protected ImageView imageView;
 
-    protected Node image;
     protected Rectangle healthBar;
     protected Rectangle healthBarBacking;
     protected double healthBarWidth;
@@ -107,7 +106,7 @@ public abstract class Monster implements Touchable {
                 Platform.runLater(() -> {
                     Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
                     Controller.getCurrentRoom().getMonsters().remove(this);
-                    monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
+                    monsterGroup.getChildren().removeAll(imageView, healthBar, healthBarBacking);
                 });
             }
             if (this instanceof Trap) {

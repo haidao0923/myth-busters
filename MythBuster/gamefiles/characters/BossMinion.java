@@ -44,7 +44,7 @@ public class BossMinion extends Monster {
             deathAnimation.setOnFinished(actionEvent -> Platform.runLater(() -> {
                 Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
                 Controller.getCurrentRoom().getMonsters().remove(this);
-                monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
+                monsterGroup.getChildren().removeAll(imageView, healthBar, healthBarBacking);
             }));
         }
         redrawHealthBar();
