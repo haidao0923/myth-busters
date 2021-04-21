@@ -249,6 +249,9 @@ public class Controller extends Application {
     }
 
     public static void goToWinScreen() {
+        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
+                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
+                controllerLoop, player.getItemLoop());
         WinScreen winScreen = new WinScreen(W, H);
         Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);

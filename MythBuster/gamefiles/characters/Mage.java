@@ -16,8 +16,6 @@ public class Mage extends Monster {
 
     }
 
-    // private int damage = 50;
-    // private int damageCooldown = 0;
     private int spawnFireballCooldown = 15;
     private double targetPositionX = Math.random() * (Controller.getW() - width);
     private double targetPositionY = Math.random() * (Controller.getH() - height);
@@ -51,15 +49,5 @@ public class Mage extends Monster {
 
             }
         }
-        /*if (Controller.getPlayer().intersects(this)) {
-            if (damageCooldown > 0) {
-                damageCooldown--;
-            } else {
-                damageCooldown = 20;
-                Controller.getPlayer().takeDamage(damage);
-                //System.out.println("Collided with Mage! Health: " 
-                // + Controller.getPlayer().getCurrentHealth());
-            }
-        }*/
     }
 }

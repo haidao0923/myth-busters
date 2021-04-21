@@ -36,7 +36,6 @@ public abstract class Monster implements Touchable {
     protected double height;
     protected ImageView imageView;
 
-    protected Node image;
     protected Rectangle healthBar;
     protected Rectangle healthBarBacking;
     protected double healthBarWidth;
@@ -61,15 +60,15 @@ public abstract class Monster implements Touchable {
         initLootTable();
 
         imageView = new ImageView(spritePath);
+        imageView.setPreserveRatio(true);
         imageView.setFitWidth(this.width);
         imageView.setFitHeight(this.height);
-        image = imageView;
         healthBar = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
         healthBar.setFill(Color.GREEN);
         healthBarBacking = new Rectangle(positionX, positionY - 30, healthBarWidth, 10);
         healthBarBacking.setFill(Color.RED);
         monsterGroup = new Group();
-        monsterGroup.getChildren().addAll(image, healthBarBacking, healthBar);
+        monsterGroup.getChildren().addAll(imageView, healthBarBacking, healthBar);
 
     }
 
@@ -103,16 +102,18 @@ public abstract class Monster implements Touchable {
     public void checkDeath() {
         if (currentHealth <= 0) {
             isDead = true;
-            Platform.runLater(() -> {
-                Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
-                Controller.getCurrentRoom().getMonsters().remove(this);
-                monsterGroup.getChildren().removeAll(image, healthBar, healthBarBacking);
-            });
+            if (!(this instanceof Boss) && !(this instanceof BossMinion)) {
+                Platform.runLater(() -> {
+                    Controller.getGameScreen().getBoard().getChildren().remove(this.getGroup());
+                    Controller.getCurrentRoom().getMonsters().remove(this);
+                    monsterGroup.getChildren().removeAll(imageView, healthBar, healthBarBacking);
+                });
+            }
             if (this instanceof Trap) {
                 Trap.decrementTrapCount(1);
             }
             GameLoop.getMonsters().remove(this);
-            if (!(this instanceof Trap) && !(this instanceof Fireball)) {
+            if (!(this instanceof Trap) && !(this instanceof Fireball) && !(this instanceof Boss) && !(this instanceof BossMinion)) {
                 addItems();
             }
         }

@@ -61,9 +61,9 @@ public class Player implements Touchable {
     private final double hotbarPadding = 10;
 
     private int spriteWidth = 63;
-    private int spriteHeight = 55;
+    private int spriteHeight = 50;
     private int spriteX = 0;
-    private int spriteY = 585;
+    private int spriteY = 590;
 
     private Group imageGroup;
     private ArrayList<Heart> hearts;
@@ -123,7 +123,7 @@ public class Player implements Touchable {
 
             duration = 500;
             animation = new SpriteAnimation(imageView, Duration.millis(duration),
-                    8, spriteY,  0, spriteWidth, spriteHeight);
+                    8, 8, spriteY,  0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
         } else if (weapon instanceof Sword) {
@@ -136,7 +136,7 @@ public class Player implements Touchable {
             // } else {
             //     positionX += 63;
             // }
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, spriteY,
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 6, 6, spriteY,
                     0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
@@ -144,7 +144,7 @@ public class Player implements Touchable {
         } else if (weapon instanceof Bow) {
             spriteY += 510;
             duration = 500;
-            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, spriteY,
+            animation = new SpriteAnimation(imageView, Duration.millis(duration), 12, 12, spriteY,
                     0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();

@@ -23,8 +23,6 @@ public class TrapMonster extends Monster {
 
     public void update() {
         // game logic
-        System.out.println("Trap: " + Trap.getTrapCount());
-        System.out.println("Monster: " + GameLoop.getMonsters().size());
         checkDeath();
         redrawHealthBar();
         // move
@@ -48,5 +46,5 @@ public class TrapMonster extends Monster {
                 Controller.getCurrentRoom().getMonsters().add(trap);
             });
         }
-    };
+    }
 }
