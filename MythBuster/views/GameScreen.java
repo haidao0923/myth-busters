@@ -1,13 +1,23 @@
 package views;
 
+import java.util.Optional;
+
+import controller.Controller;
 import controller.GameLoop;
 import gamefiles.characters.Player;
+import gamefiles.rooms.ChallengeRoom;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.rooms.TreasureRoom;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -27,6 +37,7 @@ public class GameScreen {
     private Group roomGroup;
     private Group board;
     private HBox displays;
+    private HBox alerts;
 
     private Scene scene;
 
@@ -62,13 +73,15 @@ public class GameScreen {
         coinDisplay.setId("coinDisplay");
 
 
+        alerts = new HBox();
+
         displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
         displays.setLayoutX(10);
         displays.setLayoutY(20);
 
         player.moveAbsolute(100, 100);
 
-        board.getChildren().addAll(displays);
+        board.getChildren().addAll(displays, alerts);
         scene = new Scene(board, width, height);
         changeBackgroundColor(Color.PURPLE);
     }
@@ -90,6 +103,8 @@ public class GameScreen {
         if (TreasureRoom.getAnimationTimer() != null) {
             TreasureRoom.getAnimationTimer().stop();
         }
+
+
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
                 player.getGroup(), player.getHeartsBox(), player.gethotbarBox());
@@ -98,7 +113,30 @@ public class GameScreen {
         } else {
             displays.getChildren().remove(currentRoom.getRoomInfo());
         }*/
-        board.getChildren().addAll(displays);
+
+        alerts = new HBox();
+
+        if (currentRoom instanceof ChallengeRoom) {
+            Button startChallenge = new Button("Start Challenge");
+            startChallenge.setOnAction((ActionEvent event) -> {
+                    Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                    a.setTitle("Challenge Issued!");
+                    a.setHeaderText("You have been issued a challenge.");
+                    a.setContentText(" Would you like to accept?");
+                    Optional<ButtonType> response = a.showAndWait();
+                    if (response.isPresent() && response.get() == ButtonType.OK) {
+                        alerts.getChildren().remove(startChallenge);
+                        ChallengeRoom c = (ChallengeRoom)(currentRoom);
+                        c.startChallenge();
+                    }
+                });
+            
+            alerts.getChildren().addAll(startChallenge);
+            startChallenge.setAlignment(Pos.CENTER);
+            alerts.setAlignment(Pos.CENTER);
+        }
+
+        board.getChildren().addAll(displays, alerts);
 
         GameLoop.getMonsters().clear();
         GameLoop.getMonsters().addAll(currentRoom.getMonsters());

@@ -130,7 +130,6 @@ public abstract class Monster implements Touchable {
                 if (key >= 100) {
                     Weapon w = WeaponDatabase.getWeapon(key % 100);
                     if (!checkWeapon(w)) {
-                        toAdd.add(w);
                         displayReward("You picked up a " + w.getName());
                         Inventory.addToInventory(w);
                         return true;
