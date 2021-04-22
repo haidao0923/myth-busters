@@ -28,4 +28,8 @@ public abstract class Weapon extends Item {
     public boolean equals(Weapon w) {
         return this.getName() == w.getName();
     }
+
+    public double getSpeed() {
+        return speed;
+    }
 }
