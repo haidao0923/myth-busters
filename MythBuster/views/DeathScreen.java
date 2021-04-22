@@ -1,5 +1,6 @@
 package views;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -35,11 +36,13 @@ public class DeathScreen {
 
         VBox restartButtonVBox = new VBox(restartButton);
         restartButtonVBox.setAlignment(Pos.CENTER);
-        restartButtonVBox.setMinWidth(width);
-        restartButtonVBox.setLayoutY(700);
+
+        Insets buttonInset = new Insets(450, 150, 550, 550);
+
+        restartButtonVBox.setPadding(buttonInset);
 
         Group board = new Group();
-        board.getChildren().addAll(header, death, restartButton);
+        board.getChildren().addAll(header, death, restartButtonVBox);
         Scene scene = new Scene(board, width, height, Color.CRIMSON);
 
         return scene;
