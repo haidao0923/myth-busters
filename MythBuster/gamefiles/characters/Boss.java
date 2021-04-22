@@ -22,14 +22,14 @@ public class Boss extends Monster {
     SpriteAnimation deathAnimation = new SpriteAnimation(imageView, Duration.millis(1000), 18, 10, 0 ,0 , 100, 100);
     SpriteAnimation summonAnimation = new SpriteAnimation(imageView, Duration.millis(750), 5, 4, 0, 0, 100, 100);
     SpriteAnimation skillAnimation = new SpriteAnimation(imageView, Duration.millis(1000), 12, 6, 0, 0, 100, 100);
-    private int damage = 10;
+    private int damage = 150;
     private int damageCooldown = 45;
     private int summonCooldown = 100;
     private int skillCooldown = 300;
     private int skillDuration = 450;
     private boolean cursed = false;
     public Boss() {
-        super("The Boss", 500, 2.5, "sprites/Boss/idle.png", 250, 250);
+        super("The Boss", 1000, 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
         imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
         healthBarBacking.setY(positionY - 10);
