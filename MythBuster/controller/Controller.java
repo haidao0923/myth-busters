@@ -5,6 +5,7 @@ import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
 import gamefiles.items.ItemDatabase;
+import gamefiles.rooms.ChallengeRoom;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.Bow;
@@ -137,6 +138,14 @@ public class Controller extends Application {
                 // if there are no monsters, unlock the doors
                 if (GameLoop.getMonsters().size() == 0) {
                     currentRoom.unlockDoors();
+                    if (currentRoom instanceof ChallengeRoom) {
+                        ChallengeRoom c = (ChallengeRoom)(currentRoom);
+                        if (c.getStatus()) {
+                            currentRoom.giveBonusRewards();
+                            c.setStatus(false);
+                        }
+                    }
+                    
                 }
 
                 //If there is a left door and we are at it.

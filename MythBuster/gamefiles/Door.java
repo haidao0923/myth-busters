@@ -53,6 +53,11 @@ public class Door implements Touchable {
         imageView.setImage(new Image("sprites/door.png"));
     }
 
+    public void lock() {
+        locked = true;
+        imageView.setImage(new Image("sprites/locked_door.png"));
+    }
+
     public boolean isLocked() {
         return locked;
     }

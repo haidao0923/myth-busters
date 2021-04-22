@@ -3,11 +3,19 @@ package gamefiles.rooms;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Door;
+import gamefiles.Inventory;
 import gamefiles.characters.*;
+import gamefiles.items.Item;
+import gamefiles.items.ItemDatabase;
+import gamefiles.weapons.Weapon;
+import gamefiles.weapons.WeaponDatabase;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Room {
     private Door[] doors = new Door[4];
@@ -52,6 +60,52 @@ public abstract class Room {
             monsters.add(boss);
         }
     }
+
+    public void giveBonusRewards() {
+        ArrayList<Item> toAdd = new ArrayList<>();
+        int newCoins = 0;
+        int weaponKey = (int)(3 * Math.random());
+        Weapon w = WeaponDatabase.getWeapon(weaponKey);
+        if (!checkWeapon(w)) {
+            Inventory.addToInventory(w);
+        } else {
+            newCoins += (int) (50 + Math.random() * 50);
+        }
+        for (int i = 0; i < 2 + (int)(3 * Math.random()); i++) {
+            int itemKey = (int)(3 * Math.random());
+            toAdd.add(ItemDatabase.getItem(itemKey));
+        }
+        newCoins += (int) (50 + Math.random() * 50);
+        Controller.getPlayer().addCoins(newCoins);
+        displayReward("You picked up " + newCoins + " coins, and a huge amount of treasure!\nCheck your inventory!");
+        Controller.getPlayer().updateHotbar(null, toAdd);
+        
+    }
+
+    public boolean checkWeapon(Weapon w) {
+        if (w.equals(Controller.getPlayer().getWeapon())) {
+            return true;
+        }
+        List<Item> inventory = Inventory.getInventory();
+        for (Item i: inventory) {
+            if ((i instanceof Weapon)) {
+                Weapon w2 = (Weapon) (i);
+                if (w.equals(w2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    
+    public int getWidth() {
+        return width;
+    }
+
     public Door[] getDoors() {
         return doors;
     }
@@ -84,6 +138,14 @@ public abstract class Room {
         for (int i = 0; i < 4; i++) {
             if (doors[i] != null) {
                 doors[i].unlock();
+            }
+        }
+    }
+
+    public void lockDoors() {
+        for (int i = 0; i < 4; i++) {
+            if (doors[i] != null) {
+                doors[i].lock();
             }
         }
     }
@@ -148,6 +210,29 @@ public abstract class Room {
         GameLoop.getMonsters().add(trapMonster);
         return trapMonster;
     }
+
+    public void displayReward(String text) {
+        Label display = new Label(text);
+        display.setPrefWidth(Controller.getW());
+        display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
+                + "-fx-alignment:CENTER;");
+        display.setLayoutY(250);
+        display.setId("dropNotificationDisplay");
+        Controller.getGameScreen().getBoard().getChildren().add(display);
+
+        new AnimationTimer() {
+            private int timer = 180;
+            @Override
+            public void handle(long currentNanoTime) {
+                timer--;
+                if (timer <= 0) {
+                    Controller.getGameScreen().getBoard().getChildren().remove(display);
+                    this.stop();
+                }
+            }
+        }.start();
+    }
+
     // abstract methods for generating monsters and chests will be here.
 
 
