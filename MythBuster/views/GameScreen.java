@@ -108,11 +108,6 @@ public class GameScreen {
         board.getChildren().clear();
         board.getChildren().addAll(currentRoom.getRoomGroup(),
                 player.getGroup(), player.getHeartsBox(), player.gethotbarBox());
-        /*if (currentRoom instanceof StartingRoom) {
-            displays.getChildren().add(currentRoom.getRoomInfo());
-        } else {
-            displays.getChildren().remove(currentRoom.getRoomInfo());
-        }*/
 
         alerts = new HBox();
 

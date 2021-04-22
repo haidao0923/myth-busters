@@ -4,25 +4,30 @@ import controller.Controller;
 import controller.GameLoop;
 import controller.SpriteAnimation;
 import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class Boss extends Monster {
-    Image idleImage = new Image("sprites/Boss/idle.png");
+    Player player = Controller.getPlayer();
+    Image idleImage = new Image("sprites/Boss/idle2.png");
     Image attackImage = new Image("sprites/Boss/attacking.png");
     Image deathImage = new Image("sprites/Boss/death.png");
     Image summonImage = new Image("sprites/Boss/summon.png");
-    SpriteAnimation idleAnimation = new SpriteAnimation(imageView, Duration.millis(750), 4, 4,0, 0, 100, 100);
+    Image skillImage = new Image("sprites/Boss/skill1.png");
+    SpriteAnimation idleAnimation = new SpriteAnimation(imageView, Duration.millis(750), 8, 4,0, 0, 100, 100);
     SpriteAnimation attackAnimation = new SpriteAnimation(imageView, Duration.millis(750), 13, 6, 0, 0,
             100, 100);
     SpriteAnimation deathAnimation = new SpriteAnimation(imageView, Duration.millis(1000), 18, 10, 0 ,0 , 100, 100);
     SpriteAnimation summonAnimation = new SpriteAnimation(imageView, Duration.millis(750), 5, 4, 0, 0, 100, 100);
+    SpriteAnimation skillAnimation = new SpriteAnimation(imageView, Duration.millis(1000), 12, 6, 0, 0, 100, 100);
     private int damage = 10;
-    private int damageCooldown = 40;
-    private int skillCooldown = 100;
+    private int damageCooldown = 45;
+    private int summonCooldown = 100;
+    private int skillCooldown = 300;
+    private int skillDuration = 450;
+    private boolean cursed = false;
     public Boss() {
         super("The Boss", 500, 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
@@ -63,32 +68,62 @@ public class Boss extends Monster {
             if (damageCooldown > 0) {
                 damageCooldown--;
             } else {
-                damageCooldown = 40;
+                damageCooldown = 45;
                 attack();
                 Controller.getPlayer().takeDamage(damage);
             }
         } else if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10) {
-            damageCooldown = 40;
+            damageCooldown = 45;
             moveRelative(movementSpeed * offsetX / magnitude, movementSpeed * offsetY / magnitude);
         }
 
-        if (skillCooldown <= 0 && idleAnimation.getStatus() == Animation.Status.RUNNING) {
-            damageCooldown = 40;
-            skillCooldown = 600;
+        if (summonCooldown <= 0 && idleAnimation.getStatus() == Animation.Status.RUNNING) {
+            damageCooldown = 45;
+            summonCooldown = 600;
             summon();
-            Monster minion1 = new BossMinion(Math.random() * (Controller.getW() - width), Math.random() * (Controller.getH() - height));
-            GameLoop.getMonsters().add(minion1);
-            Platform.runLater(() -> {
-                Controller.getGameScreen().getBoard().getChildren().add(minion1.getGroup());
-                Controller.getCurrentRoom().getMonsters().add(minion1);
-            });
+        } else {
+            summonCooldown--;
+        }
+        if (skillCooldown <= 0 && idleAnimation.getStatus() == Animation.Status.RUNNING) {
+            damageCooldown = 45;
+            skillDuration = 450;
+            skillCooldown = 900;
+            cursed = true;
+            displayReward("You've been cursed!");
+            skill();
         } else {
             skillCooldown--;
         }
+        if (cursed) {
+            if (skillDuration <= 0) {
+                player.addDamageStat(player.getDamageStat() / 3);
+                player.setSpeed(player.getSpeed() * 1.25);
+                cursed = false;
+                displayReward("The curse expired");
+            } else {
+                skillDuration--;
+            }
+        }
     }
+
+    private void skill() {
+        idleAnimation.stop();
+        imageView.setImage(skillImage);
+        skillAnimation.setCycleCount(1);
+        skillAnimation.play();
+        player.subtractDamageStat(player.getDamageStat() / 4);
+        player.setSpeed(player.getSpeed() * 0.8);
+        skillAnimation.setOnFinished(actionEvent -> {
+            skillAnimation.stop();
+            imageView.setImage(idleImage);
+            imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
+            idleAnimation.play();
+        });
+    }
+
     public void idle() {
         imageView.setImage(idleImage);
-        idleAnimation.setCycleCount(500);
+        idleAnimation.setCycleCount(Animation.INDEFINITE);
         idleAnimation.play();
     }
     public void attack() {
@@ -108,6 +143,12 @@ public class Boss extends Monster {
         imageView.setImage(summonImage);
         summonAnimation.setCycleCount(1);
         summonAnimation.play();
+        Monster minion1 = new BossMinion(Math.random() * (Controller.getW() - width), Math.random() * (Controller.getH() - height));
+        GameLoop.getMonsters().add(minion1);
+        Platform.runLater(() -> {
+            Controller.getGameScreen().getBoard().getChildren().add(minion1.getGroup());
+            Controller.getCurrentRoom().getMonsters().add(minion1);
+        });
         summonAnimation.setOnFinished(actionEvent -> {
             summonAnimation.stop();
             imageView.setImage(idleImage);

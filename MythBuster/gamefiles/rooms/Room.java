@@ -55,6 +55,7 @@ public abstract class Room {
             }
         }
         if (this instanceof BossRoom) {
+            lockDoors();
             Monster boss = new Boss();
             boss.moveAbsolute(width / 2, height / 2);
             monsters.add(boss);
@@ -167,9 +168,6 @@ public abstract class Room {
         for (Monster monster : monsters) {
             roomGroup.getChildren().add(monster.getGroup());
         }
-
-
-        System.out.println("Row:" + row + " Col: " + column);
         return roomGroup;
     }
 

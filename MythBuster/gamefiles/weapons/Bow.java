@@ -41,9 +41,9 @@ public class Bow extends Weapon {
                         }
                     }
                     if (arrow.direction == 1) {
-                        arrow.x += 4;
+                        arrow.x += 6;
                     } else {
-                        arrow.x -= 4;
+                        arrow.x -= 6;
                     }
                     if (arrow.x >= Controller.getW() || arrow.x <= 0) {
                         iterator.remove();

@@ -16,11 +16,11 @@ public class BossMinion extends Monster {
     SpriteAnimation deathAnimation = new SpriteAnimation(imageView, Duration.millis(750), 5, 3, 0, 0, 50, 50);
     private double targetPositionX = Math.random() * (Controller.getW() - width);
     private double targetPositionY = Math.random() * (Controller.getH() - height);
-    private int damageCooldown = 30;
+    private int damageCooldown = 10;
     private int damage = 50;
 
     public BossMinion(double posX, double posY) {
-        super("Boss Minion", 20, 5, "sprites/Boss/summonAppear.png", 100, 100);
+        super("Boss Minion", 5, 5, "sprites/Boss/summonAppear.png", 100, 100);
         moveAbsolute(posX, posY);
         imageView.setViewport(new Rectangle2D(0, 0, 50, 50));
         spawnAnimation.play();
@@ -57,11 +57,11 @@ public class BossMinion extends Monster {
             if (damageCooldown > 0) {
                 damageCooldown--;
             } else {
-                damageCooldown = 30;
+                damageCooldown = 10;
                 Controller.getPlayer().takeDamage(damage);
             }
         } else if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10) {
-            damageCooldown = 30;
+            damageCooldown = 10;
             moveRelative(movementSpeed * offsetX / magnitude, movementSpeed * offsetY / magnitude);
         } else {
             targetPositionX = Math.random() * (Controller.getW() - width);
