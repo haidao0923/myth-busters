@@ -10,6 +10,7 @@ import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
 import gamefiles.rooms.TreasureRoom;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -133,7 +134,12 @@ public class GameScreen {
             
             alerts.getChildren().addAll(startChallenge);
             startChallenge.setAlignment(Pos.CENTER);
+            startChallenge.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
             alerts.setAlignment(Pos.CENTER);
+
+            Insets buttonInset = new Insets(360, 240, 480, 480);
+
+            alerts.setPadding(buttonInset);
         }
 
         board.getChildren().addAll(displays, alerts);
