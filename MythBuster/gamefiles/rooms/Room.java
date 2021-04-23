@@ -3,6 +3,7 @@ package gamefiles.rooms;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Door;
+import gamefiles.Droppable;
 import gamefiles.Inventory;
 import gamefiles.characters.*;
 import gamefiles.items.Item;
@@ -13,6 +14,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
+import views.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public abstract class Room {
     private Text roomInfo;
 
     private ArrayList<Monster> monsters = new ArrayList<>();
+    private ArrayList<Droppable> drops = new ArrayList<>();
 
     private Group roomGroup;
 
@@ -168,11 +171,18 @@ public abstract class Room {
         for (Monster monster : monsters) {
             roomGroup.getChildren().add(monster.getGroup());
         }
+        for (Droppable drop : drops) {
+            roomGroup.getChildren().add(drop.getGroup());
+        }
         return roomGroup;
     }
 
     public ArrayList<Monster> getMonsters() {
         return monsters;
+    }
+
+    public ArrayList<Droppable> getDrops() {
+        return drops;
     }
 
     public Text getRoomInfo() {
@@ -233,6 +243,13 @@ public abstract class Room {
 
     // abstract methods for generating monsters and chests will be here.
 
+    public void addDrop(Droppable drop) {
+        drops.add(drop);
+        Controller.getGameScreen().updateBoardDrop(drop);
+    }
 
+    public void removeDrop(Droppable drop) {
+        drops.remove(drop);
+    }
 
 }

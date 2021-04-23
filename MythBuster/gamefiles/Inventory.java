@@ -45,7 +45,8 @@ public class Inventory {
         Player player = Controller.getPlayer();
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
-                Controller.getControllerLoop(), player.getItemLoop());
+                Controller.getControllerLoop(), player.getItemLoop(),
+                GameLoop.getDroppedLoop());
 
 
         selectedIndex = UNSELECTED;
@@ -132,7 +133,8 @@ public class Inventory {
                     //Upon pressing I again, go back to game.
                     GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                             player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
-                            Controller.getControllerLoop(), player.getItemLoop());
+                            Controller.getControllerLoop(), player.getItemLoop(),
+                            GameLoop.getDroppedLoop());
                     Controller.goToGameScreen();
                     player.updateHotbarImages();
                 }

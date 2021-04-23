@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import controller.Controller;
 import controller.GameLoop;
+import gamefiles.Droppable;
 import gamefiles.characters.Player;
 import gamefiles.rooms.ChallengeRoom;
 import gamefiles.rooms.Room;
@@ -141,8 +142,14 @@ public class GameScreen {
 
         GameLoop.getMonsters().clear();
         GameLoop.getMonsters().addAll(currentRoom.getMonsters());
+
+        GameLoop.getDrops().clear();
+        GameLoop.getDrops().addAll(currentRoom.getDrops());
     }
 
+    public void updateBoardDrop(Droppable drop) {
+        board.getChildren().add(drop.getGroup());
+    }
 
     /**
      * Set necessary binding properties.  Currently placeholder.

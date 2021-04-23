@@ -2,8 +2,12 @@ package gamefiles.characters;
 
 import controller.Controller;
 import controller.GameLoop;
+import gamefiles.Droppable;
 import gamefiles.Inventory;
 import gamefiles.Touchable;
+import gamefiles.items.DroppedCoin;
+import gamefiles.items.DroppedItem;
+import gamefiles.items.DroppedWeapon;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.weapons.*;
@@ -20,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -133,29 +138,49 @@ public abstract class Monster implements Touchable {
                 if (key >= 100) {
                     Weapon w = WeaponDatabase.getWeapon(key % 100);
                     if (!checkWeapon(w)) {
-                        displayReward("You picked up a " + w.getName());
-                        Inventory.addToInventory(w);
+                        DroppedItem droppedItem = new DroppedWeapon(w);
+                        droppedItem.drop(positionX, positionY, true);
                         return true;
                     } else {
                         int newCoins = (int) (5 + Math.random() * 5);
-                        displayReward("You picked up " + newCoins + " coins");
-                        Controller.getPlayer().addCoins(newCoins);
+                        
+                        dropCoins(newCoins, 5, positionX, positionY);
+
                         return true;
                     }
                 } else if (key >= 0) {
-                    displayReward("You picked up a " + ItemDatabase.getItem(key).getName());
-                    toAdd.add(ItemDatabase.getItem(key));
-                    Controller.getPlayer().updateHotbar(null, toAdd);
+                    // displayReward("You picked up a " + ItemDatabase.getItem(key).getName());
+                    // toAdd.add(ItemDatabase.getItem(key));
+                    // Controller.getPlayer().updateHotbar(null, toAdd);
+                    DroppedItem droppedItem = new DroppedItem(ItemDatabase.getItem(key));
+                    droppedItem.drop(positionX, positionY, true);
                     return true;
                 } else {
                     int newCoins = (int) (5 + Math.random() * 5);
-                    displayReward("You picked up " + newCoins + " coins");
-                    Controller.getPlayer().addCoins(newCoins);
+                    dropCoins(newCoins, 5, positionX, positionY);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    protected void dropCoins(int newCoins, int num, double positionX, double positionY) {
+        int[] nums = new int[num];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = (int) (Math.random() * newCoins); // determine breaks
+        }
+
+        Arrays.sort(nums);
+        
+        int lower = -1;
+        for (int i = 0; i < nums.length; i++) { // add coins
+            Item coin = ItemDatabase.getItem(-1);
+            coin.addQuantity(nums[i] - lower);
+            lower = nums[i];
+            DroppedItem droppedItem = new DroppedCoin(coin);
+            droppedItem.drop(positionX, positionY, true);
+        }
     }
 
     public boolean checkWeapon(Weapon w) {

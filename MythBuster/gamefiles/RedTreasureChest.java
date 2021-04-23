@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controller.Controller;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import gamefiles.items.DroppedItem;
 
 public class RedTreasureChest extends TreasureChest {
     public RedTreasureChest(double positionX, double positionY, int cost) {
@@ -24,7 +25,7 @@ public class RedTreasureChest extends TreasureChest {
             break;
         case 3:
             int coinAmount = (int) (Math.random() * 9 + 4) * 5;
-            Controller.getPlayer().addCoins(coinAmount);
+            dropCoins(coinAmount, 12, positionX, positionY);
             displayReward("You found " + Integer.toString(coinAmount) + " coins!");
             break;
         case 4:
@@ -37,7 +38,10 @@ public class RedTreasureChest extends TreasureChest {
             for (int i = 0; i < amountToAdd; i++) {
                 addRandomPotion(itemsToAdd);
             }
-            Controller.getPlayer().updateHotbar(null, itemsToAdd);
+            for (int i = 0; i < itemsToAdd.size(); i++) {
+                DroppedItem droppedItem = new DroppedItem(itemsToAdd.get(i));
+                droppedItem.drop(positionX, positionY, true);
+            }
             displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
             break;
         default:

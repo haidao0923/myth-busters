@@ -1,5 +1,6 @@
 package controller;
 
+import gamefiles.Droppable;
 import gamefiles.characters.Player;
 import gamefiles.characters.Monster;
 import gamefiles.weapons.Bow;
@@ -15,6 +16,8 @@ public class GameLoop {
     private static ArrayList<Monster> monsters = new ArrayList<>();
     private static AnimationTimer monsterLoop;
     private static Weapon bow = WeaponDatabase.getWeapon(2);
+    private static ArrayList<Droppable> drops = new ArrayList<Droppable>();
+    private static AnimationTimer droppedLoop;
 
 
     public static void gameLoop() {
@@ -26,6 +29,15 @@ public class GameLoop {
                     monsters.get(i).update();
                 }
 
+            }
+        };
+
+        droppedLoop = new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                for (Droppable drop : drops) {
+                    drop.update();
+                }
             }
         };
     }
@@ -57,7 +69,19 @@ public class GameLoop {
         monsters = newMonsters;
     }
 
+    public static ArrayList<Droppable> getDrops() {
+        return drops;
+    }
+
+    public static void setDrops(ArrayList<Droppable> newDrops) {
+        drops = newDrops;
+    }
+
     public static AnimationTimer getMonsterLoop() {
         return monsterLoop;
+    }
+
+    public static AnimationTimer getDroppedLoop() {
+        return droppedLoop;
     }
 }
