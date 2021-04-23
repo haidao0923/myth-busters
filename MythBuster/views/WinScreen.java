@@ -19,6 +19,7 @@ public class WinScreen {
         header = new Label("Congratulations!");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
                 + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
+        header.setPrefWidth(width);
     }
 
     public Scene getScene() {
