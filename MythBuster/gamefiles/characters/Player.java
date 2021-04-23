@@ -74,7 +74,8 @@ public class Player implements Touchable {
     private AnimationTimer playerHpUpdate;
     private AnimationTimer itemLoop;
 
-
+    private static int greedyIndex;
+    private static int potionsUsed;
 
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
@@ -272,6 +273,7 @@ public class Player implements Touchable {
                                 toDelete.add(i);
                                 System.out.println("Trying to delete at index " + i);
                             }
+                            potionsUsed++;
                         }
                     }
                     if (item instanceof Consumable && item.isActive()) {
@@ -485,6 +487,9 @@ public class Player implements Touchable {
         if (Controller.getGameScreen() != null) {
             Controller.getGameScreen().getCoinDisplay().setText("Coins: " + getCoins());
         }
+        if (coins > greedyIndex) {
+            greedyIndex = coins;
+        }
     }
     public void addCoins(int amount) {
         setCoins(coins + amount);
@@ -600,6 +605,19 @@ public class Player implements Touchable {
 
     public AnimationTimer getItemLoop() {
         return itemLoop;
+    }
+
+    public static int getGreedyIndex() {
+        return greedyIndex;
+    }
+    public static void setGreedyIndex(int amount) {
+        greedyIndex = amount;
+    }
+    public static int getPotionsUsed() {
+        return potionsUsed;
+    }
+    public static void setPotionsUsed(int amount) {
+        potionsUsed= amount;
     }
 
     public double getWidth() {
