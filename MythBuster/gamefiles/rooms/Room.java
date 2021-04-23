@@ -83,7 +83,7 @@ public abstract class Room {
         Controller.getPlayer().addCoins(newCoins);
         displayReward("You picked up " + newCoins + " coins, and a huge amount of treasure!\nCheck your inventory!");
         Controller.getPlayer().updateHotbar(null, toAdd);
-        
+
     }
 
     public boolean checkWeapon(Weapon w) {
@@ -105,7 +105,7 @@ public abstract class Room {
     public int getHeight() {
         return height;
     }
-    
+
     public int getWidth() {
         return width;
     }

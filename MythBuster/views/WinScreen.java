@@ -46,7 +46,7 @@ public class WinScreen {
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
         exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-        exitButton.setOnAction(e -> Platform.exit());
+        exitButton.setOnAction(e -> {Controller.getMainWindow().close();});
 
         int minutes = Controller.getTimeElapsed() / 3600;
         int seconds = Controller.getTimeElapsed() / 60 % 60;

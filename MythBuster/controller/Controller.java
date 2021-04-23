@@ -100,14 +100,14 @@ public class Controller extends Application {
         volumeControl.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
                 public void changed(
-                    ObservableValue<? extends Number> observableValue, 
-                    Number oldValue, 
-                    Number newValue) { 
+                    ObservableValue<? extends Number> observableValue,
+                    Number oldValue,
+                    Number newValue) {
                         System.out.println("Changed to: " + newValue.doubleValue());
                         BackgroundMusic.setVolume(newValue.doubleValue());
                 }
         });
-        
+
         Scene scene = configScreen.getScene();
         mainWindow.setScene(scene);
         configScreen.setBinds(mainWindow);
@@ -277,10 +277,11 @@ public class Controller extends Application {
     }
 
     public static void goToWinScreen() {
-        GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
-                player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
-                controllerLoop, player.getItemLoop(),
-                GameLoop.getDroppedLoop());
+        if (player != null) {
+            GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
+            player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
+            controllerLoop, player.getItemLoop(), GameLoop.getDroppedLoop());
+        }
         WinScreen winScreen = new WinScreen(W, H);
         Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);
@@ -427,6 +428,10 @@ public class Controller extends Application {
     public String getWindowTitle() {
         return mainWindow.getTitle();
     }
+    public static Stage getMainWindow() {
+        return mainWindow;
+    }
+
 
     /**
      * Getter for the width of the map.
