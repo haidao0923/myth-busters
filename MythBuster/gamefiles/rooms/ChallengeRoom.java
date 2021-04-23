@@ -27,6 +27,8 @@ public class ChallengeRoom extends Room {
     Group roomGroup;
     boolean challengeComplete;
 
+    private static int challengesAttempted;
+
     public ChallengeRoom(int width, int height, int row, int column) {
         super(width, height, row, column);
         challengeComplete = false;
@@ -63,6 +65,7 @@ public class ChallengeRoom extends Room {
             roomGroup.getChildren().add(monster.getGroup());
         }
         challengeComplete = true;
+        challengesAttempted++;
     }
 
     public Soldier spawnSoldier() {
@@ -93,6 +96,13 @@ public class ChallengeRoom extends Room {
 
     public void setStatus(boolean status) {
         challengeComplete = status;
+    }
+
+    public static int getChallengesAttempted() {
+        return challengesAttempted;
+    }
+    public static void setChallengesAttempted(int amount) {
+        challengesAttempted = amount;
     }
 
 }

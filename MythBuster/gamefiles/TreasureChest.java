@@ -21,6 +21,8 @@ public abstract class TreasureChest implements Touchable {
     protected int cost = 10;
     protected boolean opened;
 
+    private static int chestsOpened;
+
     public TreasureChest(double positionX, double positionY, int cost, String spritePath) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -51,7 +53,7 @@ public abstract class TreasureChest implements Touchable {
     }
 
     public boolean canOpen() {
-        if (!opened && intersects(Controller.getPlayer()) 
+        if (!opened && intersects(Controller.getPlayer())
             && Controller.getPlayer().getCoins() >= cost) {
             return true;
         }
@@ -60,6 +62,7 @@ public abstract class TreasureChest implements Touchable {
     public abstract void open();
 
     public void displayReward(String text) {
+        chestsOpened++;
         Label display = new Label(text);
         display.setPrefWidth(Controller.getW());
         display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
@@ -91,4 +94,10 @@ public abstract class TreasureChest implements Touchable {
         return treasureGroup;
     }
 
+    public static int getChestsOpened() {
+        return chestsOpened;
+    }
+    public static void setChestsOpened(int amount) {
+        chestsOpened = amount;
+    }
 }

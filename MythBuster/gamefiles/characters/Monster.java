@@ -40,6 +40,8 @@ public abstract class Monster implements Touchable {
     protected Rectangle healthBarBacking;
     protected double healthBarWidth;
 
+    private static int monstersKilled;
+
     private Map<Integer, Integer> lootTable = new HashMap<>();
 
     protected Group monsterGroup;
@@ -115,6 +117,7 @@ public abstract class Monster implements Touchable {
             GameLoop.getMonsters().remove(this);
             if (!(this instanceof Trap) && !(this instanceof Fireball) && !(this instanceof Boss) && !(this instanceof BossMinion)) {
                 addItems();
+                monstersKilled++;
             }
         }
     }
@@ -227,6 +230,13 @@ public abstract class Monster implements Touchable {
     }
     public double getMaxHealth() {
         return maxHealth;
+    }
+
+    public static int getMonstersKilled() {
+        return monstersKilled;
+    }
+    public static void setMonstersKilled(int amount) {
+        monstersKilled = amount;
     }
 
     public void displayReward(String text) {
