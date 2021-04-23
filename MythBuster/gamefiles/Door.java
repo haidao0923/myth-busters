@@ -87,4 +87,8 @@ public class Door implements Touchable {
     public double getPositionY() {
         return positionY;
     }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
 }

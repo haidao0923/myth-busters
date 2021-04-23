@@ -48,7 +48,7 @@ public class DeathScreen {
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
         exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-        exitButton.setOnAction(e -> Platform.exit());
+        exitButton.setOnAction(e -> {Controller.getMainWindow().close();});
 
         Insets buttonInset = new Insets(600, 150, 550, 550);
 
