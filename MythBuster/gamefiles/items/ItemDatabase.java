@@ -26,7 +26,9 @@ public class ItemDatabase {
      * @return the item from the passed in id
      */
     public static Item getItem(int key) {
-        if (key == 0) {
+        if (key == -1) {
+            return new Coin(-1, "Coin", "Money", 0);
+        } else if (key == 0) {
             return new HealthPotion(0, "Health Potion", "Restores 2 hearts.", 0, false, 0);
         } else if (key == 1) {
             return new RagePotion(0, "Rage Potion", 

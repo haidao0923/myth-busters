@@ -6,6 +6,8 @@ import java.util.List;
 import controller.Controller;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import gamefiles.items.DroppedItem;
+import gamefiles.items.DroppedWeapon;
 import gamefiles.weapons.Weapon;
 import gamefiles.weapons.WeaponDatabase;
 
@@ -39,7 +41,10 @@ public class BlueTreasureChest extends TreasureChest {
         for (int i = 0; i < amountToAdd; i++) {
             addRandomPotion(itemsToAdd);
         }
-        Controller.getPlayer().updateHotbar(null, itemsToAdd);
+        for (int i = 0; i < itemsToAdd.size(); i++) {
+            DroppedItem droppedItem = new DroppedItem(itemsToAdd.get(i));
+            droppedItem.drop(positionX, positionY, true);
+        }
         displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
     }
 
@@ -72,8 +77,8 @@ public class BlueTreasureChest extends TreasureChest {
     private void addWeapon() {
         Weapon weapon = WeaponDatabase.getWeapon((int) (Math.random() * 3));
         if (!hasWeapon(weapon)) {
-            Inventory.addToInventory(weapon);
-            displayReward("You have found a " + weapon.getName() + "!");
+            DroppedItem droppedItem = new DroppedWeapon(weapon);
+            droppedItem.drop(positionX, positionY, true);
         } else {
             addPotion();
         }

@@ -70,6 +70,14 @@ public abstract class Item {
         return this.active;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public ImageView getImageView() {
+        return this.imageView;
+    }
+
     public Image getImage() {
         return this.image;
     }
