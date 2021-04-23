@@ -1,6 +1,10 @@
 package gamefiles;
 
 import controller.Controller;
+import gamefiles.items.Item;
+import gamefiles.items.ItemDatabase;
+import gamefiles.items.DroppedItem;
+import gamefiles.items.DroppedCoin;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -8,6 +12,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+
+import java.util.Arrays;
 
 public abstract class TreasureChest implements Touchable {
 
@@ -60,6 +66,24 @@ public abstract class TreasureChest implements Touchable {
         return false;
     }
     public abstract void open();
+
+    protected void dropCoins(int newCoins, int num, double positionX, double positionY) {
+        int[] nums = new int[num];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = (int) (Math.random() * newCoins); // determine breaks
+        }
+
+        Arrays.sort(nums);
+        
+        int lower = -1;
+        for (int i = 0; i < nums.length; i++) { // add coins
+            Item coin = ItemDatabase.getItem(-1);
+            coin.addQuantity(nums[i] - lower);
+            lower = nums[i];
+            DroppedItem droppedItem = new DroppedCoin(coin);
+            droppedItem.drop(positionX, positionY, true);
+        }
+    }
 
     public void displayReward(String text) {
         chestsOpened++;

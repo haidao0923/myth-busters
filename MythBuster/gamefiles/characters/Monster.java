@@ -135,7 +135,7 @@ public abstract class Monster implements Touchable {
         for (int key: keySet) {
             total = total + lootTable.get(key);
             if (prob < total) {
-                if (key >= 1) {
+                if (key >= 100) {
                     Weapon w = WeaponDatabase.getWeapon(key % 100);
                     if (!checkWeapon(w)) {
                         DroppedItem droppedItem = new DroppedWeapon(w);
