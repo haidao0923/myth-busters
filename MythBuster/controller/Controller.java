@@ -1,6 +1,5 @@
 package controller;
 
-
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
@@ -43,6 +42,8 @@ public class Controller extends Application {
     private static AnimationTimer controllerLoop;
 
     private static int gameDifficulty;
+
+    private static int timeElapsed;
 
     public void start(Stage primaryStage) throws Exception {
         mainWindow = primaryStage;
@@ -130,7 +131,7 @@ public class Controller extends Application {
 
         controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
-
+                timeElapsed += 1;
                 // game logic
                 Group board = gameScreen.getBoard();
                 HBox displays = gameScreen.getDisplays();
@@ -145,7 +146,7 @@ public class Controller extends Application {
                             c.setStatus(false);
                         }
                     }
-                    
+
                 }
 
                 //If there is a left door and we are at it.
@@ -390,6 +391,13 @@ public class Controller extends Application {
 
     public static AnimationTimer getControllerLoop() {
         return controllerLoop;
+    }
+
+    public static int getTimeElapsed() {
+        return timeElapsed;
+    }
+    public static void setTimeElapsed(int amount) {
+        timeElapsed = amount;
     }
 
     /**
