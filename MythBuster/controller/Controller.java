@@ -17,11 +17,14 @@ import views.DeathScreen;
 import views.GameScreen;
 import views.WelcomeScreen;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sounds.BackgroundMusic;
@@ -79,6 +82,7 @@ public class Controller extends Application {
         TextField heroNameField = configScreen.getHeroNameField();
         ComboBox<StartingWeapon> startingWeaponSelector = configScreen.getStartingWeaponSelector();
         ComboBox<Difficulty> difficultySelector = configScreen.getDifficultySelector();
+        Slider volumeControl = configScreen.getVolumeControl();
 
         beginButton.addEventHandler(ActionEvent.ACTION, (e) -> {
             if (heroNameField.getText().length() < 1
@@ -92,6 +96,18 @@ public class Controller extends Application {
                     difficultySelector.getValue());
             goToStartingRoom();
         });
+
+        volumeControl.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+                public void changed(
+                    ObservableValue<? extends Number> observableValue, 
+                    Number oldValue, 
+                    Number newValue) { 
+                        System.out.println("Changed to: " + newValue.doubleValue());
+                        BackgroundMusic.setVolume(newValue.doubleValue());
+                }
+        });
+        
         Scene scene = configScreen.getScene();
         mainWindow.setScene(scene);
         configScreen.setBinds(mainWindow);

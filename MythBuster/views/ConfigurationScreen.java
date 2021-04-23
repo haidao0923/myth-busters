@@ -9,11 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import gamefiles.Difficulty;
 import gamefiles.StartingWeapon;
 import javafx.stage.Stage;
+import sounds.BackgroundMusic;
 
 public class ConfigurationScreen {
     private int width;
@@ -23,6 +25,7 @@ public class ConfigurationScreen {
     private ComboBox<StartingWeapon> startingWeaponSelector;
     private ComboBox<Difficulty> difficultySelector;
     private TextField heroNameTextField;
+    private Slider volumeControl;
 
     private ConfigurationScreen() { }
 
@@ -38,6 +41,8 @@ public class ConfigurationScreen {
         heroNameTextField = new TextField();
         startingWeaponSelector = new ComboBox<StartingWeapon>();
         difficultySelector = new ComboBox<Difficulty>();
+        volumeControl = new Slider(0.0, 2.0, 
+                    BackgroundMusic.getVolume() / BackgroundMusic.getVolumeMarker());
 
         header = new Label("Configuration Screen");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
@@ -65,6 +70,16 @@ public class ConfigurationScreen {
         difficultySelector.setStyle("-fx-font-size: 30");
         difficultySelector.getItems().setAll(Difficulty.values());
         difficultySelector.getSelectionModel().selectFirst();
+
+        volumeControl.setId("volumeControlId");
+        volumeControl.setPrefWidth(300);
+        volumeControl.setMajorTickUnit(.25);
+        volumeControl.setShowTickLabels(true);
+        volumeControl.showTickMarksProperty();
+        HBox volumeBox = new HBox(volumeControl);
+        volumeBox.setAlignment(Pos.CENTER);
+        volumeBox.setLayoutY(550);
+        volumeBox.setLayoutX(100);
 
         HBox hBox = new HBox(50);
         hBox.setAlignment(Pos.CENTER);
@@ -95,8 +110,15 @@ public class ConfigurationScreen {
                 + "-fx-font-weight: bold; -fx-alignment:center");
         difficultyDescription.setPrefWidth(300);
 
+        Label volumeDescription = new Label("Volume");
+        volumeDescription.layoutXProperty().bind(volumeBox.layoutXProperty());
+        volumeDescription.layoutYProperty().bind(volumeBox.layoutYProperty().subtract(50));
+        volumeDescription.setStyle("-fx-font-size: 30; "
+                + "-fx-font-weight: bold; -fx-alignment:center");
+        volumeDescription.setPrefWidth(300);
+
         Group descriptionGroup = new Group(heroNameDescription,
-                startingWeaponDescription, difficultyDescription);
+                startingWeaponDescription, difficultyDescription, volumeDescription);
 
         beginButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
 
@@ -106,7 +128,7 @@ public class ConfigurationScreen {
         beginButtonVBox.setLayoutY(700);
 
         Group board = new Group();
-        board.getChildren().addAll(header, hBox, descriptionGroup, beginButtonVBox);
+        board.getChildren().addAll(header, hBox, descriptionGroup, volumeBox, beginButtonVBox);
         Scene scene = new Scene(board, width, height, Color.POWDERBLUE);
         return scene;
     }
@@ -142,6 +164,10 @@ public class ConfigurationScreen {
 
     public ComboBox<Difficulty> getDifficultySelector() {
         return difficultySelector;
+    }
+
+    public Slider getVolumeControl() {
+        return volumeControl;
     }
 
     /**
