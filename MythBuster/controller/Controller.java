@@ -261,11 +261,13 @@ public class Controller extends Application {
             GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                 ((Bow) player.getWeapon()).getArrowTimer(),
                     player.getPlayerHpUpdateTimer(),
-                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop(),
+                    GameLoop.getDroppedLoop());
         } else {
             GameLoop.startAllAnimationTimers(player.getPlayerLogicTimer(),
                     player.getPlayerHpUpdateTimer(),
-                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop());
+                    GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop(),
+                    GameLoop.getDroppedLoop());
         }
     }
 
@@ -277,7 +279,8 @@ public class Controller extends Application {
     public static void goToWinScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
-                controllerLoop, player.getItemLoop());
+                controllerLoop, player.getItemLoop(),
+                GameLoop.getDroppedLoop());
         WinScreen winScreen = new WinScreen(W, H);
         Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);
@@ -295,7 +298,8 @@ public class Controller extends Application {
     public static void goToDeathScreen() {
         GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
                 player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
-                controllerLoop, player.getItemLoop());
+                controllerLoop, player.getItemLoop(),
+                GameLoop.getDroppedLoop());
         Trap.setTrapCount(0);
 
         for (int i = 0; i < 5; i++) {
