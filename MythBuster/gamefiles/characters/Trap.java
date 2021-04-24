@@ -5,6 +5,7 @@ import controller.GameLoop;
 
 public class Trap extends Monster {
 
+    private static int trapCount;
 
     public Trap(double posX, double posY) {
         super("Trap", 10, 0, "sprites/Medusa.png", 50, 50);
@@ -12,7 +13,6 @@ public class Trap extends Monster {
         trapCount++;
     }
 
-    private static int trapCount;
 
     private int damage = 25;
 

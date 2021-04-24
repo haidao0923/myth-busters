@@ -10,6 +10,7 @@ import controller.SpriteAnimation;
 import gamefiles.Inventory;
 import gamefiles.Touchable;
 import gamefiles.items.Consumable;
+import gamefiles.items.HealthPotion;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
 import gamefiles.weapons.Bow;
@@ -26,9 +27,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import views.GameScreen;
 
 public class Player implements Touchable {
     private String name;
@@ -43,12 +47,13 @@ public class Player implements Touchable {
     private double moveCD = 0;
     private double damage = 10;
     private double damageCooldown;
+    private int maxActiveConsumables = 2;
     private Image swordSprite = new Image("sprites/Player/daggerPlayer.png");
     private Image spearSprite = new Image("sprites/Player/spearPlayer.png");
     private Image bowSprite = new Image("sprites/Player/bowPlayer.png");
     private ImageView imageView;
     private int direction = 0; //left = 0, right = 1
-    private ArrayList<Item> activeConsumables = new ArrayList<>();
+    private ArrayList<Consumable> activeConsumables = new ArrayList<>();
 
     private double positionX;
     private double positionY;
@@ -256,6 +261,7 @@ public class Player implements Touchable {
         // ITEM LOOP
         this.itemLoop = new AnimationTimer() {
             private ArrayList<Integer> toDelete = new ArrayList<Integer>();
+            HBox effectDisplays = Controller.getGameScreen().getEffectDisplays();
             private int itemCD = 0;
 
             public void handle(long currentNanoTime) {
@@ -266,6 +272,12 @@ public class Player implements Touchable {
                     Item item = currHotbar[i];
                     if (item != null) {
                         if (itemCD <= 0 && input.contains("DIGIT" + Integer.toString(i + 1))) {
+                            if(!(item instanceof HealthPotion) && activeConsumables.size() >= maxActiveConsumables) {
+                                //Too many potions active!
+                                System.out.println("Too many potions already active!");
+                                continue;
+                            }
+
                             System.out.println("Pressed " + (i + 1));
                             item.setActive(true);
                             itemCD = 30;
@@ -277,20 +289,38 @@ public class Player implements Touchable {
                         }
                     }
                     if (item instanceof Consumable && item.isActive()) {
-                        activeConsumables.add(item);
+                        activeConsumables.add((Consumable)item);
                     }
                 }
                 updateHotbar(toDelete, null);
                 itemCD--;
 
+
+                effectDisplays.getChildren().clear();
                 for (int i = 0; i < activeConsumables.size(); i++) {
-                    Item item = activeConsumables.get(i);
-                    if (item instanceof Consumable && item.isActive()) {
-                        ((Consumable) item).effect(currentNanoTime);
+                    //For handling item effects.
+                    Consumable item = activeConsumables.get(i);
+                    if (item.isActive()) {
+                        (item).effect(currentNanoTime);
                     } else {
                         activeConsumables.remove(item);
                     }
+
+                    //for updating the UI with the item+timer
+                    //Note: this is pretty inefficient/scuffed, but it works.
+                    //It's essentially recreating the display every loop through, because
+                    //we have effectDisplays.getChildren().clear() up outside of this for loop.
+                    Image icon = item.getImage();
+                    ImageView iconView = new ImageView(icon);
+                    iconView.setFitWidth(20);
+                    iconView.setFitHeight(20);
+                    long timer = ((Consumable) item).getDurationTimer() / 60;
+                    Text timerText = new Text(10, 10, Long.toString(timer));
+                    VBox consumableDisplay = new VBox();
+                    consumableDisplay.getChildren().addAll(iconView, timerText);
+                    effectDisplays.getChildren().add(consumableDisplay);
                 }
+
             }
         };
     }
@@ -331,7 +361,7 @@ public class Player implements Touchable {
                         }
                     }
                 } else {
-                    Inventory.addToInventory(item);
+                    boolean added = Inventory.addToInventory(item);
                 }
 
             }
@@ -559,6 +589,10 @@ public class Player implements Touchable {
 
     public void setHealth(double value) {
         this.currentHealth = value;
+    }
+    public void setMaxHealth(double value) {
+        this.maxHealth = value;
+        numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
     }
     public void addHealth(double value) {
         this.currentHealth += value;

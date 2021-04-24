@@ -39,6 +39,7 @@ public class GameScreen {
     private Group roomGroup;
     private Group board;
     private HBox displays;
+    private HBox effectDisplays;
     private HBox alerts;
 
     private Scene scene;
@@ -77,13 +78,20 @@ public class GameScreen {
 
         alerts = new HBox();
 
+        //For text displays
         displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
         displays.setLayoutX(10);
-        displays.setLayoutY(20);
+        displays.setLayoutY(80);
+
+        //For consumable displays.
+        effectDisplays = new HBox(20);
+        effectDisplays.setLayoutX(10);
+        effectDisplays.setLayoutY(120);
+
 
         player.moveAbsolute(100, 100);
 
-        board.getChildren().addAll(displays, alerts);
+        board.getChildren().addAll(displays, alerts, effectDisplays);
         scene = new Scene(board, width, height);
         changeBackgroundColor(Color.PURPLE);
     }
@@ -138,7 +146,7 @@ public class GameScreen {
             alerts.setPadding(buttonInset);
         }
 
-        board.getChildren().addAll(displays, alerts);
+        board.getChildren().addAll(displays, alerts, effectDisplays);
 
         GameLoop.getMonsters().clear();
         GameLoop.getMonsters().addAll(currentRoom.getMonsters());
@@ -161,6 +169,10 @@ public class GameScreen {
 
     public HBox getDisplays() {
         return displays;
+    }
+
+    public HBox getEffectDisplays() {
+        return effectDisplays;
     }
 
     public void changeBackgroundColor(String color) {

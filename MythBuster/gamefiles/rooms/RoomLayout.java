@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.File;
 
 import controller.Controller;
+import gamefiles.Door;
 
 
 public class RoomLayout {
@@ -180,19 +181,26 @@ public class RoomLayout {
         if (oldRoom.getLeftDoor() != null) {
             bossRoom.setLeftDoor(oldRoom.getLeftDoor().getDestination());
             oldRoom.getLeftDoor().getDestination().setRightDoor(bossRoom);
+            oldRoom.getLeftDoor().getDestination().getRightDoor().setBossDoor();
         }
         if (oldRoom.getTopDoor() != null) {
             bossRoom.setTopDoor(oldRoom.getTopDoor().getDestination());
             oldRoom.getTopDoor().getDestination().setBottomDoor(bossRoom);
+            oldRoom.getTopDoor().getDestination().getBottomDoor().setBossDoor();
         }
         if (oldRoom.getRightDoor() != null) {
             bossRoom.setRightDoor(oldRoom.getRightDoor().getDestination());
             oldRoom.getRightDoor().getDestination().setLeftDoor(bossRoom);
+            oldRoom.getRightDoor().getDestination().getLeftDoor().setBossDoor();
         }
         if (oldRoom.getBottomDoor() != null) {
             bossRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
             oldRoom.getBottomDoor().getDestination().setTopDoor(bossRoom);
+            oldRoom.getBottomDoor().getDestination().getTopDoor().setBossDoor();
         }
+
+
+
 
         rooms[r][c] = bossRoom;
         bossRoomRow = r;
@@ -227,6 +235,13 @@ public class RoomLayout {
                 treasureRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
                 oldRoom.getBottomDoor().getDestination().setTopDoor(treasureRoom);
             }
+
+            for(Door door:treasureRoom.getDoors()) {
+                if(door != null && door.getDestination() instanceof BossRoom) {
+                    door.setBossDoor();
+                }
+            }
+
             rooms[row][column] = treasureRoom;
         }
     }
@@ -259,7 +274,14 @@ public class RoomLayout {
                 challengeRoom.setBottomDoor(oldRoom.getBottomDoor().getDestination());
                 oldRoom.getBottomDoor().getDestination().setTopDoor(challengeRoom);
             }
+
+            for(Door door:challengeRoom.getDoors()) {
+                if(door != null && door.getDestination() instanceof BossRoom) {
+                    door.setBossDoor();
+                }
+            }
             rooms[row][column] = challengeRoom;
+
         }
     }
 

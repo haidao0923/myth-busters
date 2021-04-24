@@ -16,27 +16,40 @@ public class BackgroundMusic {
      */
     private static final double volumeMarker = .125;
 
-    private static MediaPlayer track;
+    private static MediaPlayer backgroundTrack;
+    private static MediaPlayer bossTrack;
     private static double volume;
+    private static boolean bossPlaying;
 
     public static void initialize() {
         String soundPath = "MythBuster/sounds/BackgroundMusic.mp3";
+        String bossMusicPath = "Mythbuster/sounds/MortalInstants.mp3";
+
         volume = volumeMarker; // initial volume
         //Instantiating Media class  
-        Media media = new Media(new File(soundPath).toURI().toString());  
+        Media media = new Media(new File(soundPath).toURI().toString());
+        Media bossMusic = new Media(new File(bossMusicPath).toURI().toString());
         //Instantiating MediaPlayer class   
-        track = new MediaPlayer(media);
-        track.setCycleCount(MediaPlayer.INDEFINITE);
-        track.setVolume(volume);
+        backgroundTrack = new MediaPlayer(media);
+        backgroundTrack.setCycleCount(MediaPlayer.INDEFINITE);
+        backgroundTrack.setVolume(volume);
+        bossTrack = new MediaPlayer(bossMusic);
+        bossTrack.setCycleCount(MediaPlayer.INDEFINITE);
+        bossTrack.setVolume(volume);
+
     }
 
-    public static MediaPlayer getTrack() {
-        return track;
+    public static MediaPlayer getBackgroundTrack() {
+        return backgroundTrack;
+    }
+
+    public static MediaPlayer getBossTrack() {
+        return bossTrack;
     }
 
     public static void setVolume(double scalar) {
         volume = scalar * volumeMarker;
-        track.setVolume(volume);
+        getBackgroundTrack().setVolume(volume);
     }
 
     public static double getVolumeMarker() {
@@ -46,4 +59,14 @@ public class BackgroundMusic {
     public static double getVolume() {
         return volume;
     }
+
+
+    public static void setBossPlaying(boolean playing) {
+        bossPlaying = playing;
+    }
+
+    public static boolean isBossPlaying() {
+        return bossPlaying;
+    }
+
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class Inventory {
     private static int inventoryRowSize = 5;
+    private static int maxInventorySize = 30;
     private static int width = 1200;
     private static int height = 800;
     private static int numRows = 0;
@@ -212,7 +213,7 @@ public class Inventory {
             hotbarItemSpace.getChildren().clear();
             hotbarItemSpace.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
             hotbarItemSpace.getChildren().add(imageView);
-            addToInventory(currItemInHotbar);
+            boolean added = addToInventory(currItemInHotbar);
             refreshDisplays();
 
         }
@@ -228,9 +229,10 @@ public class Inventory {
     }
 
 
-    public static void addToInventory(Item item) {
+    public static boolean addToInventory(Item item) {
         INVENTORY.add(item);
         refreshDisplays();
+        return true;
     }
 
     public static void removeFromInventory(int inventoryIndex) {

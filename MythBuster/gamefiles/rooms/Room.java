@@ -71,7 +71,7 @@ public abstract class Room {
         int weaponKey = (int)(3 * Math.random());
         Weapon w = WeaponDatabase.getWeapon(weaponKey);
         if (!checkWeapon(w)) {
-            Inventory.addToInventory(w);
+            boolean added = Inventory.addToInventory(w);
         } else {
             newCoins += (int) (50 + Math.random() * 50);
         }

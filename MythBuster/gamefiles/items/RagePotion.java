@@ -27,13 +27,12 @@ public class RagePotion extends Consumable {
             oldDamage = player.getDamageStat();
             player.addDamageStat(oldDamage);
             doubled = true;
-            updateImageView("sprites/itemAssets/ragePotionConsumed.png");
+            //updateImageView("sprites/itemAssets/ragePotionConsumed.png");
             player.updateHotbarImages();
             System.out.println("First test");
         }
 
         boolean updated = update();
-        System.out.println("Second Test");
 
         if (!updated) {
             Player player = Controller.getPlayer();

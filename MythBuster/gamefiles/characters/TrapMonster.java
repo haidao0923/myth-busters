@@ -16,7 +16,7 @@ public class TrapMonster extends Monster {
     }
     // private int damage = 50;
     // private int damageCooldown = 0;
-    private int spawnTrapCooldown = 100;
+    private int spawnTrapCooldown = 200;
     private double targetPositionX = Math.random() * (Controller.getW() - width);
     private double targetPositionY = Math.random() * (Controller.getH() - height);
 
@@ -38,7 +38,7 @@ public class TrapMonster extends Monster {
         if (spawnTrapCooldown > 0) {
             spawnTrapCooldown--;
         } else {
-            spawnTrapCooldown = 100;
+            spawnTrapCooldown = 200;
             Trap trap = new Trap(positionX, positionY);
             GameLoop.getMonsters().add(trap);
             Platform.runLater(() -> {

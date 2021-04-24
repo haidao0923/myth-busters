@@ -11,6 +11,7 @@ public class HastePotion extends Consumable {
     // long duration = 600;
     private boolean doubled;
     private double oldSpeed;
+    private double change;
 
     public HastePotion(int id, String name, String description, 
         int quantity, boolean active, long duration) {
@@ -25,8 +26,9 @@ public class HastePotion extends Consumable {
             Player player = Controller.getPlayer();
             oldSpeed = player.getSpeed();
             player.setSpeed(oldSpeed * 2);
+            change = player.getSpeed() - oldSpeed;
             doubled = true;
-            updateImageView("sprites/itemAssets/hastePotionConsumed.png");
+            //updateImageView("sprites/itemAssets/hastePotionConsumed.png");
             player.updateHotbarImages();
         }
 
@@ -34,7 +36,7 @@ public class HastePotion extends Consumable {
         
         if (!updated) {
             Player player = Controller.getPlayer();
-            player.setSpeed(oldSpeed);
+            player.setSpeed(player.getSpeed() - change);
             doubled = false;
         }
     }

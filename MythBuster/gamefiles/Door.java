@@ -18,6 +18,7 @@ public class Door implements Touchable {
     private static double height = 80;
 
     private boolean locked;
+    private boolean isBossDoor;
 
     private ImageView imageView;
 
@@ -35,7 +36,11 @@ public class Door implements Touchable {
     }
 
     public Group getGroup() {
-        if (isLocked()) {
+        if (isBossDoor && isLocked()) {
+            imageView.setImage(new Image("sprites/LockedBossDoor.png"));
+        } else if (isBossDoor) {
+            imageView.setImage(new Image("sprites/OpenBossDoor.png"));
+        } else if (isLocked()) {
             imageView.setImage(new Image("sprites/locked_door.png"));
         } else {
             imageView.setImage(new Image("sprites/door.png"));
@@ -50,12 +55,25 @@ public class Door implements Touchable {
 
     public void unlock() {
         locked = false;
-        imageView.setImage(new Image("sprites/door.png"));
+        if(isBossDoor){
+            imageView.setImage(new Image("sprites/OpenBossDoor.png"));
+        } else {
+            imageView.setImage(new Image("sprites/door.png"));
+        }
+
     }
 
     public void lock() {
         locked = true;
-        imageView.setImage(new Image("sprites/locked_door.png"));
+        if(isBossDoor){
+            imageView.setImage(new Image("sprites/LockedBossDoor.png"));
+        } else {
+            imageView.setImage(new Image("sprites/locked_door.png"));
+        }
+
+    }
+    public void setBossDoor() {
+        isBossDoor = true;
     }
 
     public boolean isLocked() {

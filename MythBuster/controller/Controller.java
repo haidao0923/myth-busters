@@ -3,7 +3,9 @@ package controller;
 import gamefiles.*;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
+import gamefiles.items.HastePotion;
 import gamefiles.items.ItemDatabase;
+import gamefiles.rooms.BossRoom;
 import gamefiles.rooms.ChallengeRoom;
 import gamefiles.rooms.Room;
 import gamefiles.rooms.RoomLayout;
@@ -11,6 +13,7 @@ import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import views.ConfigurationScreen;
 import views.DeathScreen;
@@ -54,7 +57,7 @@ public class Controller extends Application {
         WeaponDatabase.initialize();
         ItemDatabase.initialize();
         BackgroundMusic.initialize();
-        BackgroundMusic.getTrack().play();
+        BackgroundMusic.getBackgroundTrack().play();
         initWelcomeScreen();
     }
 
@@ -163,6 +166,16 @@ public class Controller extends Application {
                         }
                     }
 
+                }
+
+                if(currentRoom instanceof BossRoom && !BackgroundMusic.isBossPlaying()) {
+                    BackgroundMusic.getBossTrack().play();
+                    BackgroundMusic.getBackgroundTrack().pause();
+                    BackgroundMusic.setBossPlaying(true);
+                } else if (!(currentRoom instanceof BossRoom) && BackgroundMusic.isBossPlaying()) {
+                    BackgroundMusic.getBossTrack().pause();
+                    BackgroundMusic.getBackgroundTrack().play();
+                    BackgroundMusic.setBossPlaying(false);
                 }
 
                 //If there is a left door and we are at it.
@@ -274,6 +287,7 @@ public class Controller extends Application {
     public static void goToGameScreen() {
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
+        Inventory.addToInventory(ItemDatabase.getItem(1));
     }
 
     public static void goToWinScreen() {
@@ -282,7 +296,19 @@ public class Controller extends Application {
             player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
             controllerLoop, player.getItemLoop(), GameLoop.getDroppedLoop());
         }
+
+        Trap.setTrapCount(0);
+
+        for (int i = 0; i < 5; i++) {
+            Inventory.removeFromHotbar(i);
+        }
+        Inventory.setHotbarSize(0);
+        Inventory.clearInventory();
+
         WinScreen winScreen = new WinScreen(W, H);
+        player = new Player(0, null);
+
+
         Scene scene = winScreen.getScene();
         mainWindow.setScene(scene);
         mainWindow.show();
@@ -351,12 +377,21 @@ public class Controller extends Application {
         switch (difficultyEntry) {
         case EASY:
             player.setCoins(30);
+            player.setHealth(800);
+            player.setMaxHealth(800);
+            player.updatePlayerMaxHp();
             break;
         case MEDIUM:
             player.setCoins(20);
+            player.setHealth(600);
+            player.setMaxHealth(600);
+            player.updatePlayerMaxHp();
             break;
         case HARD:
             player.setCoins(10);
+            player.setHealth(400);
+            player.setMaxHealth(400);
+            player.updatePlayerMaxHp();
             break;
         default: // unnecessary because of type safety
         }
