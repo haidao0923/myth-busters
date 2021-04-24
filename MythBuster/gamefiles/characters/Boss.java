@@ -29,7 +29,7 @@ public class Boss extends Monster {
     private int skillDuration = 450;
     private boolean cursed = false;
     public Boss() {
-        super("The Boss", 750, 2.5, "sprites/Boss/idle.png", 250, 250);
+        super("The Boss", 500, 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
         imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
         healthBarBacking.setY(positionY - 10);
