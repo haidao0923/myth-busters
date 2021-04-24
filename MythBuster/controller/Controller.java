@@ -70,9 +70,7 @@ public class Controller extends Application {
         Scene scene = welcomeScreen.getScene();
         Button startGameButton = welcomeScreen.getStartButton();
 
-        startGameButton.setOnAction(e -> {
-            goToConfigurationScreen();
-        });
+        startGameButton.setOnAction(e -> goToConfigurationScreen());
         welcomeScreen.setBinds(mainWindow);
 
         mainWindow.setScene(scene);
@@ -146,7 +144,7 @@ public class Controller extends Application {
                 input.add(code);
             });
 
-        System.out.println("Test!");
+
 
         controllerLoop = new AnimationTimer() {
             public void handle(long currentNanoTime) {
@@ -186,7 +184,7 @@ public class Controller extends Application {
                     prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() - 1);
-                    gameScreen.updateBoard(currentRoom);
+
                     for (int i = 0; i < 4; i++) {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
@@ -197,6 +195,7 @@ public class Controller extends Application {
                             }
                         }
                     }
+                    gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W - 200, H / 2 - player.getHeight() / 2);
                 }
 
@@ -208,7 +207,7 @@ public class Controller extends Application {
                     prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow(), currentRoom.getColumn() + 1);
-                    gameScreen.updateBoard(currentRoom);
+
                     for (int i = 0; i < 4; i++) {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
@@ -219,6 +218,7 @@ public class Controller extends Application {
                             }
                         }
                     }
+                    gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(100, H / 2 - player.getHeight() / 2);
                 }
 
@@ -230,7 +230,7 @@ public class Controller extends Application {
                     prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() - 1, currentRoom.getColumn());
-                    gameScreen.updateBoard(currentRoom);
+
                     for (int i = 0; i < 4; i++) {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
@@ -241,6 +241,7 @@ public class Controller extends Application {
                             }
                         }
                     }
+                    gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2 - player.getWidth() / 2, H - 200);
                 }
 
@@ -252,7 +253,7 @@ public class Controller extends Application {
                     prevRoom = currentRoom;
                     currentRoom =
                             roomLayout.getRoom(currentRoom.getRow() + 1, currentRoom.getColumn());
-                    gameScreen.updateBoard(currentRoom);
+
                     for (int i = 0; i < 4; i++) {
                         Door d = currentRoom.getDoors()[i];
                         if (d != null) {
@@ -263,6 +264,7 @@ public class Controller extends Application {
                             }
                         }
                     }
+                    gameScreen.updateBoard(currentRoom);
                     player.moveAbsolute(W / 2 - player.getWidth()/ 2, 100);
                 }
 
@@ -282,6 +284,7 @@ public class Controller extends Application {
                     GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop(),
                     GameLoop.getDroppedLoop());
         }
+        //goToWinScreen(); UNCOMMENT THIS TO TEST WINNING MUSIC
     }
 
     public static void goToGameScreen() {
@@ -296,7 +299,9 @@ public class Controller extends Application {
             player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
             controllerLoop, player.getItemLoop(), GameLoop.getDroppedLoop());
         }
-
+        BackgroundMusic.getBossTrack().stop();
+        BackgroundMusic.setBossPlaying(false);
+        BackgroundMusic.getBackgroundTrack().stop();
         Trap.setTrapCount(0);
 
         for (int i = 0; i < 5; i++) {

@@ -6,10 +6,7 @@ import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Droppable;
 import gamefiles.characters.Player;
-import gamefiles.rooms.ChallengeRoom;
-import gamefiles.rooms.Room;
-import gamefiles.rooms.RoomLayout;
-import gamefiles.rooms.TreasureRoom;
+import gamefiles.rooms.*;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -145,7 +142,9 @@ public class GameScreen {
 
             alerts.setPadding(buttonInset);
         }
-
+        if (currentRoom instanceof BossRoom) {
+            currentRoom.lockDoors();
+        }
         board.getChildren().addAll(displays, alerts, effectDisplays);
 
         GameLoop.getMonsters().clear();

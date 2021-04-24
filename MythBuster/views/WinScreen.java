@@ -5,7 +5,6 @@ import gamefiles.TreasureChest;
 import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
 import gamefiles.rooms.ChallengeRoom;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,16 +13,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
+
+import java.io.File;
 
 public class WinScreen {
     private int width;
     private int height;
     private Label header;
     private Button restartButton;
+    private MediaPlayer soundEffect;
 
     public WinScreen(int width, int height) {
         this.width = width;
@@ -34,6 +39,8 @@ public class WinScreen {
                 + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
         header.setPrefWidth(width);
         restartButton = new Button("Restart?");
+
+        setSoundEffect("MythBuster/sounds/VictorySound.wav");
     }
 
     public Scene getScene() {
@@ -90,11 +97,20 @@ public class WinScreen {
             congratulateMessage.setText("Let me guess. You stacked rage potions. Really unique.");
             break;
         }
-
+        soundEffect.seek(Duration.ZERO);
+        soundEffect.play();
         Group board = new Group();
         board.getChildren().addAll(header, timer, chestsOpened, greedyIndex, monstersKilled,
             challengesAttempted, potionsUsed, restartButtonVBox, exitButton, congratulateMessage);
         Scene scene = new Scene(board, width, height, Color.POWDERBLUE);
         return scene;
+    }
+
+    public void setSoundEffect(String soundPath) {
+        //Instantiating Media class
+        Media media = new Media(new File(soundPath).toURI().toString());
+        //Instantiating MediaPlayer class
+        soundEffect = new MediaPlayer(media);
+        soundEffect.setStopTime(Duration.seconds(8));
     }
 }
