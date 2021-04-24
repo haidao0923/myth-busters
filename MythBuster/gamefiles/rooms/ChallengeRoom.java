@@ -25,13 +25,13 @@ public class ChallengeRoom extends Room {
 
     private ArrayList<Monster> monsters = new ArrayList<>();
     Group roomGroup;
-    boolean challengeComplete;
+    int challengeComplete;
 
     private static int challengesAttempted;
 
     public ChallengeRoom(int width, int height, int row, int column) {
         super(width, height, row, column);
-        challengeComplete = false;
+        challengeComplete = 0;
 
     }
 
@@ -64,7 +64,7 @@ public class ChallengeRoom extends Room {
         for (Monster monster : monsters) {
             roomGroup.getChildren().add(monster.getGroup());
         }
-        challengeComplete = true;
+        challengeComplete = 1;
         challengesAttempted++;
     }
 
@@ -90,13 +90,14 @@ public class ChallengeRoom extends Room {
         return trapMonster;
     }
 
-    public boolean getStatus() {
+    public int getStatus() {
         return challengeComplete;
     }
-
-    public void setStatus(boolean status) {
+    
+    public void setStatus(int status) {
         challengeComplete = status;
     }
+
 
     public static int getChallengesAttempted() {
         return challengesAttempted;

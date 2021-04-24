@@ -284,6 +284,7 @@ public abstract class Monster implements Touchable {
                 }
             }
         }.start();
+
     }
 
 }

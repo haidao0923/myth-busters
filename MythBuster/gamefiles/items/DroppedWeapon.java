@@ -3,7 +3,7 @@ package gamefiles.items;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Inventory;
-
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 
 public class DroppedWeapon extends DroppedItem {
@@ -18,6 +18,10 @@ public class DroppedWeapon extends DroppedItem {
     public void pickup() {
         if (!getDropped()) {
             setDropped(true);
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
+            }
             displayReward("You picked up a " + getItem().getName());
             Inventory.addToInventory(getItem());
 

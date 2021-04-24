@@ -160,9 +160,9 @@ public class Controller extends Application {
                     currentRoom.unlockDoors();
                     if (currentRoom instanceof ChallengeRoom) {
                         ChallengeRoom c = (ChallengeRoom)(currentRoom);
-                        if (c.getStatus()) {
+                        if (c.getStatus() == 1) {
                             currentRoom.giveBonusRewards();
-                            c.setStatus(false);
+                            c.setStatus(2);
                         }
                     }
 
