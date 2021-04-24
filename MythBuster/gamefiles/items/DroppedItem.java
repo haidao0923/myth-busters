@@ -1,6 +1,8 @@
 package gamefiles.items;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import controller.Controller;
 import controller.GameLoop;
@@ -26,6 +28,8 @@ public class DroppedItem implements Droppable {
     private Group dropGroup;
     private boolean dropped;
     private int cooldown = 60;
+
+    protected static volatile Queue<AnimationTimer> atQueue = new LinkedList<>();
 
     public DroppedItem(Item item) {
         this.item = item;
@@ -122,6 +126,10 @@ public class DroppedItem implements Droppable {
     public void pickup() {
         if (!dropped) {
             dropped = true;
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
+            }
             displayReward("You picked up a " + item.getName());
             ArrayList<Item> toAdd = new ArrayList<Item>();
             toAdd.add(item);
@@ -161,13 +169,29 @@ public class DroppedItem implements Droppable {
         display.setId("dropNotificationDisplay");
         Controller.getGameScreen().getBoard().getChildren().add(display);
 
+
         new AnimationTimer() {
             private int timer = 40;
+
+            @Override
+            public void start() {
+                super.start();
+                atQueue.add(this);
+                System.out.println(atQueue.size());
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                Controller.getGameScreen().getBoard().getChildren().remove(display);
+                atQueue.remove(this);
+                System.out.println("dequeued");
+            }
+
             @Override
             public void handle(long currentNanoTime) {
                 timer--;
                 if (timer <= 0) {
-                    Controller.getGameScreen().getBoard().getChildren().remove(display);
                     this.stop();
                 }
             }

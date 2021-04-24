@@ -122,28 +122,31 @@ public class GameScreen {
         alerts = new HBox();
 
         if (currentRoom instanceof ChallengeRoom) {
-            Button startChallenge = new Button("Start Challenge");
-            startChallenge.setOnAction((ActionEvent event) -> {
-                    Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                    a.setTitle("Challenge Issued!");
-                    a.setHeaderText("You have been issued a challenge.");
-                    a.setContentText(" Would you like to accept?");
-                    Optional<ButtonType> response = a.showAndWait();
-                    if (response.isPresent() && response.get() == ButtonType.OK) {
-                        alerts.getChildren().remove(startChallenge);
-                        ChallengeRoom c = (ChallengeRoom)(currentRoom);
-                        c.startChallenge();
-                    }
-                });
+            ChallengeRoom c = (ChallengeRoom)(currentRoom);
+            if (c.getStatus() == 0) {
+                Button startChallenge = new Button("Start Challenge");
+                startChallenge.setOnAction((ActionEvent event) -> {
+                        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                        a.setTitle("Challenge Issued!");
+                        a.setHeaderText("You have been issued a challenge.");
+                        a.setContentText(" Would you like to accept?");
+                        Optional<ButtonType> response = a.showAndWait();
+                        if (response.isPresent() && response.get() == ButtonType.OK) {
+                            alerts.getChildren().remove(startChallenge);
+                            c.startChallenge();
+                        }
+                    });
+                
+                alerts.getChildren().addAll(startChallenge);
+                startChallenge.setAlignment(Pos.CENTER);
+                startChallenge.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+                alerts.setAlignment(Pos.CENTER);
+
+                Insets buttonInset = new Insets(360, 240, 480, 480);
+
+                alerts.setPadding(buttonInset);
+            }
             
-            alerts.getChildren().addAll(startChallenge);
-            startChallenge.setAlignment(Pos.CENTER);
-            startChallenge.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-            alerts.setAlignment(Pos.CENTER);
-
-            Insets buttonInset = new Insets(360, 240, 480, 480);
-
-            alerts.setPadding(buttonInset);
         }
 
         board.getChildren().addAll(displays, alerts, effectDisplays);

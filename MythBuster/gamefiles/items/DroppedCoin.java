@@ -1,7 +1,7 @@
 package gamefiles.items;
 
 import controller.Controller;
-
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 
 public class DroppedCoin extends DroppedItem {
@@ -16,6 +16,10 @@ public class DroppedCoin extends DroppedItem {
     public void pickup() {
         if (!getDropped()) {
             setDropped(true);
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
+            }
             displayReward("You picked up " + getItem().getQuantity() + " coins");
             Controller.getPlayer().addCoins(getItem().getQuantity());
 
