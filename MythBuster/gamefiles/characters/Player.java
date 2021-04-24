@@ -108,8 +108,8 @@ public class Player implements Touchable {
         imageGroup.getChildren().add(imageView);
 
         // hp
-        currentHealth = 300;
-        maxHealth = 300;
+        currentHealth = 180;
+        maxHealth = 180;
         numHearts = (int) Math.floor(maxHealth / Heart.HEALTH_PER_HEART);
         updatePlayerMaxHp();
 
