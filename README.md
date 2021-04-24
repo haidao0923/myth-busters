@@ -5,8 +5,8 @@ This is a dungeon crawler game for CS 2340
 <h2>
 What does the chests do?
 </h2>
-<h3> Yellow Chest </h3>
-The yellow chest give you some coins
+<h3> Gold Chest </h3>
+The gold chest give you some coins
 <h3> Blue Chest </h3>
 The blue chest give you some potions
 <h3> Green Chest </h3>
