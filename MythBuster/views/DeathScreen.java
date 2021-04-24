@@ -7,6 +7,7 @@ import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
 import gamefiles.rooms.ChallengeRoom;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -41,18 +42,18 @@ public class DeathScreen {
     public Scene getScene() {
 
         restartButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-
         VBox restartButtonVBox = new VBox(restartButton);
         restartButtonVBox.setAlignment(Pos.CENTER);
+        Insets buttonInset = new Insets(600, 150, 550, 550);
+        restartButtonVBox.setPadding(buttonInset);
+        restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            Controller.goToConfigurationScreen();
+        });
         Button exitButton = new Button("Exit");
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
         exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
         exitButton.setOnAction(e -> {Controller.getMainWindow().close();});
-
-        Insets buttonInset = new Insets(600, 150, 550, 550);
-
-        restartButtonVBox.setPadding(buttonInset);
 
         int minutes = Controller.getTimeElapsed() / 3600;
         int seconds = Controller.getTimeElapsed() / 60 % 60;

@@ -6,6 +6,7 @@ import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
 import gamefiles.rooms.ChallengeRoom;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -42,6 +43,9 @@ public class WinScreen {
         restartButtonVBox.setAlignment(Pos.CENTER);
         Insets buttonInset = new Insets(600, 150, 550, 550);
         restartButtonVBox.setPadding(buttonInset);
+        restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            Controller.goToConfigurationScreen();
+        });
         Button exitButton = new Button("Exit");
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);

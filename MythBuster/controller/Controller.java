@@ -312,11 +312,6 @@ public class Controller extends Application {
         DeathScreen deathScreen = new DeathScreen(W, H);
         player = new Player(0, null);
 
-        Button restartButton = deathScreen.getRestartButton();
-        restartButton.addEventHandler(ActionEvent.ACTION, (e) -> {
-            goToConfigurationScreen();
-        });
-
         Scene scene = deathScreen.getScene();
         mainWindow.setScene(scene);
         mainWindow.show();
