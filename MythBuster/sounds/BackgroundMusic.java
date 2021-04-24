@@ -23,7 +23,7 @@ public class BackgroundMusic {
 
     public static void initialize() {
         String soundPath = "MythBuster/sounds/BackgroundMusic.mp3";
-        String bossMusicPath = "Mythbuster/sounds/MortalInstants.mp3";
+        String bossMusicPath = "Mythbuster/sounds/BossMusic.wav";
 
         volume = volumeMarker; // initial volume
         //Instantiating Media class  
@@ -35,7 +35,7 @@ public class BackgroundMusic {
         backgroundTrack.setVolume(volume);
         bossTrack = new MediaPlayer(bossMusic);
         bossTrack.setCycleCount(MediaPlayer.INDEFINITE);
-        bossTrack.setVolume(volume);
+        bossTrack.setVolume(volume * 2);
 
     }
 
@@ -50,6 +50,7 @@ public class BackgroundMusic {
     public static void setVolume(double scalar) {
         volume = scalar * volumeMarker;
         getBackgroundTrack().setVolume(volume);
+        getBossTrack().setVolume(volume * 2);
     }
 
     public static double getVolumeMarker() {

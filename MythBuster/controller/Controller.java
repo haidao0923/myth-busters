@@ -285,7 +285,7 @@ public class Controller extends Application {
                     GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop(),
                     GameLoop.getDroppedLoop());
         }
-        //goToWinScreen(); UNCOMMENT THIS TO TEST WINNING MUSIC
+        goToWinScreen(); //UNCOMMENT THIS TO TEST WINNING MUSIC
     }
 
     public static void goToGameScreen() {

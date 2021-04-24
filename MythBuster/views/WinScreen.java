@@ -20,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import sounds.BackgroundMusic;
 
 import java.io.File;
 
@@ -111,6 +112,7 @@ public class WinScreen {
         Media media = new Media(new File(soundPath).toURI().toString());
         //Instantiating MediaPlayer class
         soundEffect = new MediaPlayer(media);
-        soundEffect.setStopTime(Duration.seconds(8));
+        soundEffect.setStopTime(Duration.seconds(10));
+        soundEffect.setVolume(BackgroundMusic.getVolume() * 0.9);
     }
 }
