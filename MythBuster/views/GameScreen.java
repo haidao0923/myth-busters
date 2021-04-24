@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -35,7 +36,7 @@ public class GameScreen {
     private RoomLayout roomLayout;
     private Group roomGroup;
     private Group board;
-    private HBox displays;
+    private VBox displays;
     private HBox effectDisplays;
     private HBox alerts;
 
@@ -76,14 +77,14 @@ public class GameScreen {
         alerts = new HBox();
 
         //For text displays
-        displays = new HBox(50, nameDisplay, weaponDisplay, coinDisplay);
+        displays = new VBox(15, nameDisplay, weaponDisplay, coinDisplay);
         displays.setLayoutX(10);
-        displays.setLayoutY(80);
+        displays.setLayoutY(10);
 
         //For consumable displays.
         effectDisplays = new HBox(20);
         effectDisplays.setLayoutX(10);
-        effectDisplays.setLayoutY(120);
+        effectDisplays.setLayoutY(160);
 
 
         player.moveAbsolute(100, 100);
@@ -169,7 +170,7 @@ public class GameScreen {
         //PlaceHolder for binding widths.
     }
 
-    public HBox getDisplays() {
+    public VBox getDisplays() {
         return displays;
     }
 

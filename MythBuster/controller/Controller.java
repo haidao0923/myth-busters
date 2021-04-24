@@ -15,6 +15,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import views.ConfigurationScreen;
 import views.DeathScreen;
 import views.GameScreen;
@@ -151,7 +152,7 @@ public class Controller extends Application {
                 timeElapsed += 1;
                 // game logic
                 Group board = gameScreen.getBoard();
-                HBox displays = gameScreen.getDisplays();
+                VBox displays = gameScreen.getDisplays();
 
                 // if there are no monsters, unlock the doors
                 if (GameLoop.getMonsters().size() == 0) {
@@ -382,21 +383,12 @@ public class Controller extends Application {
         switch (difficultyEntry) {
         case EASY:
             player.setCoins(30);
-            player.setHealth(800);
-            player.setMaxHealth(800);
-            player.updatePlayerMaxHp();
             break;
         case MEDIUM:
             player.setCoins(20);
-            player.setHealth(600);
-            player.setMaxHealth(600);
-            player.updatePlayerMaxHp();
             break;
         case HARD:
             player.setCoins(10);
-            player.setHealth(400);
-            player.setMaxHealth(400);
-            player.updatePlayerMaxHp();
             break;
         default: // unnecessary because of type safety
         }
