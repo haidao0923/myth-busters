@@ -3,6 +3,7 @@ package gamefiles.rooms;
 import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Door;
+import gamefiles.DropMethods;
 import gamefiles.Droppable;
 import gamefiles.Inventory;
 import gamefiles.characters.*;
@@ -80,7 +81,7 @@ public abstract class Room {
             toAdd.add(ItemDatabase.getItem(itemKey));
         }
         newCoins += (int) (50 + Math.random() * 50);
-        Controller.getPlayer().addCoins(newCoins);
+        DropMethods.dropCoins(newCoins, 25, Controller.getW() / 2, Controller.getH() / 2);
         displayReward("You picked up " + newCoins + " coins, and a huge amount of treasure!\nCheck your inventory!");
         Controller.getPlayer().updateHotbar(null, toAdd);
 
