@@ -10,11 +10,11 @@ We're Team 60 and this is our Dungeon Crawler for CS 2340! Read on for more info
 
 <h2> Weapons </h2>
 <h3> Spear </h3>
-Stabs forward, dealing moderate damage.
+Stabs forward, dealing moderate melee damage. When held, allows for full movement speed.
 <h3> Dagger </h3>
-Slices forward, dealing huge damage.
+Slices forward, dealing huge melee damage. When held, reduces movement speed.
 <h3> Bow </h3>
-Shoots an arrow, dealing small damage.
+Shoots an arrow, dealing small ranged damage. When held, allows for full movement speed. 
 
 <h2> Potions </h2>
 <h3> Health Potion </h3>

@@ -192,6 +192,7 @@ public class Inventory {
 
     public static void addToHotbar(int inventoryIndex, int hotbarIndex) {
         ImageView imageView = new ImageView(INVENTORY.get(inventoryIndex).getImage());
+
         imageView.setFitWidth(50);
         imageView.setFitHeight(50);
 

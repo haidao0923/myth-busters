@@ -24,8 +24,7 @@ public class RagePotion extends Consumable {
 
         if (!doubled) {
             Player player = Controller.getPlayer();
-            oldDamage = player.getDamageStat();
-            player.addDamageStat(oldDamage);
+            player.setDamageBuffModifier(player.getDamageBuffModifier() + 1.0);
             doubled = true;
             //updateImageView("sprites/itemAssets/ragePotionConsumed.png");
             player.updateHotbarImages();
@@ -35,7 +34,7 @@ public class RagePotion extends Consumable {
 
         if (!updated) {
             Player player = Controller.getPlayer();
-            player.subtractDamageStat(oldDamage);
+            player.setDamageBuffModifier(player.getDamageBuffModifier() - 1.0);
             doubled = false;
         }
     }

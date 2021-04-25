@@ -24,9 +24,8 @@ public class HastePotion extends Consumable {
         
         if (!doubled) {
             Player player = Controller.getPlayer();
-            oldSpeed = player.getSpeed();
-            player.setSpeed(oldSpeed * 1.75);
-            change = player.getSpeed() - oldSpeed;
+            player.setSpeedBuffModifier(player.getSpeedBuffModifier() + 0.75);
+
             doubled = true;
             //updateImageView("sprites/itemAssets/hastePotionConsumed.png");
             player.updateHotbarImages();
@@ -36,7 +35,7 @@ public class HastePotion extends Consumable {
         
         if (!updated) {
             Player player = Controller.getPlayer();
-            player.setSpeed(player.getSpeed() - change);
+            player.setSpeedBuffModifier(player.getSpeedBuffModifier() - 0.75);
             doubled = false;
         }
     }
