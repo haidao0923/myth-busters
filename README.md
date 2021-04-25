@@ -1,10 +1,15 @@
 # MythBuster
 This is a dungeon crawler game for CS 2340
 
+<h2> Monster Types </h2>
+<h3> Soldier </h3>
+Chase after the player and attack for 2 red hearts
+<h3> Mage </h3>
+Throw fireball at the player that deal 2 heart of damage, and occasionally move to a different spot in the room.
+<h3> Trap Monster </h3>
+Place 1 trap every 2 seconds and move randomly across the room.
 
-<h2>
-What does the chests do?
-</h2>
+<h2> What does the chests do? </h2>
 <h3> Gold Chest </h3>
 The gold chest give you some coins
 <h3> Blue Chest </h3>
