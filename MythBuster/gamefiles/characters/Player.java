@@ -32,7 +32,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import views.GameScreen;
 
 public class Player implements Touchable {
     private String name;
@@ -40,12 +39,17 @@ public class Player implements Touchable {
     private Weapon weapon;
     private double speed = 10;
     private double currSpeed;
+    private double speedBuffModifier = 1.0;
+    private double speedWeaponModifier = 1.0;
     private int numHearts;
     private double maxHealth;
     private double currentHealth;
     private double attackCD = 0;
     private double moveCD = 0;
     private double damage = 10;
+    private double damageBuffModifier = 1.0;
+    private double damageWeaponModifier = 1.0;
+
     private double damageCooldown;
     private int maxActiveConsumables = 2;
     private Image swordSprite = new Image("sprites/Player/daggerPlayer.png");
@@ -85,10 +89,10 @@ public class Player implements Touchable {
     public Player(int coins, Weapon weapon) {
         this.coins = coins;
         this.weapon = weapon;
-        this.speed = weapon != null ? weapon.getSpeed() * speed : 0;
+        speedWeaponModifier = weapon != null ? weapon.getSpeed() : 1;
         this.currSpeed = speed;
 
-        damage = weapon != null ? weapon.getDamage() * damage : 0;
+        damageWeaponModifier = weapon != null ? weapon.getDamage() : 1;
         imageView = new ImageView();
         if (weapon instanceof Spear) {
             imageView.setImage(spearSprite);
@@ -142,7 +146,7 @@ public class Player implements Touchable {
                     0, spriteWidth, spriteHeight);
             animation.setCycleCount(1);
             animation.play();
-            ((Bow) weapon).fireArrow(direction, positionX, positionY + width / 2, damage);
+            ((Bow) weapon).fireArrow(direction, positionX, positionY + width / 2, damage * damageWeaponModifier * damageBuffModifier);
         }
         animation.setOnFinished(actionEvent -> {
             spriteX = currX;
@@ -194,14 +198,15 @@ public class Player implements Touchable {
                     damageWindow = temp;
                     moveCD = temp;
                 } else if (input.size() > 1) {
-                    currSpeed = speed / Math.sqrt(2);
+                    currSpeed = speed * speedWeaponModifier * speedBuffModifier / Math.sqrt(2);
                 } else {
-                    currSpeed = speed;
+                    currSpeed = speed * speedWeaponModifier * speedBuffModifier;
                 }
                 if (damageWindow > 0) {
                     for (Monster monster : GameLoop.getMonsters()) {
-                        if (Controller.getPlayer().intersects(monster)) {
-                            monster.takeDamage(damage);
+                        if (Controller.getPlayer().intersects(monster) && !(weapon instanceof Bow)) {
+                            System.out.println("Player damaged monster for " + damage * damageWeaponModifier * damageBuffModifier);
+                            monster.takeDamage(damage * damageWeaponModifier * damageBuffModifier);
                             damageWindow = 0;
                         }
                     }
@@ -536,6 +541,9 @@ public class Player implements Touchable {
         } else if (weapon instanceof Bow) {
             imageView.setImage(bowSprite);
         }
+        damageWeaponModifier = weapon != null ? weapon.getDamage() : 1;
+        speedWeaponModifier = weapon != null ? weapon.getSpeed(): 1;
+
     }
     public Weapon getWeapon() {
         return weapon;
@@ -566,8 +574,11 @@ public class Player implements Touchable {
         return this.currSpeed;
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
+    public double getSpeedBuffModifier() {
+        return speedBuffModifier;
+    }
+    public void setSpeedBuffModifier(double modifier) {
+        speedBuffModifier = modifier;
     }
 
     // DAMAGE || HP
@@ -577,6 +588,13 @@ public class Player implements Touchable {
 
     public void subtractDamageStat(double value) {
         addDamageStat(-value);
+    }
+
+    public double getDamageBuffModifier() {
+        return damageBuffModifier;
+    }
+    public void setDamageBuffModifier(double modifier) {
+        damageBuffModifier = modifier;
     }
 
     public double getDamageStat() {
