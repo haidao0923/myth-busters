@@ -296,7 +296,7 @@ public class Controller extends Application {
     }
 
     public static void goToWinScreen() {
-        if (player != null) {
+        if (controllerLoop != null && player != null) {
             GameLoop.stopAllAnimationTimers(player.getPlayerLogicTimer(),
             player.getPlayerHpUpdateTimer(), GameLoop.getMonsterLoop(),
             controllerLoop, player.getItemLoop(), GameLoop.getDroppedLoop());
