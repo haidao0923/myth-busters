@@ -32,7 +32,6 @@ public class Boss extends Monster {
         super("The Boss", 500 + (250 * Controller.getDifficulty()), 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
         imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
-        imageView.setId("boss");
         healthBarBacking.setY(positionY - 10);
         healthBar.setY(positionY - 10);
         idle();
@@ -44,14 +43,12 @@ public class Boss extends Monster {
         double targetPositionY = Controller.getPlayer().getPositionY() - 30;
         checkDeath();
         if (isDead) {
+
             idleAnimation.stop();
             attackAnimation.stop();
             imageView.setImage(deathImage);
             deathAnimation.play();
-            deathAnimation.setOnFinished(actionEvent -> {
-                deathAnimation.stop();
-                Controller.goToWinScreen();
-            });
+            deathAnimation.setOnFinished(actionEvent -> Platform.runLater(Controller::goToWinScreen));
         }
         redrawHealthBar();
         // flip sprite if needed
@@ -99,8 +96,8 @@ public class Boss extends Monster {
         }
         if (cursed) {
             if (skillDuration <= 0) {
-                player.addDamageStat(player.getDamageStat() / 3);
-                player.setSpeed(player.getSpeed() * 1.25);
+                player.setDamageBuffModifier(player.getDamageBuffModifier() + 0.75);
+                player.setSpeedBuffModifier(player.getSpeedBuffModifier() + 0.5);
                 cursed = false;
                 displayReward("The curse expired");
             } else {
@@ -114,8 +111,8 @@ public class Boss extends Monster {
         imageView.setImage(skillImage);
         skillAnimation.setCycleCount(1);
         skillAnimation.play();
-        player.subtractDamageStat(player.getDamageStat() / 4);
-        player.setSpeed(player.getSpeed() * 0.8);
+        player.setDamageBuffModifier(player.getDamageBuffModifier() - 0.75);
+        player.setSpeedBuffModifier(player.getSpeedBuffModifier() - 0.5);
         skillAnimation.setOnFinished(actionEvent -> {
             skillAnimation.stop();
             imageView.setImage(idleImage);
@@ -158,10 +155,5 @@ public class Boss extends Monster {
             imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
             idleAnimation.play();
         });
-    }
-
-    public SpriteAnimation getDeathAnimation() {
-        //for testing purposes
-        return deathAnimation;
     }
 }
