@@ -291,7 +291,6 @@ public class Controller extends Application {
     public static void goToGameScreen() {
         Scene scene = gameScreen.getScene();
         mainWindow.setScene(scene);
-        Inventory.addToInventory(ItemDatabase.getItem(1));
     }
 
     public static void goToWinScreen() {
