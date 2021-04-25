@@ -2,6 +2,7 @@
 We're Team 60 and this is our Dungeon Crawler for CS 2340! Read on for more information.
 
 <h2> Player Controls </h2>
+
 - **WASD**: Control player movement up, down, left, and right.
 - **J**: Attack using the current weapon.
 - **I**: Access inventory.
