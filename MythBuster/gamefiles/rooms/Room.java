@@ -62,6 +62,7 @@ public abstract class Room {
             lockDoors();
             Monster boss = new Boss();
             boss.moveAbsolute(width / 2, height / 2);
+            GameLoop.getMonsters().add(boss);
             monsters.add(boss);
         }
     }

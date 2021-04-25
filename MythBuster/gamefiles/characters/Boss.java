@@ -32,6 +32,7 @@ public class Boss extends Monster {
         super("The Boss", 500 + (250 * Controller.getDifficulty()), 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
         imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
+        imageView.setId("boss");
         healthBarBacking.setY(positionY - 10);
         healthBar.setY(positionY - 10);
         idle();
@@ -43,12 +44,14 @@ public class Boss extends Monster {
         double targetPositionY = Controller.getPlayer().getPositionY() - 30;
         checkDeath();
         if (isDead) {
-
             idleAnimation.stop();
             attackAnimation.stop();
             imageView.setImage(deathImage);
             deathAnimation.play();
-            deathAnimation.setOnFinished(actionEvent -> Platform.runLater(Controller::goToWinScreen));
+            deathAnimation.setOnFinished(actionEvent -> {
+                deathAnimation.stop();
+                Controller.goToWinScreen();
+            });
         }
         redrawHealthBar();
         // flip sprite if needed
@@ -155,5 +158,10 @@ public class Boss extends Monster {
             imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
             idleAnimation.play();
         });
+    }
+
+    public SpriteAnimation getDeathAnimation() {
+        //for testing purposes
+        return deathAnimation;
     }
 }

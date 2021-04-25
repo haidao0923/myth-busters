@@ -1,9 +1,11 @@
 package controller;
 
-import gamefiles.*;
+import gamefiles.Difficulty;
+import gamefiles.Door;
+import gamefiles.Inventory;
+import gamefiles.StartingWeapon;
 import gamefiles.characters.Player;
 import gamefiles.characters.Trap;
-import gamefiles.items.HastePotion;
 import gamefiles.items.ItemDatabase;
 import gamefiles.rooms.BossRoom;
 import gamefiles.rooms.ChallengeRoom;
@@ -12,27 +14,15 @@ import gamefiles.rooms.RoomLayout;
 import gamefiles.weapons.Bow;
 import gamefiles.weapons.WeaponDatabase;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Group;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import views.ConfigurationScreen;
-import views.DeathScreen;
-import views.GameScreen;
-import views.WelcomeScreen;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sounds.BackgroundMusic;
-import views.WinScreen;
+import views.*;
 
 import java.util.ArrayList;
 
@@ -99,16 +89,10 @@ public class Controller extends Application {
             goToStartingRoom();
         });
 
-        volumeControl.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-                public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                        System.out.println("Changed to: " + newValue.doubleValue());
-                        BackgroundMusic.setVolume(newValue.doubleValue());
-                }
-        });
+        volumeControl.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+                    System.out.println("Changed to: " + newValue.doubleValue());
+                    BackgroundMusic.setVolume(newValue.doubleValue());
+            });
 
         Scene scene = configScreen.getScene();
         mainWindow.setScene(scene);
@@ -153,7 +137,6 @@ public class Controller extends Application {
             public void handle(long currentNanoTime) {
                 timeElapsed += 1;
                 // game logic
-                Group board = gameScreen.getBoard();
                 VBox displays = gameScreen.getDisplays();
 
                 // if there are no monsters, unlock the doors
@@ -287,7 +270,6 @@ public class Controller extends Application {
                     GameLoop.getMonsterLoop(), controllerLoop, player.getItemLoop(),
                     GameLoop.getDroppedLoop());
         }
-        goToWinScreen(); //UNCOMMENT THIS TO TEST WINNING MUSIC
     }
 
     public static void goToGameScreen() {
@@ -453,7 +435,7 @@ public class Controller extends Application {
      * Private testing method to return a String representation of the Label of the window.
      * @return the string representing the label of the window.
      */
-    public String getWindowTitle() {
+    public static String getWindowTitle() {
         return mainWindow.getTitle();
     }
     public static Stage getMainWindow() {

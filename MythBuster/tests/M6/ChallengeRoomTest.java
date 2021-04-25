@@ -17,7 +17,6 @@ import org.testfx.service.query.EmptyNodeQueryException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class ChallengeRoomTest extends ApplicationTest {
@@ -51,7 +50,7 @@ public class ChallengeRoomTest extends ApplicationTest {
             }
         }
 
-        Room currRoom = controller.getCurrentRoom();
+        Room currRoom = Controller.getCurrentRoom();
 
         assertEquals(0, currRoom.getMonsters().size());
 
