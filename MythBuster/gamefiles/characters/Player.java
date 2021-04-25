@@ -512,7 +512,7 @@ public class Player implements Touchable {
     public int getCoins() {
         return coins;
     }
-    public void setCoins(int amount) {
+    public synchronized void setCoins(int amount) {
         coins = amount;
         if (Controller.getGameScreen() != null) {
             Controller.getGameScreen().getCoinDisplay().setText("Coins: " + getCoins());
