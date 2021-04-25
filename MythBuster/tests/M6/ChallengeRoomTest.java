@@ -4,6 +4,9 @@ import controller.Controller;
 import gamefiles.Door;
 import gamefiles.characters.Boss;
 import gamefiles.rooms.BasicRoom;
+import gamefiles.rooms.ChallengeRoom;
+import gamefiles.rooms.Room;
+import gamefiles.rooms.RoomLayout;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -14,18 +17,21 @@ import org.testfx.service.query.EmptyNodeQueryException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class BossTest extends ApplicationTest {
+public class ChallengeRoomTest extends ApplicationTest {
+
+    Controller controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Controller controller = new Controller();
+        controller = new Controller();
         controller.start(primaryStage);
     }
 
     @Test
-    public void testBossHealth() {
+    public void testZeroMonsters() {
         clickOn("Start Game");
         clickOn("#HeroNameTextField");
         write("test123");
@@ -35,8 +41,20 @@ public class BossTest extends ApplicationTest {
         clickOn("HARD");
         clickOn("Begin!");
 
-        Boss b = new Boss();
-        assertEquals(1000, b.getCurrentHealth(), 0.01);
+        RoomLayout layout = controller.getRoomLayout();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (layout.getRoom(i, j) instanceof ChallengeRoom) {
+                    controller.setCurrentRoom(layout.getRoom(i, j));
+                    break;
+                }
+            }
+        }
+
+        Room currRoom = controller.getCurrentRoom();
+
+        assertEquals(0, currRoom.getMonsters().size());
+
     }
     
 }
