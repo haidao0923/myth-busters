@@ -2,6 +2,7 @@ package gamefiles.items;
 
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import sounds.BackgroundMusic;
 import javafx.scene.media.Media;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public abstract class Consumable extends Item {
         //Instantiating MediaPlayer class   
         this.soundEffect = new MediaPlayer(media);
         this.soundEffect.setStopTime(Duration.seconds(2));
+        this.soundEffect.setVolume(BackgroundMusic.getVolume());
     }
 
     public long getDuration() {
