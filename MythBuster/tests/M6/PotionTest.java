@@ -37,23 +37,6 @@ public class PotionTest extends ApplicationTest {
         controller.start(primaryStage);
     }
 
-    @Test
-    public void testTransferToHotbar() {
-        clickOn("Start Game");
-        clickOn("#HeroNameTextField");
-        write("test123");
-        clickOn("#startingWeaponSelector");
-        clickOn("SPEAR");
-        clickOn("#difficultySelector");
-        clickOn("EASY");
-        clickOn("Begin!");
-        Inventory.addToInventory(ItemDatabase.getItem(1));
-        push(KeyCode.I);
-        Platform.runLater(() -> Inventory.addToHotbar(0, 0));
-        push(KeyCode.I);
-        assertEquals(Inventory.getHotbarSize(), 1);
-
-    }
 
 
     @Test
@@ -72,6 +55,26 @@ public class PotionTest extends ApplicationTest {
         push(KeyCode.I);
         push(KeyCode.DIGIT1);
         assertEquals(Controller.getPlayer().getDamageBuffModifier(), 2.0, 0.01);
+    }
+
+
+    @Test
+    public void testPotionUI() {
+        clickOn("Start Game");
+        clickOn("#HeroNameTextField");
+        write("test123");
+        clickOn("#startingWeaponSelector");
+        clickOn("SPEAR");
+        clickOn("#difficultySelector");
+        clickOn("EASY");
+        clickOn("Begin!");
+        Inventory.addToInventory(ItemDatabase.getItem(1));
+        push(KeyCode.I);
+        Platform.runLater(() -> Inventory.addToHotbar(0, 0));
+        push(KeyCode.I);
+        push(KeyCode.DIGIT1);
+        verifyThat("9", NodeMatchers.isNotNull()); //Test that the timer is there.
+
     }
 
 
