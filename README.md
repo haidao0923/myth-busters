@@ -2,6 +2,7 @@
 We're Team 60 and this is our Dungeon Crawler for CS 2340! Read on for more information.
 
 <h2> Player Controls </h2>
+
 - **WASD**: Control player movement up, down, left, and right.
 - **J**: Attack using the current weapon.
 - **I**: Access inventory.
@@ -49,6 +50,7 @@ Spend coins to unlock special chests. Will there be fortune or curses?
 <h3> Challenge Rooms </h3>
 These extra-difficult rooms hold a hefty bounty for those who succeed.
 <h3> Boss Room </h3>
+
 *Who dares to look upon Death?*
 
 <h2> Credits </h2>
