@@ -145,6 +145,8 @@ public class Controller extends Application {
                 input.add(code);
             });
 
+        BackgroundMusic.getBackgroundTrack().play();
+
 
 
         controllerLoop = new AnimationTimer() {

@@ -79,6 +79,7 @@ public abstract class TreasureChest implements Touchable {
         for (int i = 0; i < nums.length; i++) { // add coins
             Item coin = ItemDatabase.getItem(-1);
             coin.addQuantity(nums[i] - lower);
+            System.out.println(nums[i] - lower);
             lower = nums[i];
             DroppedItem droppedItem = new DroppedCoin(coin);
             droppedItem.drop(positionX, positionY, true);

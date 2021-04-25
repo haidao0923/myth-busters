@@ -64,7 +64,7 @@ public class WinScreen {
         String timeString = String.format("%02d:%02d", minutes, seconds);
         Text timer = new Text(50, 250, "Time Taken: " + timeString);
         Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " + Monster.getMonstersKilled());
-        Text greedyIndex = new Text(50, 350, "Greedy Index: " + Player.getGreedyIndex());
+        Text greedyIndex = new Text(50, 350, "Max Concurrent Coins: " + Player.getGreedyIndex());
         Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " + Player.getPotionsUsed());
         Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " + ChallengeRoom.getChallengesAttempted());
         Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " + TreasureChest.getChestsOpened());
