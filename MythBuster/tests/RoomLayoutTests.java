@@ -56,7 +56,6 @@ public class RoomLayoutTests extends ApplicationTest {
         } catch (Exception e) {
             System.out.println("Exception: Reading file printables/RoomLayout.txt.");
             e.printStackTrace();
-            System.out.println(e);
         }
 
         assertTrue(hasStarting);

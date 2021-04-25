@@ -177,7 +177,6 @@ public class DroppedItem implements Droppable {
             public void start() {
                 super.start();
                 atQueue.add(this);
-                System.out.println(atQueue.size());
             }
 
             @Override
@@ -185,7 +184,6 @@ public class DroppedItem implements Droppable {
                 super.stop();
                 Controller.getGameScreen().getBoard().getChildren().remove(display);
                 atQueue.remove(this);
-                System.out.println("dequeued");
             }
 
             @Override

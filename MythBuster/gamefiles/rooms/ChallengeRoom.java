@@ -51,7 +51,6 @@ public class ChallengeRoom extends Room {
 
     public void startChallenge() {
         lockDoors();
-        System.out.println("Challenge Started!");
         for (int i = 0; i < 1 + Controller.getDifficulty(); i++) {
             spawnSoldier();
         }

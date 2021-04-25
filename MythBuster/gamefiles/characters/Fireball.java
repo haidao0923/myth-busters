@@ -26,8 +26,6 @@ public class Fireball extends Monster {
         double magnitude = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
         if (Controller.getPlayer().intersects(this)) {
             Controller.getPlayer().takeDamage(damage);
-            //System.out.println("Fireballed! Health: "
-            // + Controller.getPlayer().getCurrentHealth());
             currentHealth = 0;
             checkDeath();
         } else if (Math.abs(offsetX) > 1 || Math.abs(offsetY) > 1) {

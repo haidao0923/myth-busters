@@ -282,8 +282,6 @@ public class Player implements Touchable {
                                 System.out.println("Too many potions already active!");
                                 continue;
                             }
-
-                            System.out.println("Pressed " + (i + 1));
                             item.setActive(true);
                             itemCD = 30;
                             if (item instanceof Consumable) {
@@ -430,7 +428,6 @@ public class Player implements Touchable {
                 double currentHealth = getCurrentHealth();
 
                 if (currentHealth != oldHealth) {
-                    //System.out.println("Updating Damage!");
 
                     if (currentHealth <= 25) { // higher number b/c some glitch
                         Controller.goToDeathScreen();
@@ -506,7 +503,6 @@ public class Player implements Touchable {
 
     public boolean intersects(Touchable other) {
         if (other == null) {
-            System.out.println("Null Other!");
             return false;
         }
         boolean intersected = other.getBoundary().intersects(this.getBoundary());
@@ -620,7 +616,6 @@ public class Player implements Touchable {
             addHealth(-damage);
             damageCooldown = 60;
         }
-        System.out.println(currentHealth);
     }
 
     public void addMaximumHealth(double value) {

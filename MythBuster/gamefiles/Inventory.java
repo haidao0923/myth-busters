@@ -81,7 +81,6 @@ public class Inventory {
             imageView.setFitHeight(80);
             final int j = i;
             inventoryItemSpace.setOnMouseClicked(mouseEvent -> {
-                System.out.println(INVENTORY.get(j).getDescription());
                 selectedIndex = j;
             });
             inventoryItemSpace.getChildren().add(imageView);
@@ -128,7 +127,6 @@ public class Inventory {
         scene.setOnKeyReleased(
             e -> {
                 String code = e.getCode().toString();
-                System.out.println(selectedIndex);
                 if (code == "I") {
 
                     //Upon pressing I again, go back to game.
@@ -147,7 +145,6 @@ public class Inventory {
                 if (code == "DIGIT2" && selectedIndex != UNSELECTED) {
                     if (INVENTORY.get(selectedIndex) instanceof Consumable) {
                         addToHotbar(selectedIndex, 1);
-                        System.out.println("(For testing purposes) Trying to add!");
                     }
                 }
                 if (code == "DIGIT3" && selectedIndex != UNSELECTED) {
@@ -181,7 +178,6 @@ public class Inventory {
                         if (player.getWeapon() instanceof Bow) {
                             GameLoop.startAllAnimationTimers(((Bow) 
                                 Controller.getPlayer().getWeapon()).arrowTimer());
-                            System.out.println("ArrowTimer");
                         }
 
                         removeFromInventory(selectedIndex);
@@ -270,7 +266,6 @@ public class Inventory {
             imageView.setFitHeight(80);
             final int j = i;
             inventoryItemSpace.setOnMouseClicked(mouseEvent -> {
-                System.out.println(INVENTORY.get(j).getDescription());
                 selectedIndex = j;
             });
             inventoryItemSpace.getChildren().add(imageView);

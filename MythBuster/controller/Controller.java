@@ -90,7 +90,6 @@ public class Controller extends Application {
         });
 
         volumeControl.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-                    System.out.println("Changed to: " + newValue.doubleValue());
                     BackgroundMusic.setVolume(newValue.doubleValue());
             });
 

@@ -33,10 +33,6 @@ public class PotionTests extends ApplicationTest {
         RagePotion ragePotion = new RagePotion(1, "no", "no", 1, false, 600);
         HastePotion hastePotion = new HastePotion(2, "no", "no", 1, false, 600);
 
-        for (int i = 0; i < Inventory.getInventory().size(); i++) {
-            System.out.println(i + Inventory.getInventory().get(i).getName());
-        }
-
         Inventory.getHotbar()[0] = ragePotion;
         Inventory.getHotbar()[1] = hastePotion;
         press(KeyCode.DIGIT1);
