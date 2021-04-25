@@ -2,10 +2,9 @@ package gamefiles.characters;
 
 import controller.Controller;
 import controller.GameLoop;
-import gamefiles.Droppable;
 import gamefiles.Inventory;
 import gamefiles.Touchable;
-import gamefiles.items.DroppedCoin;
+import gamefiles.DropMethods;
 import gamefiles.items.DroppedItem;
 import gamefiles.items.DroppedWeapon;
 import gamefiles.items.Item;
@@ -15,7 +14,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -24,7 +22,6 @@ import javafx.scene.shape.Rectangle;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -144,7 +141,7 @@ public abstract class Monster implements Touchable {
                     } else {
                         int newCoins = (int) (5 + Math.random() * 5);
                         
-                        dropCoins(newCoins, 5, positionX, positionY);
+                        DropMethods.dropCoins(newCoins, 5, positionX, positionY);
 
                         return true;
                     }
@@ -157,30 +154,12 @@ public abstract class Monster implements Touchable {
                     return true;
                 } else {
                     int newCoins = (int) (5 + Math.random() * 5);
-                    dropCoins(newCoins, 5, positionX, positionY);
+                    DropMethods.dropCoins(newCoins, 5, positionX, positionY);
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    protected void dropCoins(int newCoins, int num, double positionX, double positionY) {
-        int[] nums = new int[num];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = (int) (Math.random() * newCoins); // determine breaks
-        }
-
-        Arrays.sort(nums);
-        
-        int lower = -1;
-        for (int i = 0; i < nums.length; i++) { // add coins
-            Item coin = ItemDatabase.getItem(-1);
-            coin.addQuantity(nums[i] - lower);
-            lower = nums[i];
-            DroppedItem droppedItem = new DroppedCoin(coin);
-            droppedItem.drop(positionX, positionY, true);
-        }
     }
 
     public boolean checkWeapon(Weapon w) {

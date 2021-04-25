@@ -1,6 +1,7 @@
 package sounds;
 
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import javafx.scene.media.Media;
 
 import java.io.File;
@@ -36,7 +37,6 @@ public class BackgroundMusic {
         bossTrack = new MediaPlayer(bossMusic);
         bossTrack.setCycleCount(MediaPlayer.INDEFINITE);
         bossTrack.setVolume(volume * 2);
-
     }
 
     public static MediaPlayer getBackgroundTrack() {

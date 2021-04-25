@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.application.Platform;
 
 import javafx.stage.Stage;
 
@@ -159,7 +160,9 @@ public class GameScreen {
     }
 
     public void updateBoardDrop(Droppable drop) {
-        board.getChildren().add(drop.getGroup());
+        Platform.runLater(() -> {
+            board.getChildren().add(drop.getGroup());
+        });
     }
 
     /**
