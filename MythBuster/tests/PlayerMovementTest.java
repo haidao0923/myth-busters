@@ -34,7 +34,6 @@ public class PlayerMovementTest extends ApplicationTest {
         player = controller.getPlayer();
         double previousPositionX = player.getPositionX();
         double previousPositionY = player.getPositionY();
-        System.out.println(previousPositionX);
         press(KeyCode.A);
         assertEquals(10, player.getSpeed(), 0.1);
         assertTrue(previousPositionX > player.getPositionX());

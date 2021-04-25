@@ -341,7 +341,6 @@ public class RoomLayout {
         } catch (Exception e) {
             System.out.println("Exception: Writing to file printables/RoomLayout.txt.");
             e.printStackTrace();
-            System.out.println(e);
         }
     }
 
