@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controller.Controller;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
+import javafx.animation.AnimationTimer;
 import gamefiles.items.DroppedItem;
 
 public class RedTreasureChest extends TreasureChest {
@@ -15,7 +16,6 @@ public class RedTreasureChest extends TreasureChest {
     @Override
     public void open() {
         Controller.getPlayer().subtractCoins(cost);
-
         int random = (int) (Math.random() * 6);
         switch (random) {
         case 0:
@@ -26,10 +26,18 @@ public class RedTreasureChest extends TreasureChest {
         case 3:
             int coinAmount = (int) (Math.random() * 9 + 4) * 5;
             dropCoins(coinAmount, 12, positionX, positionY);
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
+            }
             displayReward("You found " + Integer.toString(coinAmount) + " coins!");
             break;
         case 4:
             Controller.getPlayer().addMaximumHealth(100);
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
+            }
             displayReward("You gained 2 extra heart!");
             break;
         case 5:
@@ -41,6 +49,10 @@ public class RedTreasureChest extends TreasureChest {
             for (int i = 0; i < itemsToAdd.size(); i++) {
                 DroppedItem droppedItem = new DroppedItem(itemsToAdd.get(i));
                 droppedItem.drop(positionX, positionY, true);
+            }
+            if (!atQueue.isEmpty()) {
+                AnimationTimer e = atQueue.remove();
+                e.stop();
             }
             displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
             break;
