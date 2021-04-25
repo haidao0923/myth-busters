@@ -9,6 +9,7 @@ public class WeaponDatabase {
     /**
      * Create a weapon database.
      */
+
     public static void initialize() {
         weapons.put(0, new Spear(1, "Spear", "This is a spear.", 1, 2));
         weapons.put(1, new Sword(0, "Sword", "This is a sword.", 0.85, 2.5));
