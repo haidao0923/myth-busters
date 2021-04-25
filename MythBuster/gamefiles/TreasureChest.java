@@ -1,5 +1,8 @@
 package gamefiles;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import controller.Controller;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -22,6 +25,8 @@ public abstract class TreasureChest implements Touchable {
     protected boolean opened;
 
     private static int chestsOpened;
+
+    protected static volatile Queue<AnimationTimer> atQueue = new LinkedList<>();
 
     public TreasureChest(double positionX, double positionY, int cost, String spritePath) {
         this.positionX = positionX;
@@ -71,18 +76,33 @@ public abstract class TreasureChest implements Touchable {
         display.setPrefWidth(Controller.getW());
         display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
                 + "-fx-alignment:CENTER;");
-        display.setLayoutY(200);
+        display.setLayoutY(275);
         Platform.runLater(() -> {
             Controller.getGameScreen().getBoard().getChildren().add(display);
         });
 
         new AnimationTimer() {
             private int timer = 60;
+
+            @Override
+            public void start() {
+                super.start();
+                atQueue.add(this);
+                System.out.println(atQueue.size());
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                Controller.getGameScreen().getBoard().getChildren().remove(display);
+                atQueue.remove(this);
+                System.out.println("dequeued");
+            }
+
             @Override
             public void handle(long currentNanoTime) {
                 timer--;
                 if (timer <= 0) {
-                    Controller.getGameScreen().getBoard().getChildren().remove(display);
                     this.stop();
                 }
             }

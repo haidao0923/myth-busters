@@ -10,6 +10,7 @@ import gamefiles.items.DroppedItem;
 import gamefiles.items.DroppedWeapon;
 import gamefiles.weapons.Weapon;
 import gamefiles.weapons.WeaponDatabase;
+import javafx.animation.AnimationTimer;
 
 public class BlueTreasureChest extends TreasureChest {
     public BlueTreasureChest(double positionX, double positionY, int cost) {
@@ -44,6 +45,10 @@ public class BlueTreasureChest extends TreasureChest {
         for (int i = 0; i < itemsToAdd.size(); i++) {
             DroppedItem droppedItem = new DroppedItem(itemsToAdd.get(i));
             droppedItem.drop(positionX, positionY, true);
+        }
+        if (!atQueue.isEmpty()) {
+            AnimationTimer e = atQueue.remove();
+            e.stop();
         }
         displayReward("You have gained " + Integer.toString(amountToAdd) + " potions!");
     }
