@@ -52,13 +52,19 @@ public class Inventory {
 
         selectedIndex = UNSELECTED;
         board = new Group();
-        scene = new Scene(board, width, height, Color.POWDERBLUE);
+        VBox root = new VBox();
+        root.getChildren().addAll(board);
+        root.setStyle("-fx-background-image: url('sprites/inventoryBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
+        scene = new Scene(root, width, height, Color.POWDERBLUE);
 
         //Display Text
         Text instructions = new Text(800, 300, "Click on a consumable and then" 
-            + "press 1-5 to equip to hotbar.");
+            + " press 1-5 to equip to hotbar.");
+        instructions.setStyle("-fx-font-family: Papyrus; -fx-font-size: 16");
         Text instructions2 = new Text(800, 350, "Click on a weapon and press E to equip");
+        instructions2.setStyle("-fx-font-family: Papyrus; -fx-font-size: 16");
         Text instructions3 = new Text(800, 400, "Press I to go back.");
+        instructions3.setStyle("-fx-font-family: Papyrus; -fx-font-size: 16");
 
 
         board.getChildren().addAll(instructions, instructions2, instructions3);

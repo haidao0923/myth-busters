@@ -47,8 +47,8 @@ public class ConfigurationScreen {
                     BackgroundMusic.getVolume() / BackgroundMusic.getVolumeMarker());
 
         header = new Label("Configuration Screen");
-        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black; -fx-font-family: Papyrus");
+        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;"
+                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-font-family: Papyrus");
     }
 
     /**
