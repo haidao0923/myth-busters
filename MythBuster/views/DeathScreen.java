@@ -84,13 +84,13 @@ public class DeathScreen {
         consoleMessage.setStyle("-fx-font-size: 35; -fx-font-style: italic;-fx-alignment:center;");
         switch(Controller.getDifficulty()) {
         case 0:
-            consoleMessage.setText("Hahaha. How did you even lose on easy mode???");
+            consoleMessage.setText("Hahaha! How did you even lose on easy mode???");
             break;
         case 1:
-            consoleMessage.setText("So you lost on normal...");
+            consoleMessage.setText("So you lost on normal. Eh.");
             break;
         case 2:
-            consoleMessage.setText("Congratulation! You can now tell everyone that you lost on hard mode.");
+            consoleMessage.setText("Congratulations! You can now tell everyone that you lost on hard mode.");
             break;
         }
 

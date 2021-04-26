@@ -92,10 +92,10 @@ public class WinScreen {
             congratulateMessage.setText("Oh. You won on EASY mode!");
             break;
         case 1:
-            congratulateMessage.setText("Congratulation. You beat the game on normal. Just like most people.");
+            congratulateMessage.setText("Congratulations. You beat the game on normal. Just like most people.");
             break;
         case 2:
-            congratulateMessage.setText("Let me guess. You stacked rage potions. Really unique.");
+            congratulateMessage.setText("Let me guess. You probably stacked rage potions. Really unique.");
             break;
         }
         soundEffect.seek(Duration.ZERO);
