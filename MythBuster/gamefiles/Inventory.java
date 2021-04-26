@@ -73,7 +73,8 @@ public class Inventory {
             HBox currRow = (HBox) inventoryRows.getChildren().get(row);
 
             Group inventoryItemSpace = new Group();
-            inventoryItemSpace.getChildren().add(new Rectangle(80,  80, Color.LIGHTYELLOW));
+            ImageView image = new ImageView("sprites/inventorySlot.png");
+            inventoryItemSpace.getChildren().add(image);
             currRow.getChildren().add(inventoryItemSpace);
 
             ImageView imageView = new ImageView(INVENTORY.get(i).getImage());
@@ -96,7 +97,8 @@ public class Inventory {
         hotbarBox.setTranslateY(700);
         for (int i = 0; i < maxHotbarSize; i++) {
             Group hotbarItemSpace = new Group();
-            hotbarItemSpace.getChildren().add(new Rectangle(50,  50, Color.YELLOW));
+            ImageView image = new ImageView("sprites/inventorySlot.png");
+            hotbarItemSpace.getChildren().add(image);
             hotbarBox.getChildren().add(hotbarItemSpace);
 
             ImageView imageView = null;
@@ -208,7 +210,8 @@ public class Inventory {
             hotbar[hotbarIndex] = INVENTORY.get(inventoryIndex);
             removeFromInventory(inventoryIndex);
             hotbarItemSpace.getChildren().clear();
-            hotbarItemSpace.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+            ImageView image = new ImageView("sprites/inventorySlot.png");
+            hotbarItemSpace.getChildren().add(image);
             hotbarItemSpace.getChildren().add(imageView);
             boolean added = addToInventory(currItemInHotbar);
             refreshDisplays();
@@ -258,7 +261,8 @@ public class Inventory {
             HBox currRow = (HBox) inventoryRows.getChildren().get(row);
 
             Group inventoryItemSpace = new Group();
-            inventoryItemSpace.getChildren().add(new Rectangle(80,  80, Color.LIGHTYELLOW));
+            ImageView image = new ImageView("sprites/inventorySlot.png");
+            inventoryItemSpace.getChildren().add(image);
             currRow.getChildren().add(inventoryItemSpace);
 
             ImageView imageView = new ImageView(INVENTORY.get(i).getImage());

@@ -38,7 +38,9 @@ public class ConfigurationScreen {
         this.width = width;
         this.height = height;
         beginButton = new Button("Begin!");
+        beginButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
         heroNameTextField = new TextField();
+        heroNameTextField.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
         startingWeaponSelector = new ComboBox<StartingWeapon>();
         difficultySelector = new ComboBox<Difficulty>();
         volumeControl = new Slider(0.0, 2.0, 
@@ -46,7 +48,7 @@ public class ConfigurationScreen {
 
         header = new Label("Configuration Screen");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
+                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black; -fx-font-family: Papyrus");
     }
 
     /**
@@ -61,13 +63,13 @@ public class ConfigurationScreen {
 
         startingWeaponSelector.setId("startingWeaponSelector");
         startingWeaponSelector.setPrefWidth(300);
-        startingWeaponSelector.setStyle("-fx-font-size: 30");
+        startingWeaponSelector.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
         startingWeaponSelector.getItems().setAll(StartingWeapon.values());
         startingWeaponSelector.getSelectionModel().selectFirst();
 
         difficultySelector.setId("difficultySelector");
         difficultySelector.setPrefWidth(300);
-        difficultySelector.setStyle("-fx-font-size: 30");
+        difficultySelector.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
         difficultySelector.getItems().setAll(Difficulty.values());
         difficultySelector.getSelectionModel().selectFirst();
 
@@ -91,36 +93,38 @@ public class ConfigurationScreen {
         heroNameDescription.layoutXProperty().bind(heroNameTextField.layoutXProperty());
         heroNameDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
         heroNameDescription.setStyle("-fx-font-size: 30; "
-                + "-fx-font-weight: bold; -fx-alignment:center");
+                + "-fx-font-weight: bold; -fx-alignment:center; -fx-font-family: Papyrus");
 
         heroNameDescription.setPrefWidth(350);
+        heroNameDescription.setTextFill(Color.WHITE);
 
         Label startingWeaponDescription = new Label("Weapon");
         startingWeaponDescription.layoutXProperty()
                 .bind(startingWeaponSelector.layoutXProperty());
         startingWeaponDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
         startingWeaponDescription.setStyle("-fx-font-size: 30; "
-                + "-fx-font-weight: bold; -fx-alignment:center");
+                + "-fx-font-weight: bold; -fx-alignment:center; -fx-font-family: Papyrus");
         startingWeaponDescription.setPrefWidth(300);
+        startingWeaponDescription.setTextFill(Color.WHITE);
 
         Label difficultyDescription = new Label("Difficulty");
         difficultyDescription.layoutXProperty().bind(difficultySelector.layoutXProperty());
         difficultyDescription.layoutYProperty().bind(hBox.layoutYProperty().subtract(50));
         difficultyDescription.setStyle("-fx-font-size: 30; "
-                + "-fx-font-weight: bold; -fx-alignment:center");
+                + "-fx-font-weight: bold; -fx-alignment:center; -fx-font-family: Papyrus");
         difficultyDescription.setPrefWidth(300);
+        difficultyDescription.setTextFill(Color.WHITE);
 
         Label volumeDescription = new Label("Volume");
         volumeDescription.layoutXProperty().bind(volumeBox.layoutXProperty());
         volumeDescription.layoutYProperty().bind(volumeBox.layoutYProperty().subtract(50));
         volumeDescription.setStyle("-fx-font-size: 30; "
-                + "-fx-font-weight: bold; -fx-alignment:center");
+                + "-fx-font-weight: bold; -fx-alignment:center; -fx-font-family: Papyrus");
         volumeDescription.setPrefWidth(300);
+        volumeDescription.setTextFill(Color.WHITE);
 
         Group descriptionGroup = new Group(heroNameDescription,
                 startingWeaponDescription, difficultyDescription, volumeDescription);
-
-        beginButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
 
         VBox beginButtonVBox = new VBox(beginButton);
         beginButtonVBox.setAlignment(Pos.CENTER);
@@ -129,7 +133,11 @@ public class ConfigurationScreen {
 
         Group board = new Group();
         board.getChildren().addAll(header, hBox, descriptionGroup, volumeBox, beginButtonVBox);
-        Scene scene = new Scene(board, width, height, Color.POWDERBLUE);
+
+        VBox root = new VBox();
+        root.getChildren().addAll(board);
+        root.setStyle("-fx-background-image: url('sprites/characterSelection.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
+        Scene scene = new Scene(root, width, height);
         return scene;
     }
 

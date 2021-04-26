@@ -88,7 +88,7 @@ public class TreasureRoom extends Room {
         animationTimer.start();
 
         roomGroup.getChildren().add(treasureGroup);
-        Controller.getGameScreen().changeBackgroundColor("#6e6e65");
+        Controller.getGameScreen().changeBackground("-fx-background-image: url('sprites/treasureBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
         return roomGroup;
     }
     public String toString() {

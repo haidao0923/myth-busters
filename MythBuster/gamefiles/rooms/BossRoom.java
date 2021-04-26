@@ -12,7 +12,7 @@ public class BossRoom extends Room {
 
     @Override
     public Group getRoomGroup() {
-        Controller.getGameScreen().changeBackgroundColor(Color.PURPLE);
+        Controller.getGameScreen().changeBackground("-fx-background-image: url('sprites/bossBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
         return super.getRoomGroup();
     }
     public String toString() {
