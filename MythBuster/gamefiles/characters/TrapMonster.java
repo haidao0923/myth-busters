@@ -3,11 +3,13 @@ package gamefiles.characters;
 import controller.Controller;
 import controller.GameLoop;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 
 public class TrapMonster extends Monster {
 
     public TrapMonster() {
-        super("Trap Monster", 100, 5, "sprites/Medusa.png", 100, 100);
+        super("Trap Monster", 100, 5, "sprites/TrapMonster.png", 100, 100);
+        imageView.setViewport(new Rectangle2D(4, 23, 140, 167));
     }
 
     public TrapMonster(double health, double movementSpeed, String spritePath,
@@ -25,7 +27,7 @@ public class TrapMonster extends Monster {
         // game logic
         checkDeath();
         redrawHealthBar();
-        // move
+        // movew
         double offsetX = targetPositionX - positionX;
         double offsetY = targetPositionY - positionY;
         double magnitude = Math.sqrt(offsetX * offsetX + offsetY * offsetY);

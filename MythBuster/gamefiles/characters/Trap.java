@@ -2,13 +2,15 @@ package gamefiles.characters;
 
 import controller.Controller;
 import controller.GameLoop;
+import javafx.geometry.Rectangle2D;
 
 public class Trap extends Monster {
 
     private static int trapCount;
 
     public Trap(double posX, double posY) {
-        super("Trap", 10, 0, "sprites/Medusa.png", 50, 50);
+        super("Trap", 10, 0, "sprites/Trap.png", 50, 50);
+        imageView.setViewport(new Rectangle2D(0, 0, 210, 210));
         moveAbsolute(posX, posY);
         trapCount++;
     }
