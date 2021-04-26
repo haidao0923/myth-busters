@@ -10,7 +10,8 @@ public class Trap extends Monster {
 
     public Trap(double posX, double posY) {
         super("Trap", 10, 0, "sprites/Trap.png", 50, 50);
-        imageView.setViewport(new Rectangle2D(0, 0, 210, 210));
+        imageView.setViewport(new Rectangle2D(0, 0, 100, 95));
+        imageView.setRotate(45);
         moveAbsolute(posX, posY);
         trapCount++;
     }
