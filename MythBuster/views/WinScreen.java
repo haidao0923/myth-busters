@@ -72,7 +72,7 @@ public class WinScreen {
             + Monster.getMonstersKilled());
         monstersKilled.setStyle("-fx-font-family: Papyrus");
         monstersKilled.setFill(Color.WHITE);
-        Text greedyIndex = new Text(50, 350, "Greedy Index: " + Player.getGreedyIndex());
+        Text greedyIndex = new Text(50, 350, "Maximum Coins Collected: " + Player.getGreedyIndex());
         greedyIndex.setStyle("-fx-font-family: Papyrus");
         greedyIndex.setFill(Color.WHITE);
         Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " 
