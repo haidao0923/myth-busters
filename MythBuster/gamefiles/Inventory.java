@@ -120,7 +120,10 @@ public class Inventory {
 
         //Display weaponBox
         weaponBox = new Group();
-        weaponBox.getChildren().add(new Rectangle(80, 80, Color.RED));
+        ImageView slotBacking = new ImageView("sprites/inventorySlot.png");
+        slotBacking.setFitHeight(80);
+        slotBacking.setFitWidth(80);
+        weaponBox.getChildren().add(slotBacking);
         weaponBox.setTranslateX(700);
         weaponBox.setTranslateY(500);
         ImageView imageView = new ImageView(Controller.getPlayer().getWeapon().getImage());
@@ -225,7 +228,10 @@ public class Inventory {
 
     public static void updateWeaponBox() {
         weaponBox.getChildren().clear();
-        weaponBox.getChildren().add(new Rectangle(80, 80, Color.RED));
+        ImageView slotBacking = new ImageView("sprites/inventorySlot.png");
+        slotBacking.setFitHeight(80);
+        slotBacking.setFitWidth(80);
+        weaponBox.getChildren().add(slotBacking);
         ImageView imageView = new ImageView(Controller.getPlayer().getWeapon().getImage());
         imageView.setFitWidth(80);
         imageView.setFitHeight(80);
