@@ -36,8 +36,8 @@ public class WinScreen {
         this.height = height;
 
         header = new Label("Congratulations!");
-        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-background-color:black");
+        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;"
+                + "-fx-alignment:center; -fx-text-fill: #DEB887; -fx-font-family: Papyrus");
         header.setPrefWidth(width);
         restartButton = new Button("Restart?");
 
@@ -45,7 +45,7 @@ public class WinScreen {
     }
 
     public Scene getScene() {
-        restartButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+        restartButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
 
         VBox restartButtonVBox = new VBox(restartButton);
         restartButtonVBox.setAlignment(Pos.CENTER);
@@ -57,7 +57,7 @@ public class WinScreen {
         Button exitButton = new Button("Exit");
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
-        exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+        exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
         exitButton.setOnAction(e -> {
             Controller.getMainWindow().close();
         });
@@ -66,16 +66,27 @@ public class WinScreen {
         int seconds = Controller.getTimeElapsed() / 60 % 60;
         String timeString = String.format("%02d:%02d", minutes, seconds);
         Text timer = new Text(50, 250, "Time Taken: " + timeString);
+        timer.setFill(Color.WHITE);
+        timer.setStyle("-fx-font-family: Papyrus");
         Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " 
             + Monster.getMonstersKilled());
-        Text greedyIndex = new Text(50, 350, "Max Concurrent Coins: " 
-            + Player.getGreedyIndex());
+        monstersKilled.setStyle("-fx-font-family: Papyrus");
+        monstersKilled.setFill(Color.WHITE);
+        Text greedyIndex = new Text(50, 350, "Greedy Index: " + Player.getGreedyIndex());
+        greedyIndex.setStyle("-fx-font-family: Papyrus");
+        greedyIndex.setFill(Color.WHITE);
         Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " 
             + Player.getPotionsUsed());
+        potionsUsed.setStyle("-fx-font-family: Papyrus");
+        potionsUsed.setFill(Color.WHITE);
         Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " 
             + ChallengeRoom.getChallengesAttempted());
+        challengesAttempted.setStyle("-fx-font-family: Papyrus");
+        challengesAttempted.setFill(Color.WHITE);
         Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " 
             + TreasureChest.getChestsOpened());
+        chestsOpened.setFill(Color.WHITE);
+        chestsOpened.setStyle("-fx-font-family: Papyrus");
         Controller.setTimeElapsed(0);
         Monster.setMonstersKilled(0);
         Player.setGreedyIndex(0);
@@ -93,8 +104,7 @@ public class WinScreen {
         congratulateMessage.setWrappingWidth(width - 100);
         congratulateMessage.setTextAlignment(TextAlignment.CENTER);
         congratulateMessage.prefHeight(80);
-        congratulateMessage.setStyle(
-            "-fx-font-size: 35; -fx-font-style: italic;-fx-alignment:center;");
+        congratulateMessage.setStyle("-fx-font-size: 35; -fx-font-style: italic; -fx-alignment:center; -fx-font-family: Papyrus");
         switch (Controller.getDifficulty()) {
         case 0:
             congratulateMessage.setText("Oh. You won on EASY mode!");
@@ -114,7 +124,12 @@ public class WinScreen {
         Group board = new Group();
         board.getChildren().addAll(header, timer, chestsOpened, greedyIndex, monstersKilled,
             challengesAttempted, potionsUsed, restartButtonVBox, exitButton, congratulateMessage);
-        Scene scene = new Scene(board, width, height, Color.POWDERBLUE);
+        
+        VBox root = new VBox();
+        root.getChildren().addAll(board);
+        root.setStyle("-fx-background-image: url('sprites/winBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
+        Scene scene = new Scene(root, width, height);
+    
         return scene;
     }
 

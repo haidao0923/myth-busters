@@ -39,8 +39,8 @@ public class WelcomeScreen {
         startButton = new Button("Start Game!");
 
         header = new Label("MYTHBUSTERS");
-        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:CENTER; -fx-text-fill: #DEB887; -fx-background-color:black; -fx-font-family: Papyrus");
+        header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;"
+                + "-fx-alignment:CENTER; -fx-text-fill: #DEB887; -fx-font-family: Papyrus");
         Insets inset = new Insets(10, 0, 10, 0);
         header.setPadding(inset);
     }
@@ -67,7 +67,7 @@ public class WelcomeScreen {
         rightImage.setLayoutY(250);
 
         startButton = new Button("Start Game");
-        startButton.setStyle("-fx-font-weight: bold; -fx-font-size: 36; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
+        startButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
