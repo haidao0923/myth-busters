@@ -41,6 +41,7 @@ public class ConfigurationScreen {
         beginButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
         heroNameTextField = new TextField();
         heroNameTextField.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
+        heroNameTextField.setId("HeroNameTextField");
         startingWeaponSelector = new ComboBox<StartingWeapon>();
         difficultySelector = new ComboBox<Difficulty>();
         volumeControl = new Slider(0.0, 2.0, 
