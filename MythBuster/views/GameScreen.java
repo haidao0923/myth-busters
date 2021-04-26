@@ -88,7 +88,7 @@ public class GameScreen {
         //For consumable displays.
         effectDisplays = new HBox(20);
         effectDisplays.setLayoutX(10);
-        effectDisplays.setLayoutY(160);
+        effectDisplays.setLayoutY(170);
 
 
         player.moveAbsolute(100, 100);

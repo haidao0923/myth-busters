@@ -384,7 +384,7 @@ public class Player implements Touchable {
         this.hotbarBox = new HBox(hotbarPadding);
         for (int i = 0; i < Inventory.getmaxHotbarSize(); i++) {
             Group hotbarSlot = new Group();
-            hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+            hotbarSlot.getChildren().add(new ImageView("sprites/inventorySlot.png"));
             hotbarBox.getChildren().add(hotbarSlot);
 
             ImageView imageView = null;
@@ -409,12 +409,12 @@ public class Player implements Touchable {
                 imageView.setFitHeight(hotbar[j].getHeight());
                 Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
                 hotbarSlot.getChildren().clear();
-                hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                hotbarSlot.getChildren().add(new ImageView("sprites/inventorySlot.png"));
                 hotbarSlot.getChildren().add(imageView);
             } else {
                 Group hotbarSlot = (Group) hotbarBox.getChildren().get(j);
                 hotbarSlot.getChildren().clear();
-                hotbarSlot.getChildren().add(new Rectangle(50, 50, Color.YELLOW));
+                hotbarSlot.getChildren().add(new ImageView("sprites/inventorySlot.png"));
             }
         }
     }
