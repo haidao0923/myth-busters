@@ -230,7 +230,7 @@ public abstract class Room {
         Label display = new Label(text);
         display.setPrefWidth(Controller.getW());
         display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
-                + "-fx-alignment:CENTER;");
+                + "-fx-alignment:CENTER; -fx-font-family: Papyrus");
         display.setLayoutY(250);
         display.setId("dropNotificationDisplay");
         Controller.getGameScreen().getBoard().getChildren().add(display);
