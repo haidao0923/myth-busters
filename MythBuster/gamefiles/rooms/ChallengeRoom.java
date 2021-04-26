@@ -41,7 +41,7 @@ public class ChallengeRoom extends Room {
         for (Monster monster : monsters) {
             roomGroup.getChildren().add(monster.getGroup());
         }
-        Controller.getGameScreen().changeBackgroundColor(Color.BLACK);
+        Controller.getGameScreen().changeBackground("-fx-background-image: url('sprites/challengeBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
         return roomGroup;
     }
 

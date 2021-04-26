@@ -41,6 +41,8 @@ public class GameScreen {
 
     private Scene scene;
 
+    private VBox root;
+
 
     private GameScreen() { }
 
@@ -64,12 +66,15 @@ public class GameScreen {
 
     private void initScene() {
         nameDisplay = new Text(110, 10, "Name: " + player.getName());
-        nameDisplay.setStyle("-fx-font-size: 30;");
+        nameDisplay.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
+        nameDisplay.setFill(Color.WHITE);
         weaponDisplay = new Text(210, 10, "Weapon: " + player.getWeapon().getName());
-        weaponDisplay.setStyle("-fx-font-size: 30;");
+        weaponDisplay.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
+        weaponDisplay.setFill(Color.WHITE);
         weaponDisplay.setId("weaponDisplay");
         coinDisplay = new Text(310, 10, "Coins: " + player.getCoins());
-        coinDisplay.setStyle("-fx-font-size: 30;");
+        coinDisplay.setStyle("-fx-font-size: 30; -fx-font-family: Papyrus");
+        coinDisplay.setFill(Color.WHITE);
         coinDisplay.setId("coinDisplay");
 
 
@@ -89,8 +94,12 @@ public class GameScreen {
         player.moveAbsolute(100, 100);
 
         board.getChildren().addAll(displays, alerts, effectDisplays);
-        scene = new Scene(board, width, height);
-        changeBackgroundColor(Color.PURPLE);
+
+        root = new VBox();
+        root.getChildren().addAll(board);
+        root.setStyle("-fx-background-image: url('sprites/gameplayBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
+
+        scene = new Scene(root, width, height);
     }
 
 
@@ -136,7 +145,7 @@ public class GameScreen {
                 
                 alerts.getChildren().addAll(startChallenge);
                 startChallenge.setAlignment(Pos.CENTER);
-                startChallenge.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+                startChallenge.setStyle("-fx-font-weight: bold; -fx-font-size: 36; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
                 alerts.setAlignment(Pos.CENTER);
 
                 Insets buttonInset = new Insets(360, 240, 480, 480);
@@ -180,12 +189,8 @@ public class GameScreen {
         return effectDisplays;
     }
 
-    public void changeBackgroundColor(String color) {
-        scene.setFill(Color.web(color));
-    }
-
-    public void changeBackgroundColor(Color color) {
-        scene.setFill(color);
+    public void changeBackground(String s) {
+        root.setStyle(s);
     }
 
     /**

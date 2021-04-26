@@ -39,7 +39,7 @@ public abstract class TreasureChest implements Touchable {
         imageView.setFitHeight(100);
         costText.setPrefSize(100, 100);
         costText.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
-                + "-fx-alignment:CENTER;");
+                + "-fx-alignment:CENTER; -fx-font-family: Papyrus");
         costText.setTranslateY(-80);
         Node image = imageView;
         treasureGroup = new Group();
@@ -75,7 +75,7 @@ public abstract class TreasureChest implements Touchable {
         Label display = new Label(text);
         display.setPrefWidth(Controller.getW());
         display.setStyle("-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;"
-                + "-fx-alignment:CENTER;");
+                + "-fx-alignment:CENTER; -fx-font-family: Papyrus");
         display.setLayoutY(275);
         Platform.runLater(() -> {
             Controller.getGameScreen().getBoard().getChildren().add(display);

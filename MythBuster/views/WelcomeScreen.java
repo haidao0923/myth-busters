@@ -1,12 +1,21 @@
 package views;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Skin;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -31,7 +40,9 @@ public class WelcomeScreen {
 
         header = new Label("MYTHBUSTERS");
         header.setStyle("-fx-font-size: 100; -fx-font-weight: bold;-fx-border-color:red;"
-                + "-fx-alignment:CENTER; -fx-text-fill: #DEB887; -fx-background-color:black");
+                + "-fx-alignment:CENTER; -fx-text-fill: #DEB887; -fx-background-color:black; -fx-font-family: Papyrus");
+        Insets inset = new Insets(10, 0, 10, 0);
+        header.setPadding(inset);
     }
 
     /**
@@ -56,7 +67,7 @@ public class WelcomeScreen {
         rightImage.setLayoutY(250);
 
         startButton = new Button("Start Game");
-        startButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+        startButton.setStyle("-fx-font-weight: bold; -fx-font-size: 36; -fx-background-image: url('sprites/buttonSkin.png'); -fx-font-family: Papyrus");
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
@@ -65,7 +76,11 @@ public class WelcomeScreen {
         vBox.setLayoutY(300);
 
         board.getChildren().addAll(header, leftImage, rightImage, vBox);
-        Scene scene = new Scene(board, width, height, Color.PURPLE);
+
+        VBox root = new VBox();
+        root.getChildren().addAll(board);
+        root.setStyle("-fx-background-image: url('sprites/startBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
+        Scene scene = new Scene(root, width, height);
 
         return scene;
     }

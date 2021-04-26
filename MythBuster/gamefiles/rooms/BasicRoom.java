@@ -14,7 +14,7 @@ public class BasicRoom extends Room {
     @Override
     public Group getRoomGroup() {
         Group roomGroup = super.getRoomGroup();
-        Controller.getGameScreen().changeBackgroundColor(Color.PURPLE);
+        Controller.getGameScreen().changeBackground("-fx-background-image: url('sprites/gameplayBG.png'); -fx-background-repeat: stretch; -fx-background-size: 1200 800");
         return roomGroup;
     }
 
