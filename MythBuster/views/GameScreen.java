@@ -2,7 +2,6 @@ package views;
 
 import java.util.Optional;
 
-import controller.Controller;
 import controller.GameLoop;
 import gamefiles.Droppable;
 import gamefiles.characters.Player;
@@ -16,7 +15,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -121,20 +119,20 @@ public class GameScreen {
         alerts = new HBox();
 
         if (currentRoom instanceof ChallengeRoom) {
-            ChallengeRoom c = (ChallengeRoom)(currentRoom);
+            ChallengeRoom c = (ChallengeRoom) (currentRoom);
             if (c.getStatus() == 0) {
                 Button startChallenge = new Button("Start Challenge");
                 startChallenge.setOnAction((ActionEvent event) -> {
-                        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                        a.setTitle("Challenge Issued!");
-                        a.setHeaderText("You have been issued a challenge.");
-                        a.setContentText(" Would you like to accept?");
-                        Optional<ButtonType> response = a.showAndWait();
-                        if (response.isPresent() && response.get() == ButtonType.OK) {
-                            alerts.getChildren().remove(startChallenge);
-                            c.startChallenge();
-                        }
-                    });
+                    Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                    a.setTitle("Challenge Issued!");
+                    a.setHeaderText("You have been issued a challenge.");
+                    a.setContentText(" Would you like to accept?");
+                    Optional<ButtonType> response = a.showAndWait();
+                    if (response.isPresent() && response.get() == ButtonType.OK) {
+                        alerts.getChildren().remove(startChallenge);
+                        c.startChallenge();
+                    }
+                });
                 
                 alerts.getChildren().addAll(startChallenge);
                 startChallenge.setAlignment(Pos.CENTER);

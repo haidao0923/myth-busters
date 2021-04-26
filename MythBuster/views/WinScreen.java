@@ -58,17 +58,24 @@ public class WinScreen {
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
         exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-        exitButton.setOnAction(e -> {Controller.getMainWindow().close();});
+        exitButton.setOnAction(e -> {
+            Controller.getMainWindow().close();
+        });
 
         int minutes = Controller.getTimeElapsed() / 3600;
         int seconds = Controller.getTimeElapsed() / 60 % 60;
         String timeString = String.format("%02d:%02d", minutes, seconds);
         Text timer = new Text(50, 250, "Time Taken: " + timeString);
-        Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " + Monster.getMonstersKilled());
-        Text greedyIndex = new Text(50, 350, "Max Concurrent Coins: " + Player.getGreedyIndex());
-        Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " + Player.getPotionsUsed());
-        Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " + ChallengeRoom.getChallengesAttempted());
-        Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " + TreasureChest.getChestsOpened());
+        Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " 
+            + Monster.getMonstersKilled());
+        Text greedyIndex = new Text(50, 350, "Max Concurrent Coins: " 
+            + Player.getGreedyIndex());
+        Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " 
+            + Player.getPotionsUsed());
+        Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " 
+            + ChallengeRoom.getChallengesAttempted());
+        Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " 
+            + TreasureChest.getChestsOpened());
         Controller.setTimeElapsed(0);
         Monster.setMonstersKilled(0);
         Player.setGreedyIndex(0);
@@ -86,17 +93,21 @@ public class WinScreen {
         congratulateMessage.setWrappingWidth(width - 100);
         congratulateMessage.setTextAlignment(TextAlignment.CENTER);
         congratulateMessage.prefHeight(80);
-        congratulateMessage.setStyle("-fx-font-size: 35; -fx-font-style: italic;-fx-alignment:center;");
-        switch(Controller.getDifficulty()) {
+        congratulateMessage.setStyle(
+            "-fx-font-size: 35; -fx-font-style: italic;-fx-alignment:center;");
+        switch (Controller.getDifficulty()) {
         case 0:
             congratulateMessage.setText("Oh. You won on EASY mode!");
             break;
         case 1:
-            congratulateMessage.setText("Congratulations. You beat the game on normal. Just like most people.");
+            congratulateMessage.setText("Congratulations. You beat the game on" 
+                + "normal. Just like most people.");
             break;
         case 2:
-            congratulateMessage.setText("Let me guess. You probably stacked rage potions. Really unique.");
+            congratulateMessage.setText("Let me guess. You probably stacked" 
+                + "rage potions. Really unique.");
             break;
+        default:
         }
         soundEffect.seek(Duration.ZERO);
         soundEffect.play();

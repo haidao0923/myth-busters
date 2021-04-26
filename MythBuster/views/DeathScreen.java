@@ -1,19 +1,16 @@
 package views;
 
 import controller.Controller;
-import gamefiles.Difficulty;
 import gamefiles.TreasureChest;
 import gamefiles.characters.Monster;
 import gamefiles.characters.Player;
 import gamefiles.rooms.ChallengeRoom;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -53,17 +50,23 @@ public class DeathScreen {
         exitButton.setLayoutX(width - 150);
         exitButton.setLayoutY(40);
         exitButton.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
-        exitButton.setOnAction(e -> {Controller.getMainWindow().close();});
+        exitButton.setOnAction(e -> { 
+            Controller.getMainWindow().close(); 
+        });
 
         int minutes = Controller.getTimeElapsed() / 3600;
         int seconds = Controller.getTimeElapsed() / 60 % 60;
         String timeString = String.format("%02d:%02d", minutes, seconds);
         Text timer = new Text(50, 250, "Time Taken: " + timeString);
-        Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " + Monster.getMonstersKilled());
+        Text monstersKilled = new Text(width / 2 + 100, 250, "Monsters Killed: " 
+            + Monster.getMonstersKilled());
         Text greedyIndex = new Text(50, 350, "Greedy Index: " + Player.getGreedyIndex());
-        Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " + Player.getPotionsUsed());
-        Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " + ChallengeRoom.getChallengesAttempted());
-        Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " + TreasureChest.getChestsOpened());
+        Text potionsUsed = new Text(width / 2 + 100, 350, "Potions Used: " 
+            + Player.getPotionsUsed());
+        Text challengesAttempted = new Text(50, 450, "Challenges Attempted: " 
+            + ChallengeRoom.getChallengesAttempted());
+        Text chestsOpened = new Text(width / 2 + 100, 450, "Chests Opened: " 
+            + TreasureChest.getChestsOpened());
         Controller.setTimeElapsed(0);
         Monster.setMonstersKilled(0);
         Player.setGreedyIndex(0);
@@ -82,7 +85,7 @@ public class DeathScreen {
         consoleMessage.setTextAlignment(TextAlignment.CENTER);
         consoleMessage.prefHeight(80);
         consoleMessage.setStyle("-fx-font-size: 35; -fx-font-style: italic;-fx-alignment:center;");
-        switch(Controller.getDifficulty()) {
+        switch (Controller.getDifficulty()) {
         case 0:
             consoleMessage.setText("Hahaha! How did you even lose on easy mode???");
             break;
@@ -90,8 +93,10 @@ public class DeathScreen {
             consoleMessage.setText("So you lost on normal. Eh.");
             break;
         case 2:
-            consoleMessage.setText("Congratulations! You can now tell everyone that you lost on hard mode.");
+            consoleMessage.setText("Congratulations! You can now tell" 
+                + "everyone that you lost on hard mode.");
             break;
+        default:
         }
 
         Group board = new Group();
