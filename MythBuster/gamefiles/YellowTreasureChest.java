@@ -11,8 +11,7 @@ public class YellowTreasureChest extends TreasureChest {
     @Override
     public void open() {
         Controller.getPlayer().subtractCoins(cost);
-
-        int coinAmount = (int) (Math.random() * 9 + 2) * 5;
+        int coinAmount = cost + (int) ((Math.random() * 20) - 5 * Controller.getDifficulty());
         if (!atQueue.isEmpty()) {
             AnimationTimer e = atQueue.remove();
             e.stop();

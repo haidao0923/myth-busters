@@ -148,6 +148,7 @@ public class GameScreen {
             
         }
         if (currentRoom instanceof BossRoom) {
+            System.out.println("this is a boss room");
             currentRoom.lockDoors();
         }
         board.getChildren().addAll(displays, alerts, effectDisplays);

@@ -68,19 +68,19 @@ public class TreasureRoom extends Room {
     public Group getRoomGroup() {
         Group roomGroup = super.getRoomGroup();
         treasureGroup = new Group();
-        for (int i = 0; i < treasureChests.size(); i++) {
-            if (!treasureChests.get(i).isOpened()) {
-                treasureGroup.getChildren().add(treasureChests.get(i).getGroup());
+        for (TreasureChest treasureChest : treasureChests) {
+            if (!treasureChest.isOpened()) {
+                treasureGroup.getChildren().add(treasureChest.getGroup());
             }
         }
 
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
-                for (int i = 0; i < treasureChests.size(); i++) {
-                    if (treasureChests.get(i).canOpen()) {
-                        treasureChests.get(i).open();
-                        treasureGroup.getChildren().remove(treasureChests.get(i).getGroup());
+                for (TreasureChest treasureChest : treasureChests) {
+                    if (treasureChest.canOpen()) {
+                        treasureChest.open();
+                        treasureGroup.getChildren().remove(treasureChest.getGroup());
                     }
                 }
             }

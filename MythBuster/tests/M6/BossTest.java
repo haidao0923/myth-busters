@@ -74,6 +74,22 @@ public class BossTest extends ApplicationTest {
         Platform.runLater(() -> verifyThat("#boss", NodeMatchers.isNotNull()));
     }
 
+    @Test
+    public void testBossDoorsLocked() {
+        clickOn("Start Game");
+        clickOn("#HeroNameTextField");
+        write("test123");
+        clickOn("Begin!");
+        Platform.runLater(() -> {
+            Controller.goToBossRoom();
+            for (Door door : Controller.getCurrentRoom().getDoors()) {
+                if (door != null) {
+                    assertTrue(door.isLocked());
+                }
+            }
+        });
+    }
+
 //    @Test
 //    this doesn't actually work xd
 //    public void testBossWin() {
