@@ -14,13 +14,27 @@ public class Door implements Touchable {
 
     private double positionX;
     private double positionY;
-    private static double width = 60;
-    private static double height = 80;
+    private Rotation rotation;
+    private static double width = 100;
+    private static double height = 65;
 
     private boolean locked;
     private boolean isBossDoor;
 
     private ImageView imageView;
+
+    public enum Rotation{
+        TOP(0),
+        RIGHT(90),
+        BOTTOM(180),
+        LEFT(270);
+
+        private final int value;
+
+        Rotation(final int value) {
+            this.value = value;
+        }
+    }
 
 
     private Group doorGroup;
@@ -36,14 +50,15 @@ public class Door implements Touchable {
     }
 
     public Group getGroup() {
+        imageView.setRotate(rotation.value);
         if (isBossDoor && isLocked()) {
             imageView.setImage(new Image("sprites/LockedBossDoor.png"));
         } else if (isBossDoor) {
             imageView.setImage(new Image("sprites/OpenBossDoor.png"));
         } else if (isLocked()) {
-            imageView.setImage(new Image("sprites/locked_door.png"));
+            imageView.setImage(new Image("sprites/locked_door2.png"));
         } else {
-            imageView.setImage(new Image("sprites/door.png"));
+            imageView.setImage(new Image("sprites/door2.png"));
         }
         return doorGroup;
     }
@@ -53,12 +68,16 @@ public class Door implements Touchable {
         doorGroup.relocate(positionX, positionY);
     }
 
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
+    }
+
     public void unlock() {
         locked = false;
         if(isBossDoor){
             imageView.setImage(new Image("sprites/OpenBossDoor.png"));
         } else {
-            imageView.setImage(new Image("sprites/door.png"));
+            imageView.setImage(new Image("sprites/door2.png"));
         }
 
     }
@@ -68,7 +87,7 @@ public class Door implements Touchable {
         if(isBossDoor){
             imageView.setImage(new Image("sprites/LockedBossDoor.png"));
         } else {
-            imageView.setImage(new Image("sprites/locked_door.png"));
+            imageView.setImage(new Image("sprites/locked_door2.png"));
         }
 
     }

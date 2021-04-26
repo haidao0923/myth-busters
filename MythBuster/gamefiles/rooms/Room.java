@@ -6,6 +6,7 @@ import gamefiles.Door;
 import gamefiles.DropMethods;
 import gamefiles.Droppable;
 import gamefiles.Inventory;
+import gamefiles.Door.Rotation;
 import gamefiles.characters.*;
 import gamefiles.items.Item;
 import gamefiles.items.ItemDatabase;
@@ -128,16 +129,20 @@ public abstract class Room {
         return doors[3];
     }
     public void setLeftDoor(Room destination) {
-        doors[0] = new Door(0, height / 2 - Door.getHeight() / 2, destination);
+        doors[0] = new Door(-15, height / 2 - Door.getWidth() / 2, destination);
+        doors[0].setRotation(Rotation.LEFT);
     }
     public void setTopDoor(Room destination) {
         doors[1] = new Door(width / 2 - Door.getWidth() / 2, 0, destination);
+        doors[1].setRotation(Rotation.TOP);
     }
     public void setRightDoor(Room destination) {
-        doors[2] = new Door(width - Door.getWidth(), height / 2 - Door.getHeight() / 2, destination);
+        doors[2] = new Door(width - Door.getHeight() - 15, height / 2 - Door.getWidth() / 2, destination);
+        doors[2].setRotation(Rotation.RIGHT);
     }
     public void setBottomDoor(Room destination) {
         doors[3] = new Door(width / 2 - Door.getWidth() / 2, height - Door.getHeight(), destination);
+        doors[3].setRotation(Rotation.BOTTOM);
     }
 
     public void unlockDoors() {
