@@ -220,7 +220,7 @@ public class Player implements Touchable {
                 if (moveCD > 0) {
                     moveCD--;
                 } else {
-                    if (input.contains("A") && positionX > 0) {
+                    if (input.contains("A") && positionX > 10) {
                         imageView.setScaleX(1);
                         moveRelative(-currSpeed, 0);
                         direction = 0;
@@ -230,7 +230,7 @@ public class Player implements Touchable {
                         moveRelative(currSpeed, 0);
                         direction = 1;
                     }
-                    if (input.contains("W") && positionY > 0) {
+                    if (input.contains("W") && positionY > 10) {
                         moveRelative(0, -currSpeed);
                     }
                     if (input.contains("S") && positionY + height < scene.getHeight()) {
