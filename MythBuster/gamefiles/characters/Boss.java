@@ -32,6 +32,7 @@ public class Boss extends Monster {
         super("The Boss", 500 + (250 * Controller.getDifficulty()), 2.5, "sprites/Boss/idle.png", 250, 250);
         this.movementSpeed = 2.5;
         imageView.setViewport(new Rectangle2D(0, 0, 100, 100));
+        imageView.setId("boss");
         healthBarBacking.setY(positionY - 10);
         healthBar.setY(positionY - 10);
         idle();
