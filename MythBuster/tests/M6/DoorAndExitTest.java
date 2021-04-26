@@ -28,8 +28,8 @@ public class DoorAndExitTest extends ApplicationTest {
         Door testDoor = new Door(0, 0, new BasicRoom(0, 0, 0, 0));
         int doorWidth = 60;
         int doorHeight = 80;
-        String unlockedImage = "sprites/door.png";
-        String lockedImage = "sprites/locked_door.png";
+        String unlockedImage = "sprites/door2.png";
+        String lockedImage = "sprites/locked_door2.png";
         ImageView imageView = new ImageView(unlockedImage);
         imageView.setFitWidth(doorWidth);
         imageView.setFitHeight(doorHeight);
