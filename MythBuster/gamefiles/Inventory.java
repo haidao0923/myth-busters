@@ -59,7 +59,7 @@ public class Inventory {
 
         //Display Text
         Text instructions = new Text(800, 300, "Click on a consumable and then" 
-            + " press 1-5 to equip to hotbar.");
+            + " \npress 1-5 to equip to hotbar.");
         instructions.setStyle("-fx-font-family: Papyrus; -fx-font-size: 20");
         Text instructions2 = new Text(800, 350, "Click on a weapon and press E to equip");
         instructions2.setStyle("-fx-font-family: Papyrus; -fx-font-size: 20");
