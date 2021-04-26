@@ -105,6 +105,7 @@ public class WinScreen {
         congratulateMessage.setTextAlignment(TextAlignment.CENTER);
         congratulateMessage.prefHeight(80);
         congratulateMessage.setStyle("-fx-font-size: 35; -fx-font-style: italic; -fx-alignment:center; -fx-font-family: Papyrus");
+        congratulateMessage.setFill(Color.WHITE);
         switch (Controller.getDifficulty()) {
         case 0:
             congratulateMessage.setText("Oh. You won on EASY mode!");
